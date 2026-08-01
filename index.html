@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion Quest Helper - مساعد مهام ديسكورد</title>
+    <title>Orion Quest Helper</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -86,6 +86,27 @@
             border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        .error-box {
+            background: rgba(240, 71, 71, 0.1);
+            border: 1px solid rgba(240, 71, 71, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+            text-align: right;
+        }
+        .error-box.active { display: block; }
+        .error-box h3 { color: #f04747; margin-bottom: 10px; }
+        .error-box code { 
+            background: rgba(0,0,0,0.3); 
+            padding: 10px; 
+            border-radius: 4px; 
+            display: block; 
+            margin-top: 10px;
+            font-size: 0.85em;
+            word-break: break-all;
+        }
 
         @media (max-width: 768px) {
             h1 { font-size: 1.8em; }
@@ -111,6 +132,12 @@
             <div class="loading" id="loading">
                 <div class="spinner"></div>
                 <p>جاري تحميل بياناتك من Discord...</p>
+            </div>
+
+            <div class="error-box" id="errorBox">
+                <h3>❌ حدث خطأ:</h3>
+                <p id="errorMessage"></p>
+                <code id="errorCode"></code>
             </div>
 
             <div class="user-info" id="userInfo">
@@ -197,25 +224,41 @@
         }
 
         window.onload = async function() {
+            console.log('[Orion] Page loaded');
+            console.log('[Orion] URL:', window.location.href);
+            console.log('[Orion] Search:', window.location.search);
+            
             const urlParams = new URLSearchParams(window.location.search);
             const code = urlParams.get('code');
             const state = urlParams.get('state');
             
+            console.log('[Orion] Code:', code ? code.substring(0, 20) + '...' : 'none');
+            console.log('[Orion] State:', state);
+            
             if (code) {
+                console.log('[Orion] Code found, exchanging for token...');
                 await exchangeCodeForToken(code);
                 window.history.replaceState({}, document.title, window.location.pathname);
             } else {
+                console.log('[Orion] No code in URL, checking localStorage...');
                 const savedToken = localStorage.getItem('discord_token');
                 const savedUser = localStorage.getItem('discord_user');
+                console.log('[Orion] Saved token:', savedToken ? 'exists' : 'none');
+                console.log('[Orion] Saved user:', savedUser ? 'exists' : 'none');
+                
                 if (savedToken && savedUser) {
                     accessToken = savedToken;
                     userData = JSON.parse(savedUser);
+                    console.log('[Orion] Using saved data');
                     showUserInterface();
+                } else {
+                    console.log('[Orion] No saved data, showing login button');
                 }
             }
         };
 
         async function startOAuth() {
+            console.log('[Orion] Starting OAuth...');
             const state = Math.random().toString(36).substring(7);
             const codeVerifier = generateCodeVerifier();
             const codeChallenge = await generateCodeChallenge(codeVerifier);
@@ -223,59 +266,89 @@
             localStorage.setItem('oauth_state', state);
             localStorage.setItem('code_verifier', codeVerifier);
             
+            console.log('[Orion] State:', state);
+            console.log('[Orion] Code Verifier:', codeVerifier.substring(0, 20) + '...');
+            console.log('[Orion] Code Challenge:', codeChallenge.substring(0, 20) + '...');
+            
             const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20guilds&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
+            console.log('[Orion] Auth URL:', authUrl);
             window.location.href = authUrl;
         }
 
         async function exchangeCodeForToken(code) {
+            console.log('[Orion] Exchanging code for token...');
             document.getElementById('loading').classList.add('active');
             document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('errorBox').classList.remove('active');
             
             try {
                 const codeVerifier = localStorage.getItem('code_verifier');
+                console.log('[Orion] Code Verifier from storage:', codeVerifier ? codeVerifier.substring(0, 20) + '...' : 'NOT FOUND');
+                
                 if (!codeVerifier) {
-                    throw new Error('Code Verifier not found');
+                    throw new Error('Code Verifier not found in localStorage. Please try logging in again.');
                 }
                 
                 const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://discord.com/api/oauth2/token');
+                console.log('[Orion] Proxy URL:', proxyUrl);
+                
+                const body = new URLSearchParams({
+                    client_id: CLIENT_ID,
+                    grant_type: 'authorization_code',
+                    code: code,
+                    redirect_uri: REDIRECT_URI,
+                    code_verifier: codeVerifier,
+                });
+                
+                console.log('[Orion] Request body:', body.toString());
                 
                 const response = await fetch(proxyUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                     },
-                    body: new URLSearchParams({
-                        client_id: CLIENT_ID,
-                        grant_type: 'authorization_code',
-                        code: code,
-                        redirect_uri: REDIRECT_URI,
-                        code_verifier: codeVerifier,
-                    }),
+                    body: body,
                 });
 
+                console.log('[Orion] Response status:', response.status);
+                console.log('[Orion] Response OK:', response.ok);
+                
+                const responseText = await response.text();
+                console.log('[Orion] Response text:', responseText.substring(0, 200));
+                
                 if (response.ok) {
-                    const data = await response.json();
+                    const data = JSON.parse(responseText);
                     accessToken = data.access_token;
+                    console.log('[Orion] Access Token:', accessToken ? accessToken.substring(0, 20) + '...' : 'none');
                     
+                    // Fetch user data
                     const userProxyUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://discord.com/api/users/@me');
                     const userResponse = await fetch(userProxyUrl, {
                         headers: { 'Authorization': `Bearer ${accessToken}` }
                     });
                     
+                    console.log('[Orion] User response status:', userResponse.status);
+                    
                     if (userResponse.ok) {
                         userData = await userResponse.json();
+                        console.log('[Orion] User data:', userData);
+                        
                         localStorage.setItem('discord_token', accessToken);
                         localStorage.setItem('discord_user', JSON.stringify(userData));
+                        console.log('[Orion] Data saved to localStorage');
+                        
                         showUserInterface();
                         showToast('✅ تم تسجيل الدخول بنجاح!', '#3BA55C');
+                    } else {
+                        const userError = await userResponse.text();
+                        throw new Error('Failed to fetch user data: ' + userError);
                     }
                 } else {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error_description || 'فشل تبادل الكود');
+                    throw new Error('Token exchange failed: ' + responseText);
                 }
             } catch (error) {
-                console.error('Token Exchange Error:', error);
-                showToast('❌ فشل في تسجيل الدخول: ' + error.message, '#f04747');
+                console.error('[Orion] Error:', error);
+                showError('فشل في تسجيل الدخول', error.message);
                 document.getElementById('loginBtn').style.display = 'inline-flex';
             } finally {
                 document.getElementById('loading').classList.remove('active');
@@ -284,7 +357,18 @@
             }
         }
 
+        function showError(title, message) {
+            const errorBox = document.getElementById('errorBox');
+            const errorMessage = document.getElementById('errorMessage');
+            const errorCode = document.getElementById('errorCode');
+            
+            errorBox.classList.add('active');
+            errorMessage.textContent = title;
+            errorCode.textContent = message;
+        }
+
         function showUserInterface() {
+            console.log('[Orion] Showing user interface');
             document.getElementById('userInfo').classList.add('active');
             document.getElementById('codeGenerator').style.display = 'block';
             
@@ -326,7 +410,7 @@
         function generateCode() {
             const selected = document.querySelector('.task-option.selected');
             if (!selected) {
-                showToast('⚠️ الرجاء اختيار نوع المهمة أولاً', '#faa61a');
+                showToast('️ الرجاء اختيار نوع المهمة أولاً', '#faa61a');
                 return;
             }
 
@@ -428,6 +512,7 @@
             document.getElementById('userInfo').classList.remove('active');
             document.getElementById('codeGenerator').style.display = 'none';
             document.getElementById('loginBtn').style.display = 'inline-flex';
+            document.getElementById('errorBox').classList.remove('active');
             showToast('✅ تم تسجيل الخروج', '#3BA55C');
         }
 
