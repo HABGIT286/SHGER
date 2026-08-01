@@ -11,6 +11,7 @@
   --primary:#00ffd5;
   --secondary:#ff00aa;
   --gold:#ffd700;
+  --red:#ff4d6d;
   --bg-glass:rgba(15,20,35,0.55);
   --border-glass:rgba(255,255,255,0.12);
   --text:#e8f4ff;
@@ -18,398 +19,172 @@
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;font-family:'Tajawal',sans-serif}
 html,body{overflow-x:hidden}
-body{
-  min-height:100vh;
-  background:url('AA.jpg') center/cover fixed no-repeat;
-  color:var(--text);
-  position:relative;
-}
-body::before{
-  content:'';position:fixed;inset:0;
-  background:linear-gradient(135deg,rgba(5,10,25,0.85),rgba(20,5,30,0.85));
-  z-index:-1;
-}
-/* === Header === */
-header{
-  position:sticky;top:0;z-index:100;
-  background:var(--bg-glass);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
-  border-bottom:1px solid var(--border-glass);
-  padding:15px 30px;
-  display:flex;justify-content:space-between;align-items:center;
-  box-shadow:0 4px 30px rgba(0,0,0,0.5);
-}
+body{min-height:100vh;background:url('AA.jpg') center/cover fixed no-repeat;color:var(--text);position:relative}
+body::before{content:'';position:fixed;inset:0;background:linear-gradient(135deg,rgba(5,10,25,0.85),rgba(20,5,30,0.85));z-index:-1}
+header{position:sticky;top:0;z-index:100;background:var(--bg-glass);backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border-glass);padding:15px 30px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 4px 30px rgba(0,0,0,0.5)}
 .brand{display:flex;align-items:center;gap:15px}
-.brand img{
-  width:55px;height:55px;border-radius:50%;
-  border:2px solid var(--primary);
-  box-shadow:var(--shadow-neon);
-  object-fit:cover;
-  animation:logoGlow 3s ease-in-out infinite;
-}
-@keyframes logoGlow{
-  0%,100%{box-shadow:0 0 15px var(--primary),0 0 30px rgba(0,255,213,0.3)}
-  50%{box-shadow:0 0 25px var(--secondary),0 0 50px rgba(255,0,170,0.4)}
-}
-.brand h1{
-  font-size:1.6rem;font-weight:900;letter-spacing:3px;
-  background:linear-gradient(90deg,var(--primary),var(--gold),var(--secondary));
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;
-  text-shadow:0 0 30px rgba(0,255,213,0.3);
-}
-.clock{
-  font-size:1rem;font-weight:700;
-  color:var(--primary);
-  text-shadow:0 0 10px var(--primary);
-  direction:ltr;
-  padding:8px 18px;
-  background:rgba(0,255,213,0.08);
-  border:1px solid rgba(0,255,213,0.3);
-  border-radius:30px;
-  font-family:'Courier New',monospace;
-}
-
-/* === Navigation === */
-nav{
-  display:flex;justify-content:center;gap:15px;
-  padding:25px 20px;flex-wrap:wrap;
-  background:rgba(5,10,20,0.4);
-  backdrop-filter:blur(10px);
-}
-.nav-btn{
-  background:var(--bg-glass);
-  border:1px solid var(--border-glass);
-  padding:12px 28px;border-radius:50px;
-  color:#fff;font-weight:700;cursor:pointer;
-  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
-  display:flex;align-items:center;gap:10px;
-  backdrop-filter:blur(10px);
-  position:relative;overflow:hidden;
-}
-.nav-btn::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,rgba(0,255,213,0.2),transparent);
-  transform:translateX(-100%);transition:transform 0.6s;
-}
-.nav-btn:hover::before{transform:translateX(100%)}
-.nav-btn:hover,.nav-btn.active{
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#000;border-color:var(--primary);
-  box-shadow:var(--shadow-neon);
-  transform:translateY(-3px);
-}
-.nav-btn i{font-size:1.1rem}
-
-/* === Sections === */
-section{
-  display:none;padding:40px 25px;
-  max-width:1300px;margin:0 auto;
-  animation:fadeUp 0.7s ease;
-}
+.brand img{width:55px;height:55px;border-radius:50%;border:2px solid var(--primary);box-shadow:var(--shadow-neon);object-fit:cover;animation:logoGlow 3s ease-in-out infinite}
+@keyframes logoGlow{0%,100%{box-shadow:0 0 15px var(--primary)}50%{box-shadow:0 0 25px var(--secondary)}}
+.brand h1{font-size:1.6rem;font-weight:900;letter-spacing:3px;background:linear-gradient(90deg,var(--primary),var(--gold),var(--secondary));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.clock{font-size:1rem;font-weight:700;color:var(--primary);direction:ltr;padding:8px 18px;background:rgba(0,255,213,0.08);border:1px solid rgba(0,255,213,0.3);border-radius:30px;font-family:'Courier New',monospace}
+nav{display:flex;justify-content:center;gap:15px;padding:25px 20px;flex-wrap:wrap;background:rgba(5,10,20,0.4);backdrop-filter:blur(10px)}
+.nav-btn{background:var(--bg-glass);border:1px solid var(--border-glass);padding:12px 28px;border-radius:50px;color:#fff;font-weight:700;cursor:pointer;transition:all 0.4s;display:flex;align-items:center;gap:10px;backdrop-filter:blur(10px);position:relative;overflow:hidden}
+.nav-btn:hover,.nav-btn.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#000;box-shadow:var(--shadow-neon);transform:translateY(-3px)}
+section{display:none;padding:40px 25px;max-width:1300px;margin:0 auto;animation:fadeUp 0.7s ease}
 section.active{display:block}
 @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-
-/* === Glass Card === */
-.glass-card{
-  background:var(--bg-glass);
-  backdrop-filter:blur(20px) saturate(180%);
-  -webkit-backdrop-filter:blur(20px) saturate(180%);
-  border:1px solid var(--border-glass);
-  border-radius:24px;
-  padding:30px;margin-bottom:25px;
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.1),
-    inset 0 -1px 0 rgba(0,0,0,0.3),
-    0 10px 40px rgba(0,0,0,0.5);
-  position:relative;overflow:hidden;
-  transition:all 0.4s;
-}
-.glass-card::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,var(--primary),transparent);
-  opacity:0.5;
-}
-.glass-card:hover{
-  border-color:rgba(0,255,213,0.4);
-  box-shadow:0 15px 50px rgba(0,255,213,0.15),inset 0 1px 0 rgba(255,255,255,0.15);
-}
-.glass-card h2{
-  font-family:'Amiri',serif;
-  font-size:1.8rem;font-weight:700;
-  margin-bottom:18px;
-  display:flex;align-items:center;gap:12px;
-  background:linear-gradient(90deg,var(--gold),var(--primary));
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;
-}
-.glass-card h2 i{
-  color:var(--gold);
-  -webkit-text-fill-color:var(--gold);
-  filter:drop-shadow(0 0 10px var(--gold));
-}
+.glass-card{background:var(--bg-glass);backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--border-glass);border-radius:24px;padding:30px;margin-bottom:25px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.1),0 10px 40px rgba(0,0,0,0.5);position:relative;overflow:hidden;transition:all 0.4s}
+.glass-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:0.5}
+.glass-card:hover{border-color:rgba(0,255,213,0.4)}
+.glass-card h2{font-family:'Amiri',serif;font-size:1.8rem;font-weight:700;margin-bottom:18px;display:flex;align-items:center;gap:12px;background:linear-gradient(90deg,var(--gold),var(--primary));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.glass-card h2 i{color:var(--gold);-webkit-text-fill-color:var(--gold);filter:drop-shadow(0 0 10px var(--gold))}
 .glass-card p{line-height:2;color:#d0e0f0;font-size:1.05rem}
-
-/* === Gallery === */
-.gallery{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:15px;margin-top:20px;
-}
-.gallery img{
-  width:100%;height:240px;object-fit:cover;
-  border-radius:16px;border:1px solid var(--border-glass);
-  transition:all 0.5s;cursor:pointer;
-  filter:brightness(0.85) contrast(1.1);
-}
-.gallery img:hover{
-  transform:scale(1.05) rotate(1deg);
-  box-shadow:0 10px 30px rgba(0,255,213,0.4);
-  border-color:var(--primary);
-  filter:brightness(1.1);
-}
-
-/* === Tree === */
-.tree-container{
-  position:relative;
-  padding:30px 20px;
-  min-height:500px;
-}
-.tree-svg{
-  position:absolute;top:0;left:0;width:100%;height:100%;
-  pointer-events:none;z-index:1;
-}
-.tree-svg path{
-  fill:none;stroke:rgba(255,255,255,0.15);
-  stroke-width:2;stroke-linecap:round;
-}
-.tree-svg .liquid{
-  stroke:var(--primary);
-  stroke-width:3;
-  stroke-dasharray:1000;
-  stroke-dashoffset:1000;
-  filter:drop-shadow(0 0 8px var(--primary)) drop-shadow(0 0 15px var(--primary));
-  transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
-}
-.tree-svg .liquid.flowing{stroke-dashoffset:0}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:15px;margin-top:20px}
+.gallery img{width:100%;height:240px;object-fit:cover;border-radius:16px;border:1px solid var(--border-glass);transition:all 0.5s;cursor:pointer;filter:brightness(0.85)}
+.gallery img:hover{transform:scale(1.05);box-shadow:0 10px 30px rgba(0,255,213,0.4);border-color:var(--primary)}
+.tree-container{position:relative;padding:30px 20px;min-height:500px}
+.tree-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.tree-svg path{fill:none;stroke:rgba(255,255,255,0.15);stroke-width:2;stroke-linecap:round}
+.tree-svg .liquid{stroke:var(--primary);stroke-width:3;stroke-dasharray:1000;stroke-dashoffset:1000;filter:drop-shadow(0 0 8px var(--primary)) drop-shadow(0 0 15px var(--primary));transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1)}
 .tree-nodes{position:relative;z-index:2}
-.tree-node{
-  background:rgba(10,20,35,0.7);
-  backdrop-filter:blur(15px);
-  border:1px solid var(--border-glass);
-  border-radius:16px;
-  padding:14px 20px;margin:12px 0;
-  cursor:pointer;
-  transition:all 0.4s;
-  display:flex;align-items:center;gap:15px;
-  position:relative;
-}
-.tree-node::before{
-  content:'';position:absolute;inset:0;border-radius:16px;
-  background:linear-gradient(135deg,rgba(0,255,213,0.1),transparent);
-  opacity:0;transition:opacity 0.4s;
-}
+.tree-node{background:rgba(10,20,35,0.7);backdrop-filter:blur(15px);border:1px solid var(--border-glass);border-radius:16px;padding:14px 20px;margin:12px 0;cursor:pointer;transition:all 0.4s;display:flex;align-items:center;gap:15px;position:relative}
+.tree-node::before{content:'';position:absolute;inset:0;border-radius:16px;background:linear-gradient(135deg,rgba(0,255,213,0.1),transparent);opacity:0;transition:opacity 0.4s}
 .tree-node:hover::before{opacity:1}
-.tree-node:hover{
-  border-color:var(--primary);
-  transform:translateX(-5px);
-  box-shadow:0 5px 25px rgba(0,255,213,0.3);
-}
-.tree-node.active{
-  border-color:var(--gold);
-  box-shadow:0 0 25px rgba(255,215,0,0.5),inset 0 0 20px rgba(255,215,0,0.1);
-  background:rgba(255,215,0,0.08);
-}
-.tree-node .icon{
-  width:45px;height:45px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#000;font-size:1.2rem;font-weight:900;
-  box-shadow:0 0 15px rgba(0,255,213,0.5);
-  flex-shrink:0;
-}
-.tree-node.female .icon{
-  background:linear-gradient(135deg,#ff6bcb,#ff00aa);
-  box-shadow:0 0 15px rgba(255,0,170,0.5);
-}
+.tree-node:hover{border-color:var(--primary);transform:translateX(-5px);box-shadow:0 5px 25px rgba(0,255,213,0.3)}
+.tree-node.active{border-color:var(--gold);box-shadow:0 0 25px rgba(255,215,0,0.5);background:rgba(255,215,0,0.08)}
+.tree-node .icon{width:45px;height:45px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#000;font-size:1.2rem;font-weight:900;flex-shrink:0}
+.tree-node.female .icon{background:linear-gradient(135deg,#ff6bcb,#ff00aa)}
 .tree-node .info{flex:1;min-width:0}
-.tree-node .name{
-  font-weight:800;font-size:1.05rem;color:#fff;
-  font-family:'Amiri',serif;
-  margin-bottom:4px;
-}
-.tree-node .meta{
-  font-size:0.8rem;color:#8fa5c0;
-  display:flex;gap:12px;flex-wrap:wrap;
-}
+.tree-node .name{font-weight:800;font-size:1.05rem;color:#fff;font-family:'Amiri',serif;margin-bottom:4px}
+.tree-node .meta{font-size:0.8rem;color:#8fa5c0;display:flex;gap:12px;flex-wrap:wrap}
 .tree-node .meta span{display:flex;align-items:center;gap:5px}
 .tree-node .meta i{color:var(--primary);font-size:0.75rem}
-.tree-children{
-  margin-right:30px;padding-right:20px;
-  border-right:2px dashed rgba(0,255,213,0.2);
-  max-height:0;overflow:hidden;
-  transition:max-height 0.8s ease;
-}
+.tree-children{margin-right:30px;padding-right:20px;border-right:2px dashed rgba(0,255,213,0.2);max-height:0;overflow:hidden;transition:max-height 0.8s ease}
 .tree-children.open{max-height:5000px}
 
-/* === Detail Panel === */
-.detail-panel{
-  position:fixed;top:50%;right:30px;
-  transform:translateY(-50%) translateX(120%);
-  width:380px;max-width:90vw;max-height:85vh;
-  background:rgba(10,15,30,0.95);
-  backdrop-filter:blur(25px);
-  border:1px solid var(--primary);
-  border-radius:20px;
-  padding:25px;overflow-y:auto;
-  z-index:200;
-  box-shadow:0 0 40px rgba(0,255,213,0.4),0 20px 60px rgba(0,0,0,0.7);
-  transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
-}
+/* === Detail Panel - الهيكل الجديد الكامل === */
+.detail-panel{position:fixed;top:50%;right:30px;transform:translateY(-50%) translateX(120%);width:500px;max-width:95vw;max-height:92vh;background:rgba(8,12,25,0.97);backdrop-filter:blur(25px);border:1px solid var(--primary);border-radius:24px;padding:0;overflow:hidden;z-index:200;box-shadow:0 0 50px rgba(0,255,213,0.4),0 20px 60px rgba(0,0,0,0.8);transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column}
 .detail-panel.open{transform:translateY(-50%) translateX(0)}
-.detail-panel h3{
-  font-family:'Amiri',serif;font-size:1.5rem;
-  color:var(--gold);margin-bottom:15px;
-  text-align:center;
-  text-shadow:0 0 15px rgba(255,215,0,0.5);
-}
-.detail-row{
-  display:flex;justify-content:space-between;
-  padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);
-  font-size:0.95rem;
-}
-.detail-row .label{color:#8fa5c0;display:flex;align-items:center;gap:8px}
-.detail-row .value{color:#fff;font-weight:700}
-.detail-section{margin-top:15px}
-.detail-section h4{
-  color:var(--primary);font-size:1rem;margin-bottom:10px;
-  display:flex;align-items:center;gap:8px;
-}
-.detail-list{
-  background:rgba(0,0,0,0.3);
-  border-radius:10px;padding:12px;
-  max-height:150px;overflow-y:auto;
-}
-.detail-list-item{
-  padding:6px 10px;margin:4px 0;
-  background:rgba(0,255,213,0.05);
-  border-radius:6px;font-size:0.9rem;
-  border-right:2px solid var(--primary);
-}
-.close-btn{
-  position:absolute;top:15px;left:15px;
-  width:32px;height:32px;border-radius:50%;
-  background:rgba(255,0,0,0.2);border:1px solid rgba(255,0,0,0.5);
-  color:#ff6b6b;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all 0.3s;
-}
-.close-btn:hover{background:rgba(255,0,0,0.4);transform:rotate(90deg)}
+.detail-header{background:linear-gradient(135deg,rgba(0,255,213,0.15),rgba(255,0,170,0.1));padding:25px 25px 20px;border-bottom:1px solid var(--border-glass);position:relative;text-align:center;flex-shrink:0}
+.detail-header::before{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.detail-header .close-btn{position:absolute;top:15px;left:15px;width:34px;height:34px;border-radius:50%;background:rgba(255,0,0,0.15);border:1px solid rgba(255,80,80,0.4);color:#ff6b6b;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;font-size:1rem}
+.detail-header .close-btn:hover{background:rgba(255,0,0,0.4);transform:rotate(90deg)}
+.detail-header .person-icon{width:75px;height:75px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:2.2rem;color:#000;background:linear-gradient(135deg,var(--primary),var(--secondary));box-shadow:0 0 25px rgba(0,255,213,0.5)}
+.detail-header.female .person-icon{background:linear-gradient(135deg,#ff6bcb,#ff00aa);box-shadow:0 0 25px rgba(255,0,170,0.5)}
+.detail-header .full-name{font-family:'Amiri',serif;font-size:1.7rem;font-weight:700;color:var(--gold);margin-bottom:6px;text-shadow:0 0 15px rgba(255,215,0,0.4)}
+.detail-header .short-name{font-size:1rem;color:#fff;margin-bottom:4px;font-weight:600}
+.detail-header .kunya-line{font-size:0.95rem;color:var(--primary);font-weight:600}
+.detail-header .titles-line{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.detail-header .title-badge{background:rgba(255,215,0,0.15);color:var(--gold);padding:3px 10px;border-radius:15px;font-size:0.75rem;border:1px solid rgba(255,215,0,0.3)}
+
+/* === Tabs داخل لوحة التفاصيل === */
+.detail-tabs{display:flex;gap:5px;padding:12px;background:rgba(0,0,0,0.3);border-bottom:1px solid var(--border-glass);overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.detail-tabs::-webkit-scrollbar{display:none}
+.detail-tab{padding:8px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--border-glass);border-radius:20px;color:#8fa5c0;font-size:0.8rem;font-weight:700;cursor:pointer;white-space:nowrap;transition:all 0.3s;display:flex;align-items:center;gap:6px}
+.detail-tab:hover{background:rgba(0,255,213,0.1);color:var(--primary)}
+.detail-tab.active{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#000;border-color:var(--primary);box-shadow:0 0 10px rgba(0,255,213,0.4)}
+.detail-tab .tab-count{background:rgba(0,0,0,0.3);color:inherit;padding:1px 7px;border-radius:10px;font-size:0.7rem}
+
+.detail-body{padding:20px;overflow-y:auto;flex:1}
+.detail-body::-webkit-scrollbar{width:6px}
+.detail-body::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
+.tab-content{display:none;animation:fadeIn 0.4s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* === الأقسام === */
+.detail-section{margin-bottom:18px;background:rgba(255,255,255,0.02);border:1px solid var(--border-glass);border-radius:14px;overflow:hidden;transition:all 0.3s}
+.detail-section:hover{border-color:rgba(0,255,213,0.3)}
+.section-title{display:flex;align-items:center;gap:10px;padding:12px 16px;background:linear-gradient(90deg,rgba(0,255,213,0.08),transparent);border-bottom:1px solid var(--border-glass);font-weight:800;font-size:1rem;color:var(--primary);cursor:pointer;user-select:none}
+.section-title i{font-size:1.1rem;filter:drop-shadow(0 0 6px var(--primary))}
+.section-title .count{margin-right:auto;background:rgba(0,255,213,0.15);color:var(--primary);padding:2px 10px;border-radius:20px;font-size:0.8rem}
+.section-title .toggle-icon{transition:transform 0.3s;color:#8fa5c0}
+.section-title.collapsed .toggle-icon{transform:rotate(-90deg)}
+.section-body{padding:12px 14px;transition:max-height 0.4s ease}
+.section-body.collapsed{display:none}
+
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(255,255,255,0.05);font-size:0.92rem;gap:10px}
+.info-row:last-child{border-bottom:none}
+.info-row .label{color:#8fa5c0;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.info-row .label i{color:var(--gold);font-size:0.85rem}
+.info-row .value{color:#fff;font-weight:700;text-align:left;flex:1}
+
+.person-list{display:flex;flex-direction:column;gap:8px;max-height:300px;overflow-y:auto;padding-left:5px}
+.person-list::-webkit-scrollbar{width:4px}
+.person-list::-webkit-scrollbar-thumb{background:var(--primary);border-radius:10px}
+.person-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(0,0,0,0.3);border:1px solid var(--border-glass);border-radius:10px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
+.person-item::before{content:'';position:absolute;top:0;right:0;bottom:0;width:3px;background:var(--primary);transform:scaleY(0);transition:transform 0.3s}
+.person-item:hover::before{transform:scaleY(1)}
+.person-item:hover{background:rgba(0,255,213,0.08);border-color:var(--primary);transform:translateX(-5px);box-shadow:0 4px 15px rgba(0,255,213,0.2)}
+.person-item .mini-icon{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:#000;background:linear-gradient(135deg,var(--primary),var(--secondary));flex-shrink:0}
+.person-item.female .mini-icon{background:linear-gradient(135deg,#ff6bcb,#ff00aa)}
+.person-item .p-name{flex:1;font-weight:700;font-size:0.92rem;color:#fff;font-family:'Amiri',serif}
+.person-item .p-sub{font-size:0.75rem;color:#8fa5c0;display:block;margin-top:2px;font-family:'Tajawal',sans-serif}
+.person-item .arrow{color:var(--primary);font-size:0.8rem;opacity:0;transition:opacity 0.3s}
+.person-item:hover .arrow{opacity:1}
+
+/* === Wife Card (مفصلة) === */
+.wife-card{background:rgba(0,0,0,0.3);border:1px solid var(--border-glass);border-radius:12px;padding:14px;margin-bottom:10px;transition:all 0.3s}
+.wife-card:hover{border-color:var(--primary);box-shadow:0 4px 15px rgba(0,255,213,0.2)}
+.wife-header{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer}
+.wife-header .mini-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#000;background:linear-gradient(135deg,#ff6bcb,#ff00aa);flex-shrink:0}
+.wife-header .wife-name{font-family:'Amiri',serif;font-size:1.05rem;font-weight:700;color:#fff;flex:1}
+.wife-header .wife-name:hover{color:var(--primary)}
+.wife-info{font-size:0.85rem;color:#a0b0c0;margin-bottom:8px;line-height:1.6}
+.wife-children{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.wife-children .child-group{background:rgba(255,255,255,0.03);border-radius:8px;padding:8px}
+.wife-children .group-title{font-size:0.75rem;color:var(--primary);font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:5px}
+.wife-children .child-name{font-size:0.82rem;color:#d0e0f0;padding:3px 0}
+
+/* === Events Timeline === */
+.timeline{position:relative;padding-right:20px}
+.timeline::before{content:'';position:absolute;right:8px;top:0;bottom:0;width:2px;background:linear-gradient(var(--primary),var(--secondary))}
+.timeline-item{position:relative;margin-bottom:15px;padding-right:25px}
+.timeline-item::before{content:'';position:absolute;right:-16px;top:5px;width:12px;height:12px;border-radius:50%;background:var(--gold);box-shadow:0 0 10px var(--gold);border:2px solid #000}
+.timeline-item .event-title{font-weight:800;color:var(--primary);font-size:0.95rem;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.timeline-item .event-desc{font-size:0.85rem;color:#c0d0e0;line-height:1.7}
+
+/* === Narrations === */
+.narration-item{background:rgba(0,0,0,0.3);border-right:3px solid var(--gold);border-radius:8px;padding:12px 15px;margin-bottom:10px;font-family:'Amiri',serif;font-size:1rem;line-height:1.9;color:#e0d0b0;position:relative}
+.narration-item::before{content:'❝';position:absolute;top:-5px;right:10px;font-size:1.5rem;color:var(--gold);opacity:0.3}
+
+/* === Sources === */
+.source-item{display:flex;align-items:center;gap:12px;padding:10px;background:rgba(0,0,0,0.3);border:1px solid var(--border-glass);border-radius:10px;margin-bottom:8px;transition:all 0.3s}
+.source-item:hover{border-color:var(--gold);background:rgba(255,215,0,0.05)}
+.source-item .book-icon{width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#b8860b);display:flex;align-items:center;justify-content:center;color:#000;flex-shrink:0}
+.source-item .book-info{flex:1}
+.source-item .book-name{font-weight:800;color:#fff;font-size:0.92rem;font-family:'Amiri',serif}
+.source-item .book-author{font-size:0.78rem;color:#8fa5c0}
+.source-item .book-ref{font-size:0.75rem;color:var(--primary);margin-top:3px}
 
 /* === Contact === */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
 .social-links{display:flex;flex-direction:column;gap:15px}
-.social-link{
-  display:flex;align-items:center;gap:15px;
-  padding:18px 25px;
-  background:var(--bg-glass);
-  border:1px solid var(--border-glass);
-  border-radius:16px;
-  text-decoration:none;color:#fff;
-  transition:all 0.4s;
-  backdrop-filter:blur(10px);
-}
-.social-link:hover{
-  transform:translateX(-8px);
-  border-color:var(--primary);
-  box-shadow:var(--shadow-neon);
-}
-.social-link i{
-  font-size:2rem;width:50px;height:50px;
-  border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:#000;
-}
+.social-link{display:flex;align-items:center;gap:15px;padding:18px 25px;background:var(--bg-glass);border:1px solid var(--border-glass);border-radius:16px;text-decoration:none;color:#fff;transition:all 0.4s}
+.social-link:hover{transform:translateX(-8px);border-color:var(--primary);box-shadow:var(--shadow-neon)}
+.social-link i{font-size:2rem;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#000}
 .social-link.discord i{background:linear-gradient(135deg,#5865F2,#7289da)}
 .social-link.tiktok i{background:linear-gradient(135deg,#000,#ff0050)}
 .social-link .info-text{flex:1}
 .social-link .info-text h4{font-size:1.1rem;margin-bottom:3px}
 .social-link .info-text p{font-size:0.85rem;color:#8fa5c0}
-
 .form-group{margin-bottom:15px}
-.form-group label{
-  display:block;margin-bottom:8px;
-  color:var(--primary);font-weight:700;
-  font-size:0.9rem;
-}
-.form-input{
-  width:100%;padding:14px 18px;
-  background:rgba(0,0,0,0.4);
-  border:1px solid var(--border-glass);
-  border-radius:12px;color:#fff;
-  font-family:inherit;font-size:1rem;
-  transition:all 0.3s;
-}
-.form-input:focus{
-  border-color:var(--primary);
-  box-shadow:0 0 15px rgba(0,255,213,0.3);
-  background:rgba(0,0,0,0.6);
-}
+.form-group label{display:block;margin-bottom:8px;color:var(--primary);font-weight:700;font-size:0.9rem}
+.form-input{width:100%;padding:14px 18px;background:rgba(0,0,0,0.4);border:1px solid var(--border-glass);border-radius:12px;color:#fff;font-family:inherit;font-size:1rem;transition:all 0.3s}
+.form-input:focus{border-color:var(--primary);box-shadow:0 0 15px rgba(0,255,213,0.3)}
 textarea.form-input{resize:vertical;min-height:100px}
-.submit-btn{
-  width:100%;padding:15px;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  border:none;border-radius:12px;
-  color:#000;font-weight:900;font-size:1.1rem;
-  cursor:pointer;transition:all 0.3s;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-}
-.submit-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 10px 30px rgba(0,255,213,0.5);
-}
-
-/* === Toast === */
-#toast-container{
-  position:fixed;bottom:25px;left:25px;
-  z-index:9999;display:flex;flex-direction:column;gap:12px;
-  pointer-events:none;
-}
-.toast{
-  background:rgba(10,15,30,0.95);
-  backdrop-filter:blur(20px);
-  border-right:4px solid var(--primary);
-  border-radius:14px;
-  padding:18px 22px;min-width:320px;
-  color:#fff;pointer-events:auto;
-  box-shadow:0 10px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,255,213,0.2);
-  animation:toastIn 0.5s cubic-bezier(0.4,0,0.2,1);
-  display:flex;gap:15px;align-items:flex-start;
-}
-.toast .toast-icon{
-  width:40px;height:40px;border-radius:50%;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  display:flex;align-items:center;justify-content:center;
-  color:#000;font-size:1.2rem;flex-shrink:0;
-}
+.submit-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),var(--secondary));border:none;border-radius:12px;color:#000;font-weight:900;font-size:1.1rem;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:10px}
+.submit-btn:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(0,255,213,0.5)}
+#toast-container{position:fixed;bottom:25px;left:25px;z-index:9999;display:flex;flex-direction:column;gap:12px;pointer-events:none}
+.toast{background:rgba(10,15,30,0.95);backdrop-filter:blur(20px);border-right:4px solid var(--primary);border-radius:14px;padding:18px 22px;min-width:320px;color:#fff;pointer-events:auto;box-shadow:0 10px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,255,213,0.2);animation:toastIn 0.5s cubic-bezier(0.4,0,0.2,1);display:flex;gap:15px;align-items:flex-start}
+.toast .toast-icon{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;color:#000;font-size:1.2rem;flex-shrink:0}
 .toast.sad .toast-icon{background:linear-gradient(135deg,#667,#334)}
 .toast .toast-body{flex:1}
 .toast .toast-title{font-weight:900;font-size:1.05rem;margin-bottom:4px;color:var(--gold)}
 .toast .toast-msg{font-size:0.9rem;color:#c0d0e0;line-height:1.5}
 .toast .toast-time{font-size:0.75rem;color:#6a7a8a;margin-top:6px}
-@keyframes toastIn{
-  from{transform:translateX(-120%);opacity:0}
-  to{transform:translateX(0);opacity:1}
-}
-
-/* === Scrollbar === */
-::-webkit-scrollbar{width:8px;height:8px}
-::-webkit-scrollbar-track{background:rgba(0,0,0,0.3)}
-::-webkit-scrollbar-thumb{background:linear-gradient(var(--primary),var(--secondary));border-radius:10px}
-
-/* === Responsive === */
+@keyframes toastIn{from{transform:translateX(-120%);opacity:0}to{transform:translateX(0);opacity:1}}
 @media(max-width:768px){
   header{padding:12px 15px}
   .brand h1{font-size:1.1rem;letter-spacing:1px}
@@ -419,8 +194,10 @@ textarea.form-input{resize:vertical;min-height:100px}
   section{padding:20px 15px}
   .glass-card{padding:20px}
   .glass-card h2{font-size:1.4rem}
-  .detail-panel{right:10px;left:10px;width:auto;max-width:none}
+  .detail-panel{right:5px;left:5px;width:auto;max-width:none;top:auto;bottom:0;transform:translateY(100%);max-height:90vh;border-radius:24px 24px 0 0}
+  .detail-panel.open{transform:translateY(0)}
   .tree-children{margin-right:15px;padding-right:12px}
+  .wife-children{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -440,40 +217,35 @@ textarea.form-input{resize:vertical;min-height:100px}
   <button class="nav-btn" data-tab="contact"><i class="fa-solid fa-paper-plane"></i> تواصل</button>
 </nav>
 
-<!-- Home Section -->
 <section id="home" class="active">
   <div class="glass-card">
     <h2><i class="fa-solid fa-star-and-crescent"></i> سيد الشهداء (ع)</h2>
-    <p>أبو عبد الله الحسين بن علي بن أبي طالب (عليهم السلام)، سبط رسول الله (ص) وريحانته، سيد شباب أهل الجنة. ثار في سبيل الله نصرةً لدين جده وإصلاحاً لأمة جده، فقدم نفسه وأهل بيته وأصحابه فداءً للحق، وأصبح نهجه مدرسةً خالدةً في التحرر والإباء.</p>
+    <p>أبو عبد الله الحسين بن علي بن أبي طالب (عليهم السلام)، سبط رسول الله (ص) وريحانته، سيد شباب أهل الجنة. ثار في سبيل الله نصرةً لدين جده وإصلاحاً لأمة جده، فقدم نفسه وأهل بيته وأصحابه فداءً للحق.</p>
   </div>
-
   <div class="glass-card">
     <h2><i class="fa-solid fa-book-quran"></i> نصيحة الإمام الحسين (ع)</h2>
     <p style="font-family:'Amiri',serif;font-size:1.2rem;color:var(--gold);text-align:center;line-height:2.2">
       «إِنَّما خَرَجْتُ لِطَلَبِ الْإِصْلاحِ فِي أُمَّةِ جَدِّي، أَمُرُ بِالْمَعْرُوفِ وَأَنْهَى عَنِ الْمُنْكَرِ»
     </p>
   </div>
-
   <div class="glass-card">
-    <h2><i class="fa-solid fa-mosque"></i> زيارة عاشوراء (مقطع)</h2>
+    <h2><i class="fa-solid fa-mosque"></i> زيارة عاشوراء</h2>
     <p style="font-family:'Amiri',serif;font-size:1.1rem;line-height:2.2;color:#e0d0b0">
-      «السَّلامُ عَلَيْكَ يَا أَبَا عَبْدِ اللَّهِ، السَّلامُ عَلَيْكَ يَا ابْنَ رَسُولِ اللَّهِ، السَّلامُ عَلَيْكَ يَا ابْنَ أَمِيرِ الْمُؤْمِنِينَ... لَقَدْ عَظُمَتِ الرَّزِيَّةُ وَجَلَّتْ وَعَظُمَتِ الْمُصِيبَةُ بِكَ عَلَيْنَا وَعَلَى جَمِيعِ أَهْلِ الْإِسْلامِ»
+      «السَّلامُ عَلَيْكَ يَا أَبَا عَبْدِ اللَّهِ، السَّلامُ عَلَيْكَ يَا ابْنَ رَسُولِ اللَّهِ، السَّلامُ عَلَيْكَ يَا ابْنَ أَمِيرِ الْمُؤْمِنِينَ... لَقَدْ عَظُمَتِ الرَّزِيَّةُ وَجَلَّتْ وَعَظُمَتِ الْمُصِيبَةُ بِكَ عَلَيْنَا»
     </p>
   </div>
-
   <div class="glass-card">
     <h2><i class="fa-solid fa-images"></i> معرض الصور</h2>
     <div class="gallery" id="gallery"></div>
   </div>
 </section>
 
-<!-- Tree Section -->
 <section id="tree">
   <div class="glass-card">
     <h2><i class="fa-solid fa-dna"></i> الشجرة الطاهرة - آل بيت الحسين (ع)</h2>
     <p style="margin-bottom:20px;color:#8fa5c0">
       <i class="fa-solid fa-circle-info" style="color:var(--primary)"></i>
-      انقر على أي اسم لتفعيل تدفق السائل واستعراض التفاصيل الكاملة (النسبة، الولادة، الوفاة، الزوجات، الأبناء، الإخوة...)
+      انقر على أي اسم لتفعيل تدفق السائل واستعراض التفاصيل الكاملة بالأقسام العشرة.
     </p>
     <div class="tree-container" id="tree-container">
       <svg class="tree-svg" id="tree-svg"></svg>
@@ -482,38 +254,27 @@ textarea.form-input{resize:vertical;min-height:100px}
   </div>
 </section>
 
-<!-- Contact Section -->
 <section id="contact">
   <div class="glass-card">
     <h2><i class="fa-solid fa-comments"></i> تواصل معنا</h2>
     <div class="contact-grid">
       <div>
-        <h3 style="color:var(--primary);margin-bottom:15px;font-size:1.1rem">
-          <i class="fa-solid fa-share-nodes"></i> حساباتنا
-        </h3>
+        <h3 style="color:var(--primary);margin-bottom:15px;font-size:1.1rem"><i class="fa-solid fa-share-nodes"></i> حساباتنا</h3>
         <div class="social-links">
           <a href="#" class="social-link discord" id="discord-link">
             <i class="fa-brands fa-discord"></i>
-            <div class="info-text">
-              <h4>Discord</h4>
-              <p>انضم إلى سيرفرنا</p>
-            </div>
+            <div class="info-text"><h4>Discord</h4><p>انضم إلى سيرفرنا</p></div>
             <i class="fa-solid fa-arrow-left" style="color:#8fa5c0"></i>
           </a>
           <a href="#" class="social-link tiktok" id="tiktok-link">
             <i class="fa-brands fa-tiktok"></i>
-            <div class="info-text">
-              <h4>TikTok</h4>
-              <p>تابعنا على تيك توك</p>
-            </div>
+            <div class="info-text"><h4>TikTok</h4><p>تابعنا على تيك توك</p></div>
             <i class="fa-solid fa-arrow-left" style="color:#8fa5c0"></i>
           </a>
         </div>
       </div>
       <div>
-        <h3 style="color:var(--primary);margin-bottom:15px;font-size:1.1rem">
-          <i class="fa-solid fa-envelope-open-text"></i> رسالة مباشرة
-        </h3>
+        <h3 style="color:var(--primary);margin-bottom:15px;font-size:1.1rem"><i class="fa-solid fa-envelope-open-text"></i> رسالة مباشرة</h3>
         <form id="contact-form">
           <div class="form-group">
             <label><i class="fa-solid fa-user"></i> الاسم (مطلوب)</label>
@@ -523,53 +284,30 @@ textarea.form-input{resize:vertical;min-height:100px}
             <label><i class="fa-solid fa-message"></i> الرسالة</label>
             <textarea class="form-input" id="sender-msg" required></textarea>
           </div>
-          <button type="submit" class="submit-btn">
-            <i class="fa-solid fa-paper-plane"></i> إرسال الرسالة
-          </button>
+          <button type="submit" class="submit-btn"><i class="fa-solid fa-paper-plane"></i> إرسال الرسالة</button>
         </form>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Detail Panel -->
 <div class="detail-panel" id="detail-panel">
-  <button class="close-btn" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
   <div id="detail-content"></div>
 </div>
 
 <div id="toast-container"></div>
 
 <script>
-/* ============================================
-   ONYX-TAQE ENGINE v1.0
-   Data-Driven Architecture
-============================================ */
+const CONFIG = { WEBHOOK_URL: '', DISCORD_URL: '#', TIKTOK_URL: '#' };
+let DATA = null, TIME = null;
 
-const CONFIG = {
-  WEBHOOK_URL: '', // ضع رابط Discord Webhook هنا
-  DISCORD_URL: '#',
-  TIKTOK_URL: '#'
-};
-
-// === State ===
-let DATA = null;
-let TIME = null;
-let activeNode = null;
-
-// === 1. Clock (12h format) ===
 function updateClock(){
   const now = new Date();
-  const opts = {
-    year:'numeric', month:'long', day:'numeric',
-    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true
-  };
+  const opts = {year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:true};
   document.getElementById('live-clock').innerText = now.toLocaleDateString('ar-IQ', opts);
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock, 1000); updateClock();
 
-// === 2. Tab Navigation ===
 document.querySelectorAll('.nav-btn').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
@@ -579,17 +317,14 @@ document.querySelectorAll('.nav-btn').forEach(btn=>{
   });
 });
 
-// === 3. Gallery ===
 const gallery = document.getElementById('gallery');
 for(let i=1;i<=10;i++){
   const img = document.createElement('img');
   img.src = `${i}.jpg`;
-  img.alt = `صورة ${i}`;
   img.onerror = function(){ this.style.display='none'; };
   gallery.appendChild(img);
 }
 
-// === 4. Toast System ===
 function showToast(title, msg, type='info'){
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
@@ -613,14 +348,11 @@ function showToast(title, msg, type='info'){
   }, 7000);
 }
 
-// === 5. Contact Form ===
 document.getElementById('contact-form').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const name = document.getElementById('sender-name').value.trim();
   const msg = document.getElementById('sender-msg').value.trim();
   if(!name || !msg) return;
-
-  // Send to Discord Webhook
   if(CONFIG.WEBHOOK_URL){
     try{
       await fetch(CONFIG.WEBHOOK_URL, {
@@ -641,115 +373,87 @@ document.getElementById('contact-form').addEventListener('submit', async (e)=>{
       });
     }catch(err){console.error(err)}
   }
-
-  showToast('✅ تم الإرسال بنجاح', `شكراً لك يا ${name}، تم استلام رسالتك.`, 'info');
+  showToast('✅ تم الإرسال بنجاح', `شكراً لك يا ${name}، تم استلام رسالتك.`);
   e.target.reset();
 });
 
-// === 6. Social Links ===
 document.getElementById('discord-link').href = CONFIG.DISCORD_URL;
 document.getElementById('tiktok-link').href = CONFIG.TIKTOK_URL;
 
-// === 7. Data Loading ===
 async function loadData(){
   try{
-    const [dRes, tRes] = await Promise.all([
-      fetch('data.json'),
-      fetch('time.json')
-    ]);
+    const [dRes, tRes] = await Promise.all([fetch('data.json'), fetch('time.json')]);
     DATA = await dRes.json();
     TIME = await tRes.json();
     renderTree();
     checkAnniversaries();
   }catch(err){
-    console.error('Error loading data:', err);
+    console.error('Error:', err);
     showToast('⚠️ خطأ في التحميل', 'تأكد من وجود data.json و time.json', 'sad');
   }
 }
 
-// === 8. Tree Rendering ===
 function renderTree(){
   const root = document.getElementById('tree-root');
   root.innerHTML = '';
-  if(DATA && DATA.root){
-    renderNode(DATA.root, root, 0);
-  }
+  if(DATA && DATA.root) renderNode(DATA.root, root, 0);
 }
 
 function renderNode(personId, container, depth){
   const person = DATA.persons[personId];
   if(!person) return;
-
   const wrapper = document.createElement('div');
   wrapper.className = 'tree-branch';
-  wrapper.dataset.id = personId;
-
   const node = document.createElement('div');
   node.className = `tree-node ${person.gender==='f'?'female':''}`;
   node.dataset.id = personId;
-
   const icon = person.gender==='f' ? 'fa-venus' : 'fa-mars';
   const timeInfo = TIME[personId] || {};
-
+  const pi = person.personalInfo || {};
   node.innerHTML = `
     <div class="icon"><i class="fa-solid ${icon}"></i></div>
     <div class="info">
-      <div class="name">${person.name}</div>
+      <div class="name">${pi.fullName || person.name}</div>
       <div class="meta">
         ${timeInfo.birth ? `<span><i class="fa-solid fa-cake-candles"></i> ${timeInfo.birth}</span>` : ''}
         ${timeInfo.death ? `<span><i class="fa-solid fa-dove"></i> ${timeInfo.death}</span>` : ''}
-        ${person.relation ? `<span><i class="fa-solid fa-link"></i> ${person.relation}</span>` : ''}
+        ${pi.relation ? `<span><i class="fa-solid fa-link"></i> ${pi.relation}</span>` : ''}
       </div>
     </div>
   `;
-
   node.addEventListener('click', (e)=>{
     e.stopPropagation();
     activateNode(personId, node);
   });
-
   wrapper.appendChild(node);
-
-  // Children container
   const childrenContainer = document.createElement('div');
   childrenContainer.className = 'tree-children';
-  childrenContainer.dataset.parent = personId;
-
-  const hasChildren = (person.children && person.children.length) || 
-                      (person.spouses && person.spouses.length);
-
+  const sons = person.sons || [];
+  const daughters = person.daughters || [];
+  const wives = person.wives || [];
+  const hasChildren = sons.length || daughters.length || wives.length;
   if(hasChildren){
-    if(person.spouses){
-      person.spouses.forEach(spId=>renderNode(spId, childrenContainer, depth+1));
-    }
-    if(person.children){
-      person.children.forEach(chId=>renderNode(chId, childrenContainer, depth+1));
-    }
+    wives.forEach(w=>{
+      if(typeof w === 'string') renderNode(w, childrenContainer, depth+1);
+      else if(w.personId) renderNode(w.personId, childrenContainer, depth+1);
+    });
+    sons.forEach(s=>renderNode(s, childrenContainer, depth+1));
+    daughters.forEach(d=>renderNode(d, childrenContainer, depth+1));
   }
-
   wrapper.appendChild(childrenContainer);
   container.appendChild(wrapper);
 }
 
 function activateNode(personId, nodeEl){
-  // Reset previous
   document.querySelectorAll('.tree-node.active').forEach(n=>n.classList.remove('active'));
   document.querySelectorAll('.tree-children.open').forEach(c=>c.classList.remove('open'));
   document.querySelectorAll('.liquid').forEach(l=>l.remove());
-
-  // Activate current
   nodeEl.classList.add('active');
-  activeNode = personId;
-
-  // Open children
   const children = nodeEl.parentElement.querySelector('.tree-children');
   if(children){
     children.classList.add('open');
-    // Draw liquid
     setTimeout(()=>drawLiquid(nodeEl, children), 50);
   }
-
-  // Show detail
   showDetail(personId);
 }
 
@@ -757,97 +461,511 @@ function drawLiquid(fromNode, toContainer){
   const svg = document.getElementById('tree-svg');
   const container = document.getElementById('tree-container');
   const cRect = container.getBoundingClientRect();
-
   const fromRect = fromNode.getBoundingClientRect();
   const startX = fromRect.left - cRect.left + 20;
   const startY = fromRect.top - cRect.top + fromRect.height/2;
-
-  // Draw lines to each child node
   const childNodes = toContainer.querySelectorAll(':scope > .tree-branch > .tree-node');
   childNodes.forEach(child=>{
     const childRect = child.getBoundingClientRect();
     const endX = childRect.left - cRect.left + 20;
     const endY = childRect.top - cRect.top + childRect.height/2;
-
     const path = document.createElementNS('http://www.w3.org/2000/svg','path');
     const midX = (startX + endX)/2;
     path.setAttribute('d', `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`);
     path.classList.add('liquid');
     svg.appendChild(path);
-
-    // Trigger animation
     const length = path.getTotalLength();
     path.style.strokeDasharray = length;
     path.style.strokeDashoffset = length;
-    requestAnimationFrame(()=>{
-      path.style.strokeDashoffset = '0';
-    });
+    requestAnimationFrame(()=>{ path.style.strokeDashoffset = '0'; });
   });
 }
 
-// === 9. Detail Panel ===
+// === عرض التفاصيل بالأقسام العشرة ===
 function showDetail(personId){
   const person = DATA.persons[personId];
   const time = TIME[personId] || {};
   if(!person) return;
-
   const panel = document.getElementById('detail-panel');
   const content = document.getElementById('detail-content');
+  const pi = person.personalInfo || {};
+  const isFemale = person.gender === 'f';
+  const iconClass = isFemale ? 'fa-venus' : 'fa-mars';
 
-  let html = `<h3>${person.name}</h3>`;
+  // === الهيدر ===
+  let html = `
+    <div class="detail-header ${isFemale?'female':''}">
+      <button class="close-btn" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="person-icon"><i class="fa-solid ${iconClass}"></i></div>
+      <div class="full-name">${pi.fullName || person.name || 'غير معروف'}</div>
+      ${pi.shortName ? `<div class="short-name">${pi.shortName}</div>` : ''}
+      ${pi.kunya ? `<div class="kunya-line"><i class="fa-solid fa-id-badge"></i> ${pi.kunya}</div>` : ''}
+      ${pi.titles && pi.titles.length ? `
+        <div class="titles-line">
+          ${pi.titles.map(t=>`<span class="title-badge">${t}</span>`).join('')}
+        </div>
+      ` : ''}
+    </div>
+  `;
 
-  // Basic info
-  html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-venus-mars"></i> الجنس</span><span class="value">${person.gender==='f'?'أنثى':'ذكر'}</span></div>`;
-  if(person.relation) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-link"></i> القرابة</span><span class="value">${person.relation}</span></div>`;
-  if(time.birth) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-cake-candles"></i> الولادة</span><span class="value">${time.birth}</span></div>`;
-  if(time.death) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-dove"></i> الوفاة</span><span class="value">${time.death}</span></div>`;
-  if(person.nisba) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-scroll"></i> النسبة</span><span class="value">${person.nisba}</span></div>`;
-  if(person.bio) html += `<p style="margin-top:15px;line-height:1.9;color:#c0d0e0;font-size:0.95rem">${person.bio}</p>`;
+  // === التبويبات ===
+  const tabs = [
+    {id:'info', icon:'fa-circle-info', label:'المعلومات', count:null},
+    {id:'wives', icon:'fa-heart', label:'الزوجات', count:(person.wives||[]).length, hidden:isFemale},
+    {id:'husband', icon:'fa-heart', label:'الزوج', count:(person.wives||[]).length, hidden:!isFemale},
+    {id:'sons', icon:'fa-child-reaching', label:'الأبناء', count:(person.sons||[]).length, hidden:isFemale},
+    {id:'daughters', icon:'fa-person-dress', label:'البنات', count:(person.daughters||[]).length},
+    {id:'brothers', icon:'fa-user-group', label:'الإخوة', count:(person.brothers||[]).length},
+    {id:'sisters', icon:'fa-people-group', label:'الأخوات', count:(person.sisters||[]).length},
+    {id:'events', icon:'fa-clock-rotate-left', label:'الأحداث', count:Object.keys(person.events||{}).length},
+    {id:'narrations', icon:'fa-book-open', label:'الروايات', count:countNarrations(person.narrations||{})},
+    {id:'descendants', icon:'fa-sitemap', label:'الذرية', count:countDescendants(person)},
+    {id:'sources', icon:'fa-book-bookmark', label:'المصادر', count:(person.sources||[]).length}
+  ].filter(t=>!t.hidden);
 
-  // Spouses
-  if(person.spouses && person.spouses.length){
-    html += `<div class="detail-section"><h4><i class="fa-solid fa-heart"></i> الزوجات (${person.spouses.length})</h4><div class="detail-list">`;
-    person.spouses.forEach(spId=>{
-      const sp = DATA.persons[spId];
-      if(sp) html += `<div class="detail-list-item">${sp.name}</div>`;
+  html += `<div class="detail-tabs">`;
+  tabs.forEach((t, i)=>{
+    html += `<div class="detail-tab ${i===0?'active':''}" data-tab-id="${t.id}">
+      <i class="fa-solid ${t.icon}"></i>
+      <span>${t.label}</span>
+      ${t.count!==null && t.count>0 ? `<span class="tab-count">${t.count}</span>` : ''}
+    </div>`;
+  });
+  html += `</div>`;
+
+  html += `<div class="detail-body">`;
+
+  // === تبويب 1: المعلومات الشخصية ===
+  html += `<div class="tab-content active" data-content-id="info">`;
+  html += `
+    <div class="detail-section">
+      <div class="section-title"><i class="fa-solid fa-user"></i><span>البيانات الأساسية</span></div>
+      <div class="section-body">
+  `;
+  if(pi.relation) html += infoRow('fa-link', 'القرابة', pi.relation);
+  if(pi.lineage) html += infoRow('fa-scroll', 'النسب الكامل', pi.lineage);
+  if(pi.gender) html += infoRow('fa-venus-mars', 'الجنس', pi.gender==='f'?'أنثى':'ذكر');
+  if(pi.father){
+    const f = DATA.persons[pi.father];
+    html += infoRow('fa-mars', 'الأب', f ? `<span style="cursor:pointer;color:var(--primary)" onclick="navigateToPerson('${pi.father}')">${f.personalInfo?.fullName || f.name}</span>` : pi.father);
+  }
+  if(pi.mother){
+    const m = DATA.persons[pi.mother];
+    html += infoRow('fa-venus', 'الأم', m ? `<span style="cursor:pointer;color:var(--primary)" onclick="navigateToPerson('${pi.mother}')">${m.personalInfo?.fullName || m.name}</span>` : pi.mother);
+  }
+  if(time.birth) html += infoRow('fa-cake-candles', 'تاريخ الولادة', time.birth);
+  if(time.birthPlace) html += infoRow('fa-map-location-dot', 'مكان الولادة', time.birthPlace);
+  if(time.death) html += infoRow('fa-dove', 'تاريخ الوفاة/الشهادة', time.death);
+  if(time.deathCause) html += infoRow('fa-skull', 'سبب الوفاة', time.deathCause);
+  if(time.burialPlace) html += infoRow('fa-place-of-worship', 'مكان الدفن', time.burialPlace);
+  if(time.age) html += infoRow('fa-hourglass-half', 'العمر', time.age);
+  html += `</div></div>`;
+
+  if(pi.bio){
+    html += `
+      <div class="detail-section">
+        <div class="section-title"><i class="fa-solid fa-book-open"></i><span>النبذة المختصرة</span></div>
+        <div class="section-body">
+          <div style="font-family:'Amiri',serif;font-size:0.95rem;line-height:2;color:#c0d0e0">${pi.bio}</div>
+        </div>
+      </div>
+    `;
+  }
+  html += `</div>`;
+
+  // === تبويب 2: الزوجات ===
+  if(!isFemale && person.wives && person.wives.length){
+    html += `<div class="tab-content" data-content-id="wives">`;
+    person.wives.forEach((wife, idx)=>{
+      html += renderWifeCard(wife, idx);
     });
-    html += `</div></div>`;
+    html += `</div>`;
   }
 
-  // Children
-  if(person.children && person.children.length){
-    const sons = person.children.filter(id=>DATA.persons[id]?.gender==='m');
-    const daughters = person.children.filter(id=>DATA.persons[id]?.gender==='f');
-    html += `<div class="detail-section"><h4><i class="fa-solid fa-child"></i> الأبناء (${person.children.length})</h4><div class="detail-list">`;
-    person.children.forEach(chId=>{
-      const ch = DATA.persons[chId];
-      if(ch){
-        const icon = ch.gender==='f'?'fa-venus':'fa-mars';
-        html += `<div class="detail-list-item"><i class="fa-solid ${icon}" style="color:${ch.gender==='f'?'#ff6bcb':'#00ffd5'}"></i> ${ch.name}</div>`;
+  // === تبويب 2 (بديل): الزوج ===
+  if(isFemale && person.wives && person.wives.length){
+    html += `<div class="tab-content" data-content-id="husband">`;
+    person.wives.forEach((husband, idx)=>{
+      const hId = typeof husband === 'string' ? husband : husband.personId;
+      const h = DATA.persons[hId];
+      if(h){
+        const hpi = h.personalInfo || {};
+        html += `
+          <div class="wife-card">
+            <div class="wife-header">
+              <div class="mini-icon" style="background:linear-gradient(135deg,var(--primary),var(--secondary))"><i class="fa-solid fa-mars"></i></div>
+              <div class="wife-name" onclick="navigateToPerson('${hId}')" style="cursor:pointer">${hpi.fullName || h.name}</div>
+            </div>
+            ${hpi.lineage ? `<div class="wife-info"><i class="fa-solid fa-scroll" style="color:var(--gold)"></i> ${hpi.lineage}</div>` : ''}
+            ${hpi.bio ? `<div class="wife-info">${hpi.bio}</div>` : ''}
+          </div>
+        `;
+      }
+    });
+    html += `</div>`;
+  }
+
+  // === تبويب 3: الأبناء ===
+  if(person.sons && person.sons.length){
+    html += `<div class="tab-content" data-content-id="sons">`;
+    html += `<div class="person-list">`;
+    person.sons.forEach(sId=>{
+      const s = DATA.persons[sId];
+      if(s){
+        const spi = s.personalInfo || {};
+        const st = TIME[sId] || {};
+        html += `
+          <div class="person-item" onclick="navigateToPerson('${sId}')">
+            <div class="mini-icon"><i class="fa-solid fa-mars"></i></div>
+            <div style="flex:1">
+              <div class="p-name">${spi.fullName || s.name}</div>
+              ${spi.kunya ? `<span class="p-sub">${spi.kunya}</span>` : ''}
+              ${st.birth || st.death ? `<span class="p-sub">${st.birth||''} ${st.death?'— '+st.death:''}</span>` : ''}
+            </div>
+            <i class="fa-solid fa-chevron-left arrow"></i>
+          </div>
+        `;
       }
     });
     html += `</div></div>`;
   }
 
-  // Siblings
-  if(person.siblings && person.siblings.length){
-    html += `<div class="detail-section"><h4><i class="fa-solid fa-people-roof"></i> الإخوة (${person.siblings.length})</h4><div class="detail-list">`;
-    person.siblings.forEach(sibId=>{
-      const sib = DATA.persons[sibId];
-      if(sib) html += `<div class="detail-list-item">${sib.name}</div>`;
+  // === تبويب 4: البنات ===
+  if(person.daughters && person.daughters.length){
+    html += `<div class="tab-content" data-content-id="daughters">`;
+    html += `<div class="person-list">`;
+    person.daughters.forEach(dId=>{
+      const d = DATA.persons[dId];
+      if(d){
+        const dpi = d.personalInfo || {};
+        const dt = TIME[dId] || {};
+        html += `
+          <div class="person-item female" onclick="navigateToPerson('${dId}')">
+            <div class="mini-icon"><i class="fa-solid fa-venus"></i></div>
+            <div style="flex:1">
+              <div class="p-name">${dpi.fullName || d.name}</div>
+              ${dpi.kunya ? `<span class="p-sub">${dpi.kunya}</span>` : ''}
+              ${dt.birth || dt.death ? `<span class="p-sub">${dt.birth||''} ${dt.death?'— '+dt.death:''}</span>` : ''}
+            </div>
+            <i class="fa-solid fa-chevron-left arrow"></i>
+          </div>
+        `;
+      }
     });
     html += `</div></div>`;
   }
 
+  // === تبويب 5: الإخوة ===
+  if(person.brothers && person.brothers.length){
+    html += `<div class="tab-content" data-content-id="brothers">`;
+    html += `<div class="person-list">`;
+    person.brothers.forEach(bId=>{
+      const b = DATA.persons[bId];
+      if(b){
+        const bpi = b.personalInfo || {};
+        html += `
+          <div class="person-item" onclick="navigateToPerson('${bId}')">
+            <div class="mini-icon"><i class="fa-solid fa-mars"></i></div>
+            <div style="flex:1">
+              <div class="p-name">${bpi.fullName || b.name}</div>
+              ${bpi.kunya ? `<span class="p-sub">${bpi.kunya}</span>` : ''}
+              ${bpi.relation ? `<span class="p-sub">${bpi.relation}</span>` : ''}
+            </div>
+            <i class="fa-solid fa-chevron-left arrow"></i>
+          </div>
+        `;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  // === تبويب 6: الأخوات ===
+  if(person.sisters && person.sisters.length){
+    html += `<div class="tab-content" data-content-id="sisters">`;
+    html += `<div class="person-list">`;
+    person.sisters.forEach(sId=>{
+      const s = DATA.persons[sId];
+      if(s){
+        const spi = s.personalInfo || {};
+        html += `
+          <div class="person-item female" onclick="navigateToPerson('${sId}')">
+            <div class="mini-icon"><i class="fa-solid fa-venus"></i></div>
+            <div style="flex:1">
+              <div class="p-name">${spi.fullName || s.name}</div>
+              ${spi.kunya ? `<span class="p-sub">${spi.kunya}</span>` : ''}
+              ${spi.relation ? `<span class="p-sub">${spi.relation}</span>` : ''}
+            </div>
+            <i class="fa-solid fa-chevron-left arrow"></i>
+          </div>
+        `;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  // === تبويب 7: الأحداث المهمة ===
+  if(person.events && Object.keys(person.events).length){
+    html += `<div class="tab-content" data-content-id="events">`;
+    html += `<div class="timeline">`;
+    const eventLabels = {
+      birth:{icon:'fa-baby', label:'الميلاد'},
+      childhood:{icon:'fa-child', label:'الطفولة'},
+      life:{icon:'fa-person', label:'الحياة'},
+      imamate:{icon:'fa-crown', label:'الإمامة'},
+      battles:{icon:'fa-shield', label:'المعارك'},
+      martyrdom:{icon:'fa-dove', label:'الاستشهاد'},
+      burial:{icon:'fa-place-of-worship', label:'الدفن'}
+    };
+    Object.entries(person.events).forEach(([key, val])=>{
+      if(val){
+        const ev = eventLabels[key] || {icon:'fa-circle', label:key};
+        html += `
+          <div class="timeline-item">
+            <div class="event-title"><i class="fa-solid ${ev.icon}" style="color:var(--gold)"></i> ${ev.label}</div>
+            <div class="event-desc">${val}</div>
+          </div>
+        `;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  // === تبويب 8: الروايات ===
+  if(person.narrations){
+    const n = person.narrations;
+    const hasAny = (n.hadiths?.length) || (n.sayings?.length) || (n.wills?.length) || (n.prayers?.length) || (n.visits?.length);
+    if(hasAny){
+      html += `<div class="tab-content" data-content-id="narrations">`;
+      if(n.hadiths?.length){
+        html += sectionBlock('fa-message', 'الأحاديث', n.hadiths.map(h=>`<div class="narration-item">${h}</div>`).join(''));
+      }
+      if(n.sayings?.length){
+        html += sectionBlock('fa-quote-right', 'الأقوال', n.sayings.map(s=>`<div class="narration-item">${s}</div>`).join(''));
+      }
+      if(n.wills?.length){
+        html += sectionBlock('fa-scroll', 'الوصايا', n.wills.map(w=>`<div class="narration-item">${w}</div>`).join(''));
+      }
+      if(n.prayers?.length){
+        html += sectionBlock('fa-hands-praying', 'الأدعية', n.prayers.map(p=>`<div class="narration-item">${p}</div>`).join(''));
+      }
+      if(n.visits?.length){
+        html += sectionBlock('fa-mosque', 'الزيارات', n.visits.map(v=>`<div class="narration-item">${v}</div>`).join(''));
+      }
+      html += `</div>`;
+    }
+  }
+
+  // === تبويب 9: الذرية ===
+  html += `<div class="tab-content" data-content-id="descendants">`;
+  html += renderDescendantsTree(personId, 0);
+  html += `</div>`;
+
+  // === تبويب 10: المصادر ===
+  if(person.sources && person.sources.length){
+    html += `<div class="tab-content" data-content-id="sources">`;
+    html += `<div style="display:flex;flex-direction:column;gap:8px">`;
+    person.sources.forEach(src=>{
+      html += `
+        <div class="source-item">
+          <div class="book-icon"><i class="fa-solid fa-book"></i></div>
+          <div class="book-info">
+            <div class="book-name">${src.book}</div>
+            <div class="book-author"><i class="fa-solid fa-pen-nib"></i> ${src.author}</div>
+            ${src.part || src.page ? `<div class="book-ref"><i class="fa-solid fa-location-dot"></i> الجزء ${src.part||'-'} / الصفحة ${src.page||'-'}</div>` : ''}
+          </div>
+        </div>
+      `;
+    });
+    html += `</div></div>`;
+  }
+
+  html += `</div>`;
   content.innerHTML = html;
   panel.classList.add('open');
+
+  // ربط التبويبات
+  document.querySelectorAll('.detail-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      document.querySelectorAll('.detail-tab').forEach(t=>t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+      tab.classList.add('active');
+      document.querySelector(`.tab-content[data-content-id="${tab.dataset.tabId}"]`)?.classList.add('active');
+    });
+  });
+}
+
+// === دوال مساعدة ===
+function infoRow(icon, label, value){
+  return `<div class="info-row"><span class="label"><i class="fa-solid ${icon}"></i> ${label}</span><span class="value">${value}</span></div>`;
+}
+
+function sectionBlock(icon, title, content){
+  return `
+    <div class="detail-section">
+      <div class="section-title"><i class="fa-solid ${icon}"></i><span>${title}</span></div>
+      <div class="section-body">${content}</div>
+    </div>
+  `;
+}
+
+function renderWifeCard(wife, idx){
+  const wId = typeof wife === 'string' ? wife : wife.personId;
+  const w = DATA.persons[wId];
+  if(!w) return '';
+  const wpi = w.personalInfo || {};
+  const wt = TIME[wId] || {};
+  const extraData = typeof wife === 'object' ? wife : {};
+  
+  // الأبناء من هذه الزوجة
+  const sons = extraData.sons || w.sons || [];
+  const daughters = extraData.daughters || w.daughters || [];
+
+  let html = `
+    <div class="wife-card">
+      <div class="wife-header">
+        <div class="mini-icon"><i class="fa-solid fa-venus"></i></div>
+        <div class="wife-name" onclick="navigateToPerson('${wId}')">${wpi.fullName || w.name}</div>
+        <span style="color:var(--gold);font-size:0.8rem">#${idx+1}</span>
+      </div>
+  `;
+  if(wpi.lineage) html += `<div class="wife-info"><i class="fa-solid fa-scroll" style="color:var(--gold)"></i> <strong>النسب:</strong> ${wpi.lineage}</div>`;
+  if(wt.birth) html += `<div class="wife-info"><i class="fa-solid fa-cake-candles" style="color:var(--primary)"></i> <strong>الولادة:</strong> ${wt.birth}</div>`;
+  if(wt.death) html += `<div class="wife-info"><i class="fa-solid fa-dove" style="color:var(--red)"></i> <strong>الوفاة:</strong> ${wt.death}</div>`;
+  if(wpi.bio) html += `<div class="wife-info" style="margin-top:6px;padding-top:6px;border-top:1px dashed rgba(255,255,255,0.1)"><i class="fa-solid fa-book-open" style="color:var(--gold)"></i> ${wpi.bio}</div>`;
+
+  if(sons.length || daughters.length){
+    html += `<div class="wife-children">`;
+    if(sons.length){
+      html += `<div class="child-group"><div class="group-title"><i class="fa-solid fa-child-reaching"></i> الأبناء (${sons.length})</div>`;
+      sons.forEach(sId=>{
+        const s = DATA.persons[sId];
+        if(s){
+          const spi = s.personalInfo || {};
+          html += `<div class="child-name" style="cursor:pointer" onclick="navigateToPerson('${sId}')"><i class="fa-solid fa-mars" style="color:var(--primary);font-size:0.7rem"></i> ${spi.shortName || spi.fullName || s.name}</div>`;
+        }
+      });
+      html += `</div>`;
+    }
+    if(daughters.length){
+      html += `<div class="child-group"><div class="group-title"><i class="fa-solid fa-person-dress"></i> البنات (${daughters.length})</div>`;
+      daughters.forEach(dId=>{
+        const d = DATA.persons[dId];
+        if(d){
+          const dpi = d.personalInfo || {};
+          html += `<div class="child-name" style="cursor:pointer" onclick="navigateToPerson('${dId}')"><i class="fa-solid fa-venus" style="color:#ff6bcb;font-size:0.7rem"></i> ${dpi.shortName || dpi.fullName || d.name}</div>`;
+        }
+      });
+      html += `</div>`;
+    }
+    html += `</div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function countNarrations(n){
+  return (n.hadiths?.length||0) + (n.sayings?.length||0) + (n.wills?.length||0) + (n.prayers?.length||0) + (n.visits?.length||0);
+}
+
+function countDescendants(person){
+  let count = 0;
+  const sons = person.sons || [];
+  const daughters = person.daughters || [];
+  count += sons.length + daughters.length;
+  // الأحفاد
+  [...sons, ...daughters].forEach(id=>{
+    const p = DATA.persons[id];
+    if(p){
+      count += (p.sons?.length||0) + (p.daughters?.length||0);
+    }
+  });
+  return count;
+}
+
+function renderDescendantsTree(personId, depth){
+  const person = DATA.persons[personId];
+  if(!person) return '';
+  const sons = person.sons || [];
+  const daughters = person.daughters || [];
+  if(!sons.length && !daughters.length){
+    if(depth === 0) return `<div style="text-align:center;padding:30px;color:#6a7a8a"><i class="fa-solid fa-tree" style="font-size:2rem;margin-bottom:10px;display:block;opacity:0.3"></i>لا توجد ذرية مسجلة</div>`;
+    return '';
+  }
+  let html = `<div style="padding-right:${depth*15}px;border-right:${depth?'2px dashed rgba(0,255,213,0.2)':'none'};margin-right:${depth?'10px':'0'}">`;
+  if(depth === 0){
+    html += `<div style="text-align:center;margin-bottom:15px;color:var(--gold);font-family:'Amiri',serif;font-size:1.1rem"><i class="fa-solid fa-sitemap"></i> شجرة الذرية</div>`;
+  }
+  sons.forEach(sId=>{
+    const s = DATA.persons[sId];
+    if(s){
+      const spi = s.personalInfo || {};
+      html += `
+        <div class="person-item" onclick="navigateToPerson('${sId}')" style="margin-bottom:6px">
+          <div class="mini-icon"><i class="fa-solid fa-mars"></i></div>
+          <div style="flex:1">
+            <div class="p-name">${spi.fullName || s.name}</div>
+            ${depth===0 && spi.kunya ? `<span class="p-sub">${spi.kunya}</span>` : ''}
+          </div>
+          <i class="fa-solid fa-chevron-left arrow"></i>
+        </div>
+      `;
+      // الأحفاد
+      const grandsons = s.sons || [];
+      const granddaughters = s.daughters || [];
+      if(grandsons.length || granddaughters.length){
+        html += `<div style="padding-right:20px;border-right:2px dashed rgba(255,215,0,0.2);margin:6px 15px 10px 0">`;
+        [...grandsons, ...granddaughters].forEach(gId=>{
+          const g = DATA.persons[gId];
+          if(g){
+            const gpi = g.personalInfo || {};
+            const isF = g.gender === 'f';
+            html += `
+              <div class="person-item ${isF?'female':''}" onclick="navigateToPerson('${gId}')" style="margin-bottom:4px">
+                <div class="mini-icon"><i class="fa-solid ${isF?'fa-venus':'fa-mars'}"></i></div>
+                <div style="flex:1"><div class="p-name" style="font-size:0.85rem">${gpi.fullName || g.name}</div></div>
+                <i class="fa-solid fa-chevron-left arrow"></i>
+              </div>
+            `;
+          }
+        });
+        html += `</div>`;
+      }
+    }
+  });
+  daughters.forEach(dId=>{
+    const d = DATA.persons[dId];
+    if(d){
+      const dpi = d.personalInfo || {};
+      html += `
+        <div class="person-item female" onclick="navigateToPerson('${dId}')" style="margin-bottom:6px">
+          <div class="mini-icon"><i class="fa-solid fa-venus"></i></div>
+          <div style="flex:1">
+            <div class="p-name">${dpi.fullName || d.name}</div>
+            ${depth===0 && dpi.kunya ? `<span class="p-sub">${dpi.kunya}</span>` : ''}
+          </div>
+          <i class="fa-solid fa-chevron-left arrow"></i>
+        </div>
+      `;
+    }
+  });
+  html += `</div>`;
+  return html;
+}
+
+function navigateToPerson(personId){
+  showDetail(personId);
+  const nodeEl = document.querySelector(`.tree-node[data-id="${personId}"]`);
+  if(nodeEl){
+    document.querySelectorAll('.tree-node.active').forEach(n=>n.classList.remove('active'));
+    nodeEl.classList.add('active');
+    nodeEl.scrollIntoView({behavior:'smooth', block:'center'});
+  }
 }
 
 function closeDetail(){
   document.getElementById('detail-panel').classList.remove('open');
 }
 
-// Close on outside click
 document.addEventListener('click', (e)=>{
   const panel = document.getElementById('detail-panel');
   if(!panel.contains(e.target) && !e.target.closest('.tree-node')){
@@ -855,38 +973,30 @@ document.addEventListener('click', (e)=>{
   }
 });
 
-// === 10. Anniversary Checker ===
 function checkAnniversaries(){
   if(!TIME) return;
   const today = new Date();
   const todayStr = `${today.getDate()}-${today.getMonth()+1}`;
-
   Object.entries(TIME).forEach(([personId, dates])=>{
     const person = DATA.persons[personId];
     if(!person) return;
-
     if(dates.death){
       const dParts = dates.death.match(/(\d+)[\/-](\d+)/);
       if(dParts){
         const deathStr = `${dParts[1]}-${dParts[2]}`;
-        if(deathStr === todayStr){
-          showToast('🕯️ ذكرى أليمة', `اليوم ذكرى وفاة ${person.name}`, 'sad');
-        }
+        if(deathStr === todayStr) showToast('🕯️ ذكرى أليمة', `اليوم ذكرى وفاة ${(person.personalInfo?.fullName || person.name)}`, 'sad');
       }
     }
     if(dates.birth){
       const bParts = dates.birth.match(/(\d+)[\/-](\d+)/);
       if(bParts){
         const birthStr = `${bParts[1]}-${bParts[2]}`;
-        if(birthStr === todayStr){
-          showToast('🌸 ذكرى مباركة', `اليوم ذكرى ولادة ${person.name}`, 'info');
-        }
+        if(birthStr === todayStr) showToast('🌸 ذكرى مباركة', `اليوم ذكرى ولادة ${(person.personalInfo?.fullName || person.name)}`, 'info');
       }
     }
   });
 }
 
-// === Initialize ===
 loadData();
 </script>
 </body>
