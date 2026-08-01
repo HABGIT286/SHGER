@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion - Callback</title>
+    <title>Orion - جاري المعالجة</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -38,6 +38,23 @@
         }
         p {
             color: #72767d;
+            margin-bottom: 20px;
+        }
+        .back-btn {
+            background: linear-gradient(135deg, #5865F2, #7289DA);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
         }
     </style>
 </head>
@@ -45,24 +62,33 @@
     <div class="container">
         <div class="spinner"></div>
         <h2>جاري معالجة تسجيل الدخول...</h2>
-        <p>سيتم تحويلك تلقائياً</p>
+        <p>سيتم تحويلك تلقائياً خلال ثوانٍ</p>
+        <a href="index.html" class="back-btn">العودة للصفحة الرئيسية</a>
     </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const code = urlParams.get('code');
         const state = urlParams.get('state');
+        const error = urlParams.get('error');
         
-        if (code && state) {
+        if (error) {
+            document.querySelector('h2').textContent = 'خطأ في المصادقة';
+            document.querySelector('p').textContent = `التفاصيل: ${error}`;
+            document.querySelector('.spinner').style.display = 'none';
+        } else if (code && state) {
             // حفظ الكود في localStorage
             localStorage.setItem('oauth_code', code);
             localStorage.setItem('oauth_state', state);
             
             // العودة للصفحة الرئيسية
-            window.location.href = window.location.origin + window.location.pathname.replace('callback.html', '') + 'index.html';
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
         } else {
-            document.querySelector('h2').textContent = 'خطأ في المصادقة';
+            document.querySelector('h2').textContent = 'لا توجد بيانات مصادقة';
             document.querySelector('p').textContent = 'لم يتم استلام رمز المصادقة';
+            document.querySelector('.spinner').style.display = 'none';
         }
     </script>
 </body>
