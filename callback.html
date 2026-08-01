@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Orion - جاري المعالجة</title>
+    <title>Orion - جاري المعالجة...</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,6 +18,9 @@
         .container {
             text-align: center;
             padding: 40px;
+            background: rgba(30, 30, 46, 0.8);
+            border-radius: 16px;
+            border: 1px solid rgba(88, 101, 242, 0.3);
         }
         .spinner {
             border: 4px solid rgba(88, 101, 242, 0.3);
@@ -34,11 +37,27 @@
         }
         h2 {
             color: #5865F2;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
         p {
             color: #72767d;
             margin-bottom: 20px;
+        }
+        .error {
+            color: #f04747;
+            background: rgba(240, 71, 71, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(240, 71, 71, 0.3);
+            margin-top: 20px;
+        }
+        .success {
+            color: #3BA55C;
+            background: rgba(59, 165, 92, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 165, 92, 0.3);
+            margin-top: 20px;
         }
         .back-btn {
             background: linear-gradient(135deg, #5865F2, #7289DA);
@@ -51,45 +70,135 @@
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            margin-top: 15px;
         }
         .back-btn:hover {
             transform: scale(1.05);
             box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
         }
+        .debug-info {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: left;
+            font-family: monospace;
+            font-size: 0.85em;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="spinner"></div>
-        <h2>جاري معالجة تسجيل الدخول...</h2>
-        <p>سيتم تحويلك تلقائياً خلال ثوانٍ</p>
-        <a href="index.html" class="back-btn">العودة للصفحة الرئيسية</a>
+        <div class="spinner" id="spinner"></div>
+        <h2 id="title">جاري معالجة تسجيل الدخول...</h2>
+        <p id="message">سيتم تحويلك للصفحة الرئيسية خلال لحظات</p>
+        
+        <div class="debug-info" id="debugInfo"></div>
+        
+        <a href="index.html" class="back-btn" id="backBtn" style="display: none;">العودة للصفحة الرئيسية</a>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        const error = urlParams.get('error');
+        // عرض معلومات التصحيح
+        const debugInfo = document.getElementById('debugInfo');
+        const title = document.getElementById('title');
+        const message = document.getElementById('message');
+        const spinner = document.getElementById('spinner');
+        const backBtn = document.getElementById('backBtn');
         
-        if (error) {
-            document.querySelector('h2').textContent = 'خطأ في المصادقة';
-            document.querySelector('p').textContent = `التفاصيل: ${error}`;
-            document.querySelector('.spinner').style.display = 'none';
-        } else if (code && state) {
-            // حفظ الكود في localStorage
-            localStorage.setItem('oauth_code', code);
-            localStorage.setItem('oauth_state', state);
+        // عرض جميع معاملات URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const hash = window.location.hash.substring(1);
+        const hashParams = new URLSearchParams(hash);
+        
+        let debugText = '=== معلومات الرابط ===\n';
+        debugText += 'Search Params: ' + window.location.search + '\n';
+        debugText += 'Hash: ' + window.location.hash + '\n\n';
+        debugText += '=== التفاصيل ===\n';
+        
+        // التحقق من وجود Token (Implicit Flow)
+        const accessToken = hashParams.get('access_token');
+        const tokenType = hashParams.get('token_type');
+        const expiresIn = hashParams.get('expires_in');
+        const scope = hashParams.get('scope');
+        const state = hashParams.get('state');
+        
+        // التحقق من وجود Code (Authorization Code Flow)
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+        
+        if (accessToken) {
+            debugText += '✅ Access Token: موجود\n';
+            debugText += 'Token Type: ' + tokenType + '\n';
+            debugText += 'Expires In: ' + expiresIn + '\n';
+            debugText += 'Scope: ' + scope + '\n';
             
-            // العودة للصفحة الرئيسية
+            // حفظ Token في localStorage
+            localStorage.setItem('discord_token', accessToken);
+            localStorage.setItem('discord_token_type', tokenType);
+            
+            debugText += '\n✅ تم حفظ Token بنجاح!\n';
+            
+            title.textContent = '✅ تم تسجيل الدخول بنجاح!';
+            title.style.color = '#3BA55C';
+            message.textContent = 'جاري تحويلك للصفحة الرئيسية...';
+            spinner.style.display = 'none';
+            
+            // إخفاء الـ Token من العرض للتوضيح
             setTimeout(() => {
                 window.location.href = 'index.html';
-            }, 1000);
+            }, 2000);
+            
+        } else if (code) {
+            debugText += '⚠️ Authorization Code: موجود (لكن نحتاج Token)\n';
+            debugText += 'Code: ' + code.substring(0, 20) + '...\n';
+            debugText += 'State: ' + state + '\n';
+            
+            // حفظ الكود لاستخدامه لاحقاً
+            localStorage.setItem('discord_auth_code', code);
+            localStorage.setItem('oauth_state', state);
+            
+            debugText += '\n✅ تم حفظ الكود\n';
+            debugText += '⚠️ ملاحظة: هذا النوع من المصادقة يتطلب Backend لتبادل الكود بـ Token';
+            
+            title.textContent = '⚠️ تم استلام الكود';
+            message.textContent = 'لكن نحتاج Token للوصول للبيانات';
+            spinner.style.display = 'none';
+            
+        } else if (error) {
+            debugText += '❌ خطأ في المصادقة\n';
+            debugText += 'Error: ' + error + '\n';
+            debugText += 'Description: ' + errorDescription + '\n';
+            
+            title.textContent = '❌ خطأ في المصادقة';
+            title.style.color = '#f04747';
+            message.textContent = errorDescription || 'حدث خطأ غير معروف';
+            spinner.style.display = 'none';
+            
         } else {
-            document.querySelector('h2').textContent = 'لا توجد بيانات مصادقة';
-            document.querySelector('p').textContent = 'لم يتم استلام رمز المصادقة';
-            document.querySelector('.spinner').style.display = 'none';
+            debugText += '❌ لم يتم استلام Token أو Code\n';
+            debugText += 'جميع المعاملات: ' + JSON.stringify(Object.fromEntries(urlParams)) + '\n';
+            
+            title.textContent = '❌ لم يتم استلام البيانات';
+            title.style.color = '#f04747';
+            message.textContent = 'لم يتم استلام Token من Discord';
+            spinner.style.display = 'none';
         }
+        
+        // عرض معلومات التصحيح
+        debugInfo.textContent = debugText;
+        debugInfo.style.display = 'block';
+        
+        // إظهار زر العودة في حالة الخطأ
+        if (error || (!accessToken && !code)) {
+            backBtn.style.display = 'inline-block';
+        }
+        
+        console.log('[Orion Callback] Debug Info:', debugText);
     </script>
 </body>
 </html>
