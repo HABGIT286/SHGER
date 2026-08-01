@@ -1,0 +1,146 @@
+{
+  "imam_hussein": {
+    "birth": "3-8-4",
+    "death": "10-1-61",
+    "birth_note": "3 شعبان 4 هـ",
+    "death_note": "10 محرم 61 هـ - يوم عاشوراء"
+  },
+  "imam_hasan": {
+    "birth": "15-9-3",
+    "death": "7-3-50",
+    "birth_note": "15 رمضان 3 هـ",
+    "death_note": "7 صفر 50 هـ"
+  },
+  "ali_zain": {
+    "birth": "5-8-38",
+    "death": "25-1-95",
+    "birth_note": "5 شعبان 38 هـ",
+    "death_note": "25 محرم 95 هـ"
+  },
+  "muhammad_baqir": {
+    "birth": "1-5-57",
+    "death": "7-12-114",
+    "birth_note": "1 رجب 57 هـ",
+    "death_note": "7 ذو الحجة 114 هـ"
+  },
+  "imam_sadiq": {
+    "birth": "17-4-83",
+    "death": "25-10-148",
+    "birth_note": "17 ربيع الأول 83 هـ",
+    "death_note": "25 شوال 148 هـ"
+  },
+  "imam_kadhim": {
+    "birth": "7-12-128",
+    "death": "25-7-183",
+    "birth_note": "7 ذو الحجة 128 هـ",
+    "death_note": "25 رجب 183 هـ"
+  },
+  "imam_ridha": {
+    "birth": "11-12-148",
+    "death": "17-9-203",
+    "birth_note": "11 ذو القعدة 148 هـ",
+    "death_note": "17 صفر 203 هـ"
+  },
+  "imam_jawad": {
+    "birth": "10-4-195",
+    "death": "29-11-220",
+    "birth_note": "10 رمضان 195 هـ",
+    "death_note": "29 ذو القعدة 220 هـ"
+  },
+  "imam_hadi": {
+    "birth": "15-12-212",
+    "death": "3-6-260",
+    "birth_note": "15 ذو الحجة 212 هـ",
+    "death_note": "3 رجب 260 هـ"
+  },
+  "imam_askari": {
+    "birth": "8-12-232",
+    "death": "8-1-260",
+    "birth_note": "8 ربيع الثاني 232 هـ",
+    "death_note": "8 ربيع الأول 260 هـ"
+  },
+  "imam_mahdi": {
+    "birth": "15-7-255",
+    "death": null,
+    "birth_note": "15 شعبان 255 هـ",
+    "death_note": "الإمام الحي المنتظر"
+  },
+  "ali_akbar": {
+    "birth": "1-1-47",
+    "death": "10-1-61",
+    "birth_note": "1 محرم 47 هـ",
+    "death_note": "10 محرم 61 هـ - كربلاء"
+  },
+  "sakina": {
+    "birth": "20-5-56",
+    "death": "10-3-62",
+    "birth_note": "20 جمادى الأولى 56 هـ",
+    "death_note": "10 ربيع الأول 62 هـ"
+  },
+  "ruqayya": {
+    "birth": "15-5-57",
+    "death": "5-3-62",
+    "birth_note": "15 جمادى الأولى 57 هـ",
+    "death_note": "5 ربيع الأول 62 هـ - خراب الشام"
+  },
+  "abdullah_radi": {
+    "birth": "1-1-60",
+    "death": "10-1-61",
+    "birth_note": "1 محرم 60 هـ",
+    "death_note": "10 محرم 61 هـ - كربلاء"
+  },
+  "zayd": {
+    "birth": "1-1-79",
+    "death": "25-1-122",
+    "birth_note": "1 محرم 79 هـ",
+    "death_note": "25 محرم 122 هـ - الكوفة"
+  },
+  "rubab": {
+    "birth": null,
+    "death": "10-1-61",
+    "birth_note": null,
+    "death_note": "بعد كربلاء - رثت الحسين"
+  },
+  "layla": {
+    "birth": null,
+    "death": "10-1-61",
+    "birth_note": null,
+    "death_note": "بعد استشهاد ولدها علي الأكبر"
+  },
+  "shahrbano": {
+    "birth": null,
+    "death": "10-1-61",
+    "birth_note": null,
+    "death_note": "بعد كربلاء"
+  },
+  "um_ishaq": {
+    "birth": null,
+    "death": null,
+    "birth_note": null,
+    "death_note": null
+  },
+  "fatima_bint_hasan": {
+    "birth": null,
+    "death": null,
+    "birth_note": null,
+    "death_note": null
+  },
+  "fatima_sughra": {
+    "birth": null,
+    "death": null,
+    "birth_note": null,
+    "death_note": null
+  },
+  "abdullah_baqir": {
+    "birth": null,
+    "death": null,
+    "birth_note": null,
+    "death_note": null
+  },
+  "abdullah_afiah": {
+    "birth": null,
+    "death": null,
+    "birth_note": null,
+    "death_note": null
+  }
+}

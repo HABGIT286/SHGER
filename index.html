@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ONYX - TAQE | شجرة الإمام الحسين (ع)</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --primary:#00ffd5;
+  --secondary:#ff00aa;
+  --gold:#ffd700;
+  --bg-glass:rgba(15,20,35,0.55);
+  --border-glass:rgba(255,255,255,0.12);
+  --text:#e8f4ff;
+  --shadow-neon:0 0 20px rgba(0,255,213,0.4),0 0 40px rgba(0,255,213,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;outline:none;font-family:'Tajawal',sans-serif}
+html,body{overflow-x:hidden}
+body{
+  min-height:100vh;
+  background:url('AA.jpg') center/cover fixed no-repeat;
+  color:var(--text);
+  position:relative;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:linear-gradient(135deg,rgba(5,10,25,0.85),rgba(20,5,30,0.85));
+  z-index:-1;
+}
+/* === Header === */
+header{
+  position:sticky;top:0;z-index:100;
+  background:var(--bg-glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid var(--border-glass);
+  padding:15px 30px;
+  display:flex;justify-content:space-between;align-items:center;
+  box-shadow:0 4px 30px rgba(0,0,0,0.5);
+}
+.brand{display:flex;align-items:center;gap:15px}
+.brand img{
+  width:55px;height:55px;border-radius:50%;
+  border:2px solid var(--primary);
+  box-shadow:var(--shadow-neon);
+  object-fit:cover;
+  animation:logoGlow 3s ease-in-out infinite;
+}
+@keyframes logoGlow{
+  0%,100%{box-shadow:0 0 15px var(--primary),0 0 30px rgba(0,255,213,0.3)}
+  50%{box-shadow:0 0 25px var(--secondary),0 0 50px rgba(255,0,170,0.4)}
+}
+.brand h1{
+  font-size:1.6rem;font-weight:900;letter-spacing:3px;
+  background:linear-gradient(90deg,var(--primary),var(--gold),var(--secondary));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  text-shadow:0 0 30px rgba(0,255,213,0.3);
+}
+.clock{
+  font-size:1rem;font-weight:700;
+  color:var(--primary);
+  text-shadow:0 0 10px var(--primary);
+  direction:ltr;
+  padding:8px 18px;
+  background:rgba(0,255,213,0.08);
+  border:1px solid rgba(0,255,213,0.3);
+  border-radius:30px;
+  font-family:'Courier New',monospace;
+}
+
+/* === Navigation === */
+nav{
+  display:flex;justify-content:center;gap:15px;
+  padding:25px 20px;flex-wrap:wrap;
+  background:rgba(5,10,20,0.4);
+  backdrop-filter:blur(10px);
+}
+.nav-btn{
+  background:var(--bg-glass);
+  border:1px solid var(--border-glass);
+  padding:12px 28px;border-radius:50px;
+  color:#fff;font-weight:700;cursor:pointer;
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+  display:flex;align-items:center;gap:10px;
+  backdrop-filter:blur(10px);
+  position:relative;overflow:hidden;
+}
+.nav-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,transparent,rgba(0,255,213,0.2),transparent);
+  transform:translateX(-100%);transition:transform 0.6s;
+}
+.nav-btn:hover::before{transform:translateX(100%)}
+.nav-btn:hover,.nav-btn.active{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#000;border-color:var(--primary);
+  box-shadow:var(--shadow-neon);
+  transform:translateY(-3px);
+}
+.nav-btn i{font-size:1.1rem}
+
+/* === Sections === */
+section{
+  display:none;padding:40px 25px;
+  max-width:1300px;margin:0 auto;
+  animation:fadeUp 0.7s ease;
+}
+section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* === Glass Card === */
+.glass-card{
+  background:var(--bg-glass);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border:1px solid var(--border-glass);
+  border-radius:24px;
+  padding:30px;margin-bottom:25px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    inset 0 -1px 0 rgba(0,0,0,0.3),
+    0 10px 40px rgba(0,0,0,0.5);
+  position:relative;overflow:hidden;
+  transition:all 0.4s;
+}
+.glass-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--primary),transparent);
+  opacity:0.5;
+}
+.glass-card:hover{
+  border-color:rgba(0,255,213,0.4);
+  box-shadow:0 15px 50px rgba(0,255,213,0.15),inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.glass-card h2{
+  font-family:'Amiri',serif;
+  font-size:1.8rem;font-weight:700;
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+  background:linear-gradient(90deg,var(--gold),var(--primary));
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.glass-card h2 i{
+  color:var(--gold);
+  -webkit-text-fill-color:var(--gold);
+  filter:drop-shadow(0 0 10px var(--gold));
+}
+.glass-card p{line-height:2;color:#d0e0f0;font-size:1.05rem}
+
+/* === Gallery === */
+.gallery{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:15px;margin-top:20px;
+}
+.gallery img{
+  width:100%;height:240px;object-fit:cover;
+  border-radius:16px;border:1px solid var(--border-glass);
+  transition:all 0.5s;cursor:pointer;
+  filter:brightness(0.85) contrast(1.1);
+}
+.gallery img:hover{
+  transform:scale(1.05) rotate(1deg);
+  box-shadow:0 10px 30px rgba(0,255,213,0.4);
+  border-color:var(--primary);
+  filter:brightness(1.1);
+}
+
+/* === Tree === */
+.tree-container{
+  position:relative;
+  padding:30px 20px;
+  min-height:500px;
+}
+.tree-svg{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;
+}
+.tree-svg path{
+  fill:none;stroke:rgba(255,255,255,0.15);
+  stroke-width:2;stroke-linecap:round;
+}
+.tree-svg .liquid{
+  stroke:var(--primary);
+  stroke-width:3;
+  stroke-dasharray:1000;
+  stroke-dashoffset:1000;
+  filter:drop-shadow(0 0 8px var(--primary)) drop-shadow(0 0 15px var(--primary));
+  transition:stroke-dashoffset 1.5s cubic-bezier(0.4,0,0.2,1);
+}
+.tree-svg .liquid.flowing{stroke-dashoffset:0}
+.tree-nodes{position:relative;z-index:2}
+.tree-node{
+  background:rgba(10,20,35,0.7);
+  backdrop-filter:blur(15px);
+  border:1px solid var(--border-glass);
+  border-radius:16px;
+  padding:14px 20px;margin:12px 0;
+  cursor:pointer;
+  transition:all 0.4s;
+  display:flex;align-items:center;gap:15px;
+  position:relative;
+}
+.tree-node::before{
+  content:'';position:absolute;inset:0;border-radius:16px;
+  background:linear-gradient(135deg,rgba(0,255,213,0.1),transparent);
+  opacity:0;transition:opacity 0.4s;
+}
+.tree-node:hover::before{opacity:1}
+.tree-node:hover{
+  border-color:var(--primary);
+  transform:translateX(-5px);
+  box-shadow:0 5px 25px rgba(0,255,213,0.3);
+}
+.tree-node.active{
+  border-color:var(--gold);
+  box-shadow:0 0 25px rgba(255,215,0,0.5),inset 0 0 20px rgba(255,215,0,0.1);
+  background:rgba(255,215,0,0.08);
+}
+.tree-node .icon{
+  width:45px;height:45px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#000;font-size:1.2rem;font-weight:900;
+  box-shadow:0 0 15px rgba(0,255,213,0.5);
+  flex-shrink:0;
+}
+.tree-node.female .icon{
+  background:linear-gradient(135deg,#ff6bcb,#ff00aa);
+  box-shadow:0 0 15px rgba(255,0,170,0.5);
+}
+.tree-node .info{flex:1;min-width:0}
+.tree-node .name{
+  font-weight:800;font-size:1.05rem;color:#fff;
+  font-family:'Amiri',serif;
+  margin-bottom:4px;
+}
+.tree-node .meta{
+  font-size:0.8rem;color:#8fa5c0;
+  display:flex;gap:12px;flex-wrap:wrap;
+}
+.tree-node .meta span{display:flex;align-items:center;gap:5px}
+.tree-node .meta i{color:var(--primary);font-size:0.75rem}
+.tree-children{
+  margin-right:30px;padding-right:20px;
+  border-right:2px dashed rgba(0,255,213,0.2);
+  max-height:0;overflow:hidden;
+  transition:max-height 0.8s ease;
+}
+.tree-children.open{max-height:5000px}
+
+/* === Detail Panel === */
+.detail-panel{
+  position:fixed;top:50%;right:30px;
+  transform:translateY(-50%) translateX(120%);
+  width:380px;max-width:90vw;max-height:85vh;
+  background:rgba(10,15,30,0.95);
+  backdrop-filter:blur(25px);
+  border:1px solid var(--primary);
+  border-radius:20px;
+  padding:25px;overflow-y:auto;
+  z-index:200;
+  box-shadow:0 0 40px rgba(0,255,213,0.4),0 20px 60px rgba(0,0,0,0.7);
+  transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.detail-panel.open{transform:translateY(-50%) translateX(0)}
+.detail-panel h3{
+  font-family:'Amiri',serif;font-size:1.5rem;
+  color:var(--gold);margin-bottom:15px;
+  text-align:center;
+  text-shadow:0 0 15px rgba(255,215,0,0.5);
+}
+.detail-row{
+  display:flex;justify-content:space-between;
+  padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.08);
+  font-size:0.95rem;
+}
+.detail-row .label{color:#8fa5c0;display:flex;align-items:center;gap:8px}
+.detail-row .value{color:#fff;font-weight:700}
+.detail-section{margin-top:15px}
+.detail-section h4{
+  color:var(--primary);font-size:1rem;margin-bottom:10px;
+  display:flex;align-items:center;gap:8px;
+}
+.detail-list{
+  background:rgba(0,0,0,0.3);
+  border-radius:10px;padding:12px;
+  max-height:150px;overflow-y:auto;
+}
+.detail-list-item{
+  padding:6px 10px;margin:4px 0;
+  background:rgba(0,255,213,0.05);
+  border-radius:6px;font-size:0.9rem;
+  border-right:2px solid var(--primary);
+}
+.close-btn{
+  position:absolute;top:15px;left:15px;
+  width:32px;height:32px;border-radius:50%;
+  background:rgba(255,0,0,0.2);border:1px solid rgba(255,0,0,0.5);
+  color:#ff6b6b;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.3s;
+}
+.close-btn:hover{background:rgba(255,0,0,0.4);transform:rotate(90deg)}
+
+/* === Contact === */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
+.social-links{display:flex;flex-direction:column;gap:15px}
+.social-link{
+  display:flex;align-items:center;gap:15px;
+  padding:18px 25px;
+  background:var(--bg-glass);
+  border:1px solid var(--border-glass);
+  border-radius:16px;
+  text-decoration:none;color:#fff;
+  transition:all 0.4s;
+  backdrop-filter:blur(10px);
+}
+.social-link:hover{
+  transform:translateX(-8px);
+  border-color:var(--primary);
+  box-shadow:var(--shadow-neon);
+}
+.social-link i{
+  font-size:2rem;width:50px;height:50px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#000;
+}
+.social-link.discord i{background:linear-gradient(135deg,#5865F2,#7289da)}
+.social-link.tiktok i{background:linear-gradient(135deg,#000,#ff0050)}
+.social-link .info-text{flex:1}
+.social-link .info-text h4{font-size:1.1rem;margin-bottom:3px}
+.social-link .info-text p{font-size:0.85rem;color:#8fa5c0}
+
+.form-group{margin-bottom:15px}
+.form-group label{
+  display:block;margin-bottom:8px;
+  color:var(--primary);font-weight:700;
+  font-size:0.9rem;
+}
+.form-input{
+  width:100%;padding:14px 18px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid var(--border-glass);
+  border-radius:12px;color:#fff;
+  font-family:inherit;font-size:1rem;
+  transition:all 0.3s;
+}
+.form-input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 15px rgba(0,255,213,0.3);
+  background:rgba(0,0,0,0.6);
+}
+textarea.form-input{resize:vertical;min-height:100px}
+.submit-btn{
+  width:100%;padding:15px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border:none;border-radius:12px;
+  color:#000;font-weight:900;font-size:1.1rem;
+  cursor:pointer;transition:all 0.3s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.submit-btn:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 30px rgba(0,255,213,0.5);
+}
+
+/* === Toast === */
+#toast-container{
+  position:fixed;bottom:25px;left:25px;
+  z-index:9999;display:flex;flex-direction:column;gap:12px;
+  pointer-events:none;
+}
+.toast{
+  background:rgba(10,15,30,0.95);
+  backdrop-filter:blur(20px);
+  border-right:4px solid var(--primary);
+  border-radius:14px;
+  padding:18px 22px;min-width:320px;
+  color:#fff;pointer-events:auto;
+  box-shadow:0 10px 40px rgba(0,0,0,0.6),0 0 20px rgba(0,255,213,0.2);
+  animation:toastIn 0.5s cubic-bezier(0.4,0,0.2,1);
+  display:flex;gap:15px;align-items:flex-start;
+}
+.toast .toast-icon{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  display:flex;align-items:center;justify-content:center;
+  color:#000;font-size:1.2rem;flex-shrink:0;
+}
+.toast.sad .toast-icon{background:linear-gradient(135deg,#667,#334)}
+.toast .toast-body{flex:1}
+.toast .toast-title{font-weight:900;font-size:1.05rem;margin-bottom:4px;color:var(--gold)}
+.toast .toast-msg{font-size:0.9rem;color:#c0d0e0;line-height:1.5}
+.toast .toast-time{font-size:0.75rem;color:#6a7a8a;margin-top:6px}
+@keyframes toastIn{
+  from{transform:translateX(-120%);opacity:0}
+  to{transform:translateX(0);opacity:1}
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:rgba(0,0,0,0.3)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--primary),var(--secondary));border-radius:10px}
+
+/* === Responsive === */
+@media(max-width:768px){
+  header{padding:12px 15px}
+  .brand h1{font-size:1.1rem;letter-spacing:1px}
+  .clock{font-size:0.8rem;padding:6px 12px}
+  nav{gap:8px;padding:15px 10px}
+  .nav-btn{padding:10px 18px;font-size:0.9rem}
+  section{padding:20px 15px}
+  .glass-card{padding:20px}
+  .glass-card h2{font-size:1.4rem}
+  .detail-panel{right:10px;left:10px;width:auto;max-width:none}
+  .tree-children{margin-right:15px;padding-right:12px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <img src="A.jpg" alt="Logo" onerror="this.src='https://via.placeholder.com/55/001a2e/00ffd5?text=ONYX'">
+    <h1>ONYX - TAQE</h1>
+  </div>
+  <div class="clock" id="live-clock">--:--:--</div>
+</header>
+
+<nav>
+  <button class="nav-btn active" data-tab="home"><i class="fa-solid fa-house"></i> الرئيسية</button>
+  <button class="nav-btn" data-tab="tree"><i class="fa-solid fa-tree"></i> الكنية</button>
+  <button class="nav-btn" data-tab="contact"><i class="fa-solid fa-paper-plane"></i> تواصل</button>
+</nav>
+
+<!-- Home Section -->
+<section id="home" class="active">
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-star-and-crescent"></i> سيد الشهداء (ع)</h2>
+    <p>أبو عبد الله الحسين بن علي بن أبي طالب (عليهم السلام)، سبط رسول الله (ص) وريحانته، سيد شباب أهل الجنة. ثار في سبيل الله نصرةً لدين جده وإصلاحاً لأمة جده، فقدم نفسه وأهل بيته وأصحابه فداءً للحق، وأصبح نهجه مدرسةً خالدةً في التحرر والإباء.</p>
+  </div>
+
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-book-quran"></i> نصيحة الإمام الحسين (ع)</h2>
+    <p style="font-family:'Amiri',serif;font-size:1.2rem;color:var(--gold);text-align:center;line-height:2.2">
+      «إِنَّما خَرَجْتُ لِطَلَبِ الْإِصْلاحِ فِي أُمَّةِ جَدِّي، أَمُرُ بِالْمَعْرُوفِ وَأَنْهَى عَنِ الْمُنْكَرِ»
+    </p>
+  </div>
+
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-mosque"></i> زيارة عاشوراء (مقطع)</h2>
+    <p style="font-family:'Amiri',serif;font-size:1.1rem;line-height:2.2;color:#e0d0b0">
+      «السَّلامُ عَلَيْكَ يَا أَبَا عَبْدِ اللَّهِ، السَّلامُ عَلَيْكَ يَا ابْنَ رَسُولِ اللَّهِ، السَّلامُ عَلَيْكَ يَا ابْنَ أَمِيرِ الْمُؤْمِنِينَ... لَقَدْ عَظُمَتِ الرَّزِيَّةُ وَجَلَّتْ وَعَظُمَتِ الْمُصِيبَةُ بِكَ عَلَيْنَا وَعَلَى جَمِيعِ أَهْلِ الْإِسْلامِ»
+    </p>
+  </div>
+
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-images"></i> معرض الصور</h2>
+    <div class="gallery" id="gallery"></div>
+  </div>
+</section>
+
+<!-- Tree Section -->
+<section id="tree">
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-dna"></i> الشجرة الطاهرة - آل بيت الحسين (ع)</h2>
+    <p style="margin-bottom:20px;color:#8fa5c0">
+      <i class="fa-solid fa-circle-info" style="color:var(--primary)"></i>
+      انقر على أي اسم لتفعيل تدفق السائل واستعراض التفاصيل الكاملة (النسبة، الولادة، الوفاة، الزوجات، الأبناء، الإخوة...)
+    </p>
+    <div class="tree-container" id="tree-container">
+      <svg class="tree-svg" id="tree-svg"></svg>
+      <div class="tree-nodes" id="tree-root"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+  <div class="glass-card">
+    <h2><i class="fa-solid fa-comments"></i> تواصل معنا</h2>
+    <div class="contact-grid">
+      <div>
+        <h3 style="color:var(--primary);margin-bottom:15px;font-size:1.1rem">
+          <i class="fa-solid fa-share-nodes"></i> حساباتنا
+        </h3>
+        <div class="social-links">
+          <a href="#" class="social-link discord" id="discord-link">
+            <i class="fa-brands fa-discord"></i>
+            <div class="info-text">
+              <h4>Discord</h4>
+              <p>انضم إلى سيرفرنا</p>
+            </div>
+            <i class="fa-solid fa-arrow-left" style="color:#8fa5c0"></i>
+          </a>
+          <a href="#" class="social-link tiktok" id="tiktok-link">
+            <i class="fa-brands fa-tiktok"></i>
+            <div class="info-text">
+              <h4>TikTok</h4>
+              <p>تابعنا على تيك توك</p>
+            </div>
+            <i class="fa-solid fa-arrow-left" style="color:#8fa5c0"></i>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h3 style="color:var(--primary);margin-bottom:15px;font-size:1.1rem">
+          <i class="fa-solid fa-envelope-open-text"></i> رسالة مباشرة
+        </h3>
+        <form id="contact-form">
+          <div class="form-group">
+            <label><i class="fa-solid fa-user"></i> الاسم (مطلوب)</label>
+            <input type="text" class="form-input" id="sender-name" required>
+          </div>
+          <div class="form-group">
+            <label><i class="fa-solid fa-message"></i> الرسالة</label>
+            <textarea class="form-input" id="sender-msg" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">
+            <i class="fa-solid fa-paper-plane"></i> إرسال الرسالة
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Detail Panel -->
+<div class="detail-panel" id="detail-panel">
+  <button class="close-btn" onclick="closeDetail()"><i class="fa-solid fa-xmark"></i></button>
+  <div id="detail-content"></div>
+</div>
+
+<div id="toast-container"></div>
+
+<script>
+/* ============================================
+   ONYX-TAQE ENGINE v1.0
+   Data-Driven Architecture
+============================================ */
+
+const CONFIG = {
+  WEBHOOK_URL: '', // ضع رابط Discord Webhook هنا
+  DISCORD_URL: '#',
+  TIKTOK_URL: '#'
+};
+
+// === State ===
+let DATA = null;
+let TIME = null;
+let activeNode = null;
+
+// === 1. Clock (12h format) ===
+function updateClock(){
+  const now = new Date();
+  const opts = {
+    year:'numeric', month:'long', day:'numeric',
+    hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true
+  };
+  document.getElementById('live-clock').innerText = now.toLocaleDateString('ar-IQ', opts);
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// === 2. Tab Navigation ===
+document.querySelectorAll('.nav-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+  });
+});
+
+// === 3. Gallery ===
+const gallery = document.getElementById('gallery');
+for(let i=1;i<=10;i++){
+  const img = document.createElement('img');
+  img.src = `${i}.jpg`;
+  img.alt = `صورة ${i}`;
+  img.onerror = function(){ this.style.display='none'; };
+  gallery.appendChild(img);
+}
+
+// === 4. Toast System ===
+function showToast(title, msg, type='info'){
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const now = new Date();
+  const timeStr = now.toLocaleString('ar-IQ', {hour:'2-digit',minute:'2-digit',hour12:true,day:'numeric',month:'short'});
+  toast.innerHTML = `
+    <div class="toast-icon"><i class="fa-solid ${type==='sad'?'fa-dove':'fa-bell'}"></i></div>
+    <div class="toast-body">
+      <div class="toast-title">${title}</div>
+      <div class="toast-msg">${msg}</div>
+      <div class="toast-time"><i class="fa-regular fa-clock"></i> ${timeStr}</div>
+    </div>
+  `;
+  container.appendChild(toast);
+  setTimeout(()=>{
+    toast.style.opacity='0';
+    toast.style.transform='translateX(-100%)';
+    toast.style.transition='all 0.5s';
+    setTimeout(()=>toast.remove(),500);
+  }, 7000);
+}
+
+// === 5. Contact Form ===
+document.getElementById('contact-form').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const name = document.getElementById('sender-name').value.trim();
+  const msg = document.getElementById('sender-msg').value.trim();
+  if(!name || !msg) return;
+
+  // Send to Discord Webhook
+  if(CONFIG.WEBHOOK_URL){
+    try{
+      await fetch(CONFIG.WEBHOOK_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          embeds:[{
+            title:'📩 رسالة جديدة',
+            color:0x00ffd5,
+            fields:[
+              {name:'الاسم', value:name, inline:true},
+              {name:'التاريخ', value:new Date().toLocaleString('ar-IQ'), inline:true},
+              {name:'الرسالة', value:msg}
+            ],
+            footer:{text:'ONYX - TAQE'}
+          }]
+        })
+      });
+    }catch(err){console.error(err)}
+  }
+
+  showToast('✅ تم الإرسال بنجاح', `شكراً لك يا ${name}، تم استلام رسالتك.`, 'info');
+  e.target.reset();
+});
+
+// === 6. Social Links ===
+document.getElementById('discord-link').href = CONFIG.DISCORD_URL;
+document.getElementById('tiktok-link').href = CONFIG.TIKTOK_URL;
+
+// === 7. Data Loading ===
+async function loadData(){
+  try{
+    const [dRes, tRes] = await Promise.all([
+      fetch('data.json'),
+      fetch('time.json')
+    ]);
+    DATA = await dRes.json();
+    TIME = await tRes.json();
+    renderTree();
+    checkAnniversaries();
+  }catch(err){
+    console.error('Error loading data:', err);
+    showToast('⚠️ خطأ في التحميل', 'تأكد من وجود data.json و time.json', 'sad');
+  }
+}
+
+// === 8. Tree Rendering ===
+function renderTree(){
+  const root = document.getElementById('tree-root');
+  root.innerHTML = '';
+  if(DATA && DATA.root){
+    renderNode(DATA.root, root, 0);
+  }
+}
+
+function renderNode(personId, container, depth){
+  const person = DATA.persons[personId];
+  if(!person) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'tree-branch';
+  wrapper.dataset.id = personId;
+
+  const node = document.createElement('div');
+  node.className = `tree-node ${person.gender==='f'?'female':''}`;
+  node.dataset.id = personId;
+
+  const icon = person.gender==='f' ? 'fa-venus' : 'fa-mars';
+  const timeInfo = TIME[personId] || {};
+
+  node.innerHTML = `
+    <div class="icon"><i class="fa-solid ${icon}"></i></div>
+    <div class="info">
+      <div class="name">${person.name}</div>
+      <div class="meta">
+        ${timeInfo.birth ? `<span><i class="fa-solid fa-cake-candles"></i> ${timeInfo.birth}</span>` : ''}
+        ${timeInfo.death ? `<span><i class="fa-solid fa-dove"></i> ${timeInfo.death}</span>` : ''}
+        ${person.relation ? `<span><i class="fa-solid fa-link"></i> ${person.relation}</span>` : ''}
+      </div>
+    </div>
+  `;
+
+  node.addEventListener('click', (e)=>{
+    e.stopPropagation();
+    activateNode(personId, node);
+  });
+
+  wrapper.appendChild(node);
+
+  // Children container
+  const childrenContainer = document.createElement('div');
+  childrenContainer.className = 'tree-children';
+  childrenContainer.dataset.parent = personId;
+
+  const hasChildren = (person.children && person.children.length) || 
+                      (person.spouses && person.spouses.length);
+
+  if(hasChildren){
+    if(person.spouses){
+      person.spouses.forEach(spId=>renderNode(spId, childrenContainer, depth+1));
+    }
+    if(person.children){
+      person.children.forEach(chId=>renderNode(chId, childrenContainer, depth+1));
+    }
+  }
+
+  wrapper.appendChild(childrenContainer);
+  container.appendChild(wrapper);
+}
+
+function activateNode(personId, nodeEl){
+  // Reset previous
+  document.querySelectorAll('.tree-node.active').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.tree-children.open').forEach(c=>c.classList.remove('open'));
+  document.querySelectorAll('.liquid').forEach(l=>l.remove());
+
+  // Activate current
+  nodeEl.classList.add('active');
+  activeNode = personId;
+
+  // Open children
+  const children = nodeEl.parentElement.querySelector('.tree-children');
+  if(children){
+    children.classList.add('open');
+    // Draw liquid
+    setTimeout(()=>drawLiquid(nodeEl, children), 50);
+  }
+
+  // Show detail
+  showDetail(personId);
+}
+
+function drawLiquid(fromNode, toContainer){
+  const svg = document.getElementById('tree-svg');
+  const container = document.getElementById('tree-container');
+  const cRect = container.getBoundingClientRect();
+
+  const fromRect = fromNode.getBoundingClientRect();
+  const startX = fromRect.left - cRect.left + 20;
+  const startY = fromRect.top - cRect.top + fromRect.height/2;
+
+  // Draw lines to each child node
+  const childNodes = toContainer.querySelectorAll(':scope > .tree-branch > .tree-node');
+  childNodes.forEach(child=>{
+    const childRect = child.getBoundingClientRect();
+    const endX = childRect.left - cRect.left + 20;
+    const endY = childRect.top - cRect.top + childRect.height/2;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    const midX = (startX + endX)/2;
+    path.setAttribute('d', `M ${startX} ${startY} C ${midX} ${startY}, ${midX} ${endY}, ${endX} ${endY}`);
+    path.classList.add('liquid');
+    svg.appendChild(path);
+
+    // Trigger animation
+    const length = path.getTotalLength();
+    path.style.strokeDasharray = length;
+    path.style.strokeDashoffset = length;
+    requestAnimationFrame(()=>{
+      path.style.strokeDashoffset = '0';
+    });
+  });
+}
+
+// === 9. Detail Panel ===
+function showDetail(personId){
+  const person = DATA.persons[personId];
+  const time = TIME[personId] || {};
+  if(!person) return;
+
+  const panel = document.getElementById('detail-panel');
+  const content = document.getElementById('detail-content');
+
+  let html = `<h3>${person.name}</h3>`;
+
+  // Basic info
+  html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-venus-mars"></i> الجنس</span><span class="value">${person.gender==='f'?'أنثى':'ذكر'}</span></div>`;
+  if(person.relation) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-link"></i> القرابة</span><span class="value">${person.relation}</span></div>`;
+  if(time.birth) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-cake-candles"></i> الولادة</span><span class="value">${time.birth}</span></div>`;
+  if(time.death) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-dove"></i> الوفاة</span><span class="value">${time.death}</span></div>`;
+  if(person.nisba) html += `<div class="detail-row"><span class="label"><i class="fa-solid fa-scroll"></i> النسبة</span><span class="value">${person.nisba}</span></div>`;
+  if(person.bio) html += `<p style="margin-top:15px;line-height:1.9;color:#c0d0e0;font-size:0.95rem">${person.bio}</p>`;
+
+  // Spouses
+  if(person.spouses && person.spouses.length){
+    html += `<div class="detail-section"><h4><i class="fa-solid fa-heart"></i> الزوجات (${person.spouses.length})</h4><div class="detail-list">`;
+    person.spouses.forEach(spId=>{
+      const sp = DATA.persons[spId];
+      if(sp) html += `<div class="detail-list-item">${sp.name}</div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  // Children
+  if(person.children && person.children.length){
+    const sons = person.children.filter(id=>DATA.persons[id]?.gender==='m');
+    const daughters = person.children.filter(id=>DATA.persons[id]?.gender==='f');
+    html += `<div class="detail-section"><h4><i class="fa-solid fa-child"></i> الأبناء (${person.children.length})</h4><div class="detail-list">`;
+    person.children.forEach(chId=>{
+      const ch = DATA.persons[chId];
+      if(ch){
+        const icon = ch.gender==='f'?'fa-venus':'fa-mars';
+        html += `<div class="detail-list-item"><i class="fa-solid ${icon}" style="color:${ch.gender==='f'?'#ff6bcb':'#00ffd5'}"></i> ${ch.name}</div>`;
+      }
+    });
+    html += `</div></div>`;
+  }
+
+  // Siblings
+  if(person.siblings && person.siblings.length){
+    html += `<div class="detail-section"><h4><i class="fa-solid fa-people-roof"></i> الإخوة (${person.siblings.length})</h4><div class="detail-list">`;
+    person.siblings.forEach(sibId=>{
+      const sib = DATA.persons[sibId];
+      if(sib) html += `<div class="detail-list-item">${sib.name}</div>`;
+    });
+    html += `</div></div>`;
+  }
+
+  content.innerHTML = html;
+  panel.classList.add('open');
+}
+
+function closeDetail(){
+  document.getElementById('detail-panel').classList.remove('open');
+}
+
+// Close on outside click
+document.addEventListener('click', (e)=>{
+  const panel = document.getElementById('detail-panel');
+  if(!panel.contains(e.target) && !e.target.closest('.tree-node')){
+    panel.classList.remove('open');
+  }
+});
+
+// === 10. Anniversary Checker ===
+function checkAnniversaries(){
+  if(!TIME) return;
+  const today = new Date();
+  const todayStr = `${today.getDate()}-${today.getMonth()+1}`;
+
+  Object.entries(TIME).forEach(([personId, dates])=>{
+    const person = DATA.persons[personId];
+    if(!person) return;
+
+    if(dates.death){
+      const dParts = dates.death.match(/(\d+)[\/-](\d+)/);
+      if(dParts){
+        const deathStr = `${dParts[1]}-${dParts[2]}`;
+        if(deathStr === todayStr){
+          showToast('🕯️ ذكرى أليمة', `اليوم ذكرى وفاة ${person.name}`, 'sad');
+        }
+      }
+    }
+    if(dates.birth){
+      const bParts = dates.birth.match(/(\d+)[\/-](\d+)/);
+      if(bParts){
+        const birthStr = `${bParts[1]}-${bParts[2]}`;
+        if(birthStr === todayStr){
+          showToast('🌸 ذكرى مباركة', `اليوم ذكرى ولادة ${person.name}`, 'info');
+        }
+      }
+    }
+  });
+}
+
+// === Initialize ===
+loadData();
+</script>
+</body>
+</html>
