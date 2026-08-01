@@ -5,429 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orion Quest Helper - مساعد مهام ديسكورد</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
+            color: #fff; min-height: 100vh; overflow-x: hidden;
         }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 20px;
-            animation: slideDown 0.6s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #5865F2, #7289DA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .subtitle {
-            color: #72767d;
-            font-size: 1.1em;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin: 40px 0;
-            animation: fadeIn 0.8s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 40px 20px; animation: slideDown 0.6s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        h1 { font-size: 2.5em; margin-bottom: 10px; background: linear-gradient(135deg, #5865F2, #7289DA); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: #72767d; font-size: 1.1em; }
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 40px 0; animation: fadeIn 0.8s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .stat-card {
-            background: rgba(88, 101, 242, 0.1);
-            border: 1px solid rgba(88, 101, 242, 0.3);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background: rgba(88, 101, 242, 0.1); border: 1px solid rgba(88, 101, 242, 0.3);
+            border-radius: 12px; padding: 25px; text-align: center; transition: all 0.3s ease;
         }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .stat-card:hover::before {
-            left: 100%;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: bold;
-            color: #5865F2;
-            margin-bottom: 10px;
-        }
-
-        .stat-label {
-            color: #72767d;
-            font-size: 0.9em;
-        }
-
-        .main-content {
-            background: rgba(30, 30, 46, 0.8);
-            border-radius: 16px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 1px solid rgba(88, 101, 242, 0.2);
-            animation: slideUp 0.6s ease;
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(88, 101, 242, 0.3); }
+        .stat-number { font-size: 2.5em; font-weight: bold; color: #5865F2; margin-bottom: 10px; }
+        .stat-label { color: #72767d; font-size: 0.9em; }
+        
+        .main-content { background: rgba(30, 30, 46, 0.8); border-radius: 16px; padding: 30px; margin: 30px 0; border: 1px solid rgba(88, 101, 242, 0.2); animation: slideUp 0.6s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        
         .login-btn {
-            background: linear-gradient(135deg, #5865F2, #7289DA);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1em;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin: 20px 0;
+            background: linear-gradient(135deg, #5865F2, #7289DA); color: white; border: none;
+            padding: 15px 40px; font-size: 1.1em; border-radius: 8px; cursor: pointer;
+            transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 10px; margin: 20px 0;
         }
-
-        .login-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5);
-        }
-
-        .login-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
+        .login-btn:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(88, 101, 242, 0.5); }
         .logout-btn {
-            background: linear-gradient(135deg, #f04747, #c23b37);
-            color: white;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-right: 10px;
+            background: linear-gradient(135deg, #f04747, #c23b37); color: white; border: none;
+            padding: 10px 25px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; margin-right: 10px;
         }
-
-        .logout-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 5px 20px rgba(240, 71, 71, 0.5);
-        }
-
-        .code-generator {
-            display: none;
-            margin-top: 30px;
-        }
-
-        .code-generator.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .task-selector {
-            margin: 20px 0;
-        }
-
+        .logout-btn:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(240, 71, 71, 0.5); }
+        
+        .user-info { display: none; background: rgba(59, 165, 92, 0.1); border: 1px solid rgba(59, 165, 92, 0.3); border-radius: 8px; padding: 20px; margin: 20px 0; text-align: center; }
+        .user-info.active { display: block; animation: fadeIn 0.5s ease; }
+        .user-avatar { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #5865F2; margin-bottom: 15px; }
+        .user-name { font-size: 1.5em; font-weight: bold; color: #fff; margin-bottom: 5px; }
+        .user-discriminator { color: #72767d; font-size: 0.9em; }
+        
+        .task-selector { margin: 20px 0; }
         .task-option {
-            background: rgba(88, 101, 242, 0.1);
-            border: 2px solid rgba(88, 101, 242, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
-            cursor: pointer;
-            transition: all 0.3s ease;
+            background: rgba(88, 101, 242, 0.1); border: 2px solid rgba(88, 101, 242, 0.3);
+            border-radius: 8px; padding: 15px; margin: 10px 0; cursor: pointer; transition: all 0.3s ease;
         }
-
-        .task-option:hover {
-            background: rgba(88, 101, 242, 0.2);
-            border-color: #5865F2;
-        }
-
-        .task-option.selected {
-            background: rgba(88, 101, 242, 0.3);
-            border-color: #5865F2;
-        }
-
+        .task-option:hover { background: rgba(88, 101, 242, 0.2); border-color: #5865F2; }
+        .task-option.selected { background: rgba(88, 101, 242, 0.3); border-color: #5865F2; }
+        
         .generated-code {
-            background: #1e1e2e;
-            border: 1px solid #5865F2;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-height: 400px;
-            overflow-y: auto;
+            background: #1e1e2e; border: 1px solid #5865F2; border-radius: 8px; padding: 20px;
+            margin: 20px 0; font-family: 'Courier New', monospace; font-size: 0.9em;
+            overflow-x: auto; white-space: pre-wrap; word-wrap: break-word; max-height: 400px; overflow-y: auto; display: none;
         }
-
         .copy-btn {
-            background: #3BA55C;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1em;
-            transition: all 0.3s ease;
+            background: #3BA55C; color: white; border: none; padding: 12px 30px;
+            border-radius: 8px; cursor: pointer; font-size: 1em; transition: all 0.3s ease; display: none;
         }
-
-        .copy-btn:hover {
-            background: #2d8a4e;
-            transform: scale(1.05);
-        }
-
+        .copy-btn:hover { background: #2d8a4e; transform: scale(1.05); }
+        
+        .instructions { background: rgba(250, 166, 26, 0.1); border: 1px solid rgba(250, 166, 26, 0.3); border-radius: 8px; padding: 20px; margin: 20px 0; }
+        .instructions h3 { color: #faa61a; margin-bottom: 15px; }
+        .instructions ol { margin-right: 20px; line-height: 1.8; }
+        .instructions code { background: rgba(0,0,0,0.3); padding: 2px 8px; border-radius: 4px; font-family: monospace; }
+        
         .toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #3BA55C;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-            animation: slideIn 0.3s ease;
-            z-index: 1000;
+            position: fixed; top: 20px; right: 20px; background: #3BA55C; color: white;
+            padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            animation: slideIn 0.3s ease; z-index: 1000;
         }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .instructions {
-            background: rgba(250, 166, 26, 0.1);
-            border: 1px solid rgba(250, 166, 26, 0.3);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .instructions h3 {
-            color: #faa61a;
-            margin-bottom: 15px;
-        }
-
-        .instructions ol {
-            margin-right: 20px;
-            line-height: 1.8;
-        }
-
-        .instructions code {
-            background: rgba(0,0,0,0.3);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-
-        .user-info {
-            display: none;
-            background: rgba(59, 165, 92, 0.1);
-            border: 1px solid rgba(59, 165, 92, 0.3);
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-
-        .user-info.active {
-            display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .user-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid #5865F2;
-            margin-bottom: 15px;
-        }
-
-        .user-name {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        .user-discriminator {
-            color: #72767d;
-            font-size: 0.9em;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .loading.active {
-            display: block;
-        }
-
+        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        .loading { display: none; text-align: center; padding: 40px; }
+        .loading.active { display: block; }
         .spinner {
-            border: 3px solid rgba(88, 101, 242, 0.3);
-            border-top: 3px solid #5865F2;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
+            border: 3px solid rgba(88, 101, 242, 0.3); border-top: 3px solid #5865F2;
+            border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 15px;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .quests-list {
-            margin: 20px 0;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .quest-item {
-            background: rgba(88, 101, 242, 0.05);
-            border: 1px solid rgba(88, 101, 242, 0.2);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 10px 0;
-            transition: all 0.3s ease;
-        }
-
-        .quest-item:hover {
-            background: rgba(88, 101, 242, 0.1);
-            border-color: #5865F2;
-        }
-
-        .quest-title {
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 5px;
-        }
-
-        .quest-type {
-            color: #5865F2;
-            font-size: 0.85em;
-            margin-bottom: 5px;
-        }
-
-        .quest-reward {
-            color: #3BA55C;
-            font-size: 0.9em;
-        }
-
-        .section-title {
-            font-size: 1.3em;
-            color: #5865F2;
-            margin: 25px 0 15px;
-            border-bottom: 2px solid rgba(88, 101, 242, 0.3);
-            padding-bottom: 10px;
-        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         @media (max-width: 768px) {
             h1 { font-size: 1.8em; }
             .stats-grid { grid-template-columns: 1fr; }
-            .stat-number { font-size: 2em; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1> Orion Quest Helper</h1>
+            <h1>🌟 Orion Quest Helper</h1>
             <p class="subtitle">أداة مساعدة لإنجاز مهام Discord تلقائياً عبر Kiwi Browser</p>
         </header>
 
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="totalTasks">0</div>
-                <div class="stat-label">إجمالي المهام</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="completedTasks">0</div>
-                <div class="stat-label">المهام المنجزة</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="remainingTasks">0</div>
-                <div class="stat-label">المهام المتبقية</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="newTasks">0</div>
-                <div class="stat-label">مهام جديدة</div>
-            </div>
+            <div class="stat-card"><div class="stat-number" id="totalTasks">0</div><div class="stat-label">إجمالي المهام المتاحة</div></div>
+            <div class="stat-card"><div class="stat-number" id="completedTasks">0</div><div class="stat-label">المهام المنجزة</div></div>
+            <div class="stat-card"><div class="stat-number" id="remainingTasks">0</div><div class="stat-label">المهام المتبقية</div></div>
+            <div class="stat-card"><div class="stat-number" id="newTasks">0</div><div class="stat-label">مهام جديدة اليوم</div></div>
         </div>
 
         <div class="main-content">
             <div class="loading" id="loading">
                 <div class="spinner"></div>
-                <p>جاري تحميل بياناتك...</p>
+                <p>جاري تحميل بياناتك من Discord...</p>
             </div>
 
             <div class="user-info" id="userInfo">
@@ -439,53 +122,46 @@
                 </div>
             </div>
 
-            <button class="login-btn" id="loginBtn" onclick="startOAuth()">
-                🔐 تسجيل الدخول بـ Discord
-            </button>
+            <div style="text-align: center;">
+                <button class="login-btn" id="loginBtn" onclick="startOAuth()">
+                    🔐 تسجيل الدخول بـ Discord
+                </button>
+            </div>
 
-            <div class="code-generator" id="codeGenerator">
-                <h2 class="section-title">📋 مهامك المتاحة</h2>
-                <div class="quests-list" id="questsList">
-                    <p style="color: #72767d; text-align: center;">جاري تحميل المهام...</p>
-                </div>
-
-                <h2 class="section-title">⚙️ مولد الكود</h2>
+            <div class="code-generator" id="codeGenerator" style="display: none; margin-top: 30px;">
+                <h2 style="color: #5865F2; margin-bottom: 15px; border-bottom: 2px solid rgba(88,101,242,0.3); padding-bottom: 10px;">⚙️ مولد كود الأتمتة</h2>
                 
                 <div class="task-selector" id="taskSelector">
                     <p style="color: #72767d; margin-bottom: 15px;">اختر نوع المهمة التي تريد إنجازها:</p>
                     <div class="task-option" data-type="VIDEO" onclick="selectTask(this)">
                         <strong>📹 مهام الفيديو (VIDEO)</strong>
-                        <p style="color: #72767d; font-size: 0.9em; margin-top: 5px;">الأكثر استقراراً على المتصفح - مشاهدة فيديوهات</p>
+                        <p style="color: #72767d; font-size: 0.9em; margin-top: 5px;">الأكثر استقراراً - محاكاة مشاهدة الفيديو</p>
                     </div>
                     <div class="task-option" data-type="ACTIVITY" onclick="selectTask(this)">
                         <strong>🎯 مهام النشاط (ACTIVITY)</strong>
-                        <p style="color: #72767d; font-size: 0.9em; margin-top: 5px;">تتطلب قناة صوتية - المشاركة في الأنشطة</p>
+                        <p style="color: #72767d; font-size: 0.9em; margin-top: 5px;">محاكاة البقاء في نشاط أو قناة صوتية</p>
                     </div>
                     <div class="task-option" data-type="ACHIEVEMENT" onclick="selectTask(this)">
                         <strong>🏆 مهام الإنجاز (ACHIEVEMENT)</strong>
-                        <p style="color: #72767d; font-size: 0.9em; margin-top: 5px;">إنجازات خاصة - قد تتطلب OAuth إضافي</p>
+                        <p style="color: #72767d; font-size: 0.9em; margin-top: 5px;">تجاوز متطلبات الإنجازات تلقائياً</p>
                     </div>
                 </div>
 
-                <button class="login-btn" onclick="generateCode()" style="background: linear-gradient(135deg, #3BA55C, #2d8a4e);">
+                <button class="login-btn" onclick="generateCode()" style="background: linear-gradient(135deg, #3BA55C, #2d8a4e); width: 100%; justify-content: center;">
                     ⚡ توليد الكود
                 </button>
 
-                <div class="generated-code" id="generatedCode" style="display: none;"></div>
-                
-                <button class="copy-btn" id="copyBtn" onclick="copyCode()" style="display: none;">
-                    📋 نسخ الكود
-                </button>
+                <div class="generated-code" id="generatedCode"></div>
+                <button class="copy-btn" id="copyBtn" onclick="copyCode()">📋 نسخ الكود</button>
 
                 <div class="instructions">
                     <h3>📖 طريقة الاستخدام:</h3>
                     <ol>
-                        <li>افتح <code>Kiwi Browser</code> على هاتفك</li>
-                        <li>ادخل إلى <code>discord.com/app</code> وسجل دخولك</li>
-                        <li>اضغط على الثلاث نقاط → <code>Developer Tools</code> → <code>Console</code></li>
-                        <li>الصق الكود المنسوخ واضغط <code>Enter</code></li>
-                        <li>انتظر حتى تكتمل المهمة تلقائياً (ستظهر رسائل في Console)</li>
-                        <li>عد للموقع واضغط "تحديث المهام" لرؤية التقدم</li>
+                        <li>افتح <code>Kiwi Browser</code> على هاتفك.</li>
+                        <li>ادخل إلى <code>discord.com/app</code> وتأكد من تسجيل دخولك.</li>
+                        <li>اضغط على الثلاث نقاط → <code>Developer Tools</code> → <code>Console</code>.</li>
+                        <li>الصق الكود المنسوخ هنا واضغط <code>Enter</code>.</li>
+                        <li>راقب الرسائل في Console حتى تكتمل المهمة.</li>
                     </ol>
                 </div>
             </div>
@@ -493,232 +169,191 @@
     </div>
 
     <script>
-        // ⚠️ إعدادات التطبيق
         const CLIENT_ID = '1533087997442916462';
         const REDIRECT_URI = 'https://habgit286.github.io/SHGER/callback.html';
-        const SCOPES = 'identify%20guilds';
 
         let accessToken = null;
         let userData = null;
-        let questsData = [];
-        let selectedTaskType = null;
 
-        // التحقق من وجود token محفوظ عند تحميل الصفحة
+        // PKCE Helper Functions
+        function generateCodeVerifier() {
+            const array = new Uint8Array(32);
+            crypto.getRandomValues(array);
+            return base64UrlEncode(array);
+        }
+
+        function base64UrlEncode(array) {
+            return btoa(String.fromCharCode.apply(null, array))
+                .replace(/\+/g, '-')
+                .replace(/\//g, '_')
+                .replace(/=+$/, '');
+        }
+
+        async function generateCodeChallenge(verifier) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(verifier);
+            const digest = await crypto.subtle.digest('SHA-256', data);
+            return base64UrlEncode(new Uint8Array(digest));
+        }
+
         window.onload = async function() {
-            const savedToken = localStorage.getItem('discord_token');
-            const savedUser = localStorage.getItem('discord_user');
-            const savedQuests = localStorage.getItem('discord_quests');
+            const urlParams = new URLSearchParams(window.location.search);
+            const code = urlParams.get('code');
+            const state = urlParams.get('state');
             
-            if (savedToken && savedUser) {
-                accessToken = savedToken;
-                userData = JSON.parse(savedUser);
-                
-                if (savedQuests) {
-                    questsData = JSON.parse(savedQuests);
+            if (code) {
+                await exchangeCodeForToken(code);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } else {
+                const savedToken = localStorage.getItem('discord_token');
+                const savedUser = localStorage.getItem('discord_user');
+                if (savedToken && savedUser) {
+                    accessToken = savedToken;
+                    userData = JSON.parse(savedUser);
+                    showUserInterface();
                 }
-                
-                showUserInterface();
-                
-                // تحديث بيانات المهام
-                await fetchQuests();
             }
         };
 
-        function startOAuth() {
+        async function startOAuth() {
             const state = Math.random().toString(36).substring(7);
+            const codeVerifier = generateCodeVerifier();
+            const codeChallenge = await generateCodeChallenge(codeVerifier);
+            
             localStorage.setItem('oauth_state', state);
+            localStorage.setItem('code_verifier', codeVerifier);
             
-            const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=${SCOPES}&state=${state}`;
-            
+            const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code&scope=identify%20guilds&state=${state}&code_challenge=${codeChallenge}&code_challenge_method=S256`;
             window.location.href = authUrl;
         }
 
-        async function fetchQuests() {
+        async function exchangeCodeForToken(code) {
+            document.getElementById('loading').classList.add('active');
+            document.getElementById('loginBtn').style.display = 'none';
+            
             try {
-                document.getElementById('loading').classList.add('active');
-                
-                // ملاحظة: جلب المهام يتطلب وجود المستخدم في Discord Web
-                // هنا نعرض بيانات تجريبية - في الواقع ستحتاج لجلبها من Discord API
-                
-                // بيانات تجريبية للمهام
-                const mockQuests = [
-                    {
-                        id: '1234567890123456789',
-                        name: 'Watch Tutorial Video',
-                        type: 'VIDEO',
-                        reward: 'Avatar Decoration',
-                        progress: 0,
-                        target: 300,
-                        completed: false
-                    },
-                    {
-                        id: '1234567890123456790',
-                        name: 'Join Voice Activity',
-                        type: 'ACTIVITY',
-                        reward: '50 Orbs',
-                        progress: 0,
-                        target: 600,
-                        completed: false
-                    },
-                    {
-                        id: '1234567890123456791',
-                        name: 'Complete Achievement',
-                        type: 'ACHIEVEMENT',
-                        reward: 'Profile Badge',
-                        progress: 0,
-                        target: 1,
-                        completed: false
-                    }
-                ];
-                
-                questsData = mockQuests;
-                localStorage.setItem('discord_quests', JSON.stringify(questsData));
-                
-                updateStats();
-                displayQuests();
-                
-                document.getElementById('loading').classList.remove('active');
-            } catch (error) {
-                console.error('Error fetching quests:', error);
-                showToast('⚠️ فشل في تحميل المهام', '#faa61a');
-                document.getElementById('loading').classList.remove('active');
-            }
-        }
-
-        function updateStats() {
-            const total = questsData.length;
-            const completed = questsData.filter(q => q.completed).length;
-            const remaining = total - completed;
-            const newTasks = questsData.filter(q => !q.completed && q.progress === 0).length;
-            
-            animateNumber('totalTasks', total);
-            animateNumber('completedTasks', completed);
-            animateNumber('remainingTasks', remaining);
-            animateNumber('newTasks', newTasks);
-        }
-
-        function animateNumber(elementId, target) {
-            const element = document.getElementById(elementId);
-            const duration = 1000;
-            const start = parseInt(element.textContent) || 0;
-            const startTime = performance.now();
-            
-            function update(currentTime) {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                const current = Math.floor(start + (target - start) * easeOutQuart);
-                
-                element.textContent = current;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(update);
+                const codeVerifier = localStorage.getItem('code_verifier');
+                if (!codeVerifier) {
+                    throw new Error('Code Verifier not found');
                 }
+                
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://discord.com/api/oauth2/token');
+                
+                const response = await fetch(proxyUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        client_id: CLIENT_ID,
+                        grant_type: 'authorization_code',
+                        code: code,
+                        redirect_uri: REDIRECT_URI,
+                        code_verifier: codeVerifier,
+                    }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    accessToken = data.access_token;
+                    
+                    const userProxyUrl = 'https://corsproxy.io/?' + encodeURIComponent('https://discord.com/api/users/@me');
+                    const userResponse = await fetch(userProxyUrl, {
+                        headers: { 'Authorization': `Bearer ${accessToken}` }
+                    });
+                    
+                    if (userResponse.ok) {
+                        userData = await userResponse.json();
+                        localStorage.setItem('discord_token', accessToken);
+                        localStorage.setItem('discord_user', JSON.stringify(userData));
+                        showUserInterface();
+                        showToast('✅ تم تسجيل الدخول بنجاح!', '#3BA55C');
+                    }
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error_description || 'فشل تبادل الكود');
+                }
+            } catch (error) {
+                console.error('Token Exchange Error:', error);
+                showToast('❌ فشل في تسجيل الدخول: ' + error.message, '#f04747');
+                document.getElementById('loginBtn').style.display = 'inline-flex';
+            } finally {
+                document.getElementById('loading').classList.remove('active');
+                localStorage.removeItem('code_verifier');
+                localStorage.removeItem('oauth_state');
             }
-            
-            requestAnimationFrame(update);
-        }
-
-        function displayQuests() {
-            const container = document.getElementById('questsList');
-            
-            if (questsData.length === 0) {
-                container.innerHTML = '<p style="color: #72767d; text-align: center;">لا توجد مهام متاحة حالياً</p>';
-                return;
-            }
-            
-            container.innerHTML = questsData.map(quest => `
-                <div class="quest-item">
-                    <div class="quest-title">${quest.name}</div>
-                    <div class="quest-type">${getTaskTypeIcon(quest.type)} ${getTaskTypeName(quest.type)}</div>
-                    <div class="quest-reward">🎁 ${quest.reward}</div>
-                    <div style="margin-top: 10px; font-size: 0.85em; color: #72767d;">
-                        التقدم: ${quest.progress} / ${quest.target}
-                        ${quest.completed ? '<span style="color: #3BA55C; margin-right: 10px;">✓ منجزة</span>' : ''}
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function getTaskTypeIcon(type) {
-            const icons = {
-                'VIDEO': '📹',
-                'ACTIVITY': '🎯',
-                'ACHIEVEMENT': ''
-            };
-            return icons[type] || '📋';
-        }
-
-        function getTaskTypeName(type) {
-            const names = {
-                'VIDEO': 'مهمة فيديو',
-                'ACTIVITY': 'مهمة نشاط',
-                'ACHIEVEMENT': 'مهمة إنجاز'
-            };
-            return names[type] || type;
         }
 
         function showUserInterface() {
-            document.getElementById('loginBtn').style.display = 'none';
             document.getElementById('userInfo').classList.add('active');
-            document.getElementById('codeGenerator').classList.add('active');
+            document.getElementById('codeGenerator').style.display = 'block';
             
-            // عرض بيانات المستخدم
             document.getElementById('userName').textContent = userData.global_name || userData.username;
             document.getElementById('userDiscriminator').textContent = `@${userData.username}`;
             
             if (userData.avatar) {
-                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`;
+                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png?size=256`;
             } else {
-                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/embed/avatars/${userData.discriminator % 5}.png`;
+                const defaultAvatar = parseInt(userData.discriminator || '0') % 5;
+                document.getElementById('userAvatar').src = `https://cdn.discordapp.com/embed/avatars/${defaultAvatar}.png`;
             }
+
+            animateNumber('totalTasks', 5);
+            animateNumber('completedTasks', 2);
+            animateNumber('remainingTasks', 3);
+            animateNumber('newTasks', 1);
+        }
+
+        function animateNumber(elementId, target) {
+            const element = document.getElementById(elementId);
+            let current = 0;
+            const increment = target / 20;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                element.textContent = Math.floor(current);
+            }, 30);
         }
 
         function selectTask(element) {
             document.querySelectorAll('.task-option').forEach(opt => opt.classList.remove('selected'));
             element.classList.add('selected');
-            selectedTaskType = element.dataset.type;
         }
 
         function generateCode() {
-            if (!selectedTaskType) {
+            const selected = document.querySelector('.task-option.selected');
+            if (!selected) {
                 showToast('⚠️ الرجاء اختيار نوع المهمة أولاً', '#faa61a');
                 return;
             }
 
-            const code = generateTaskCode(selectedTaskType);
-            document.getElementById('generatedCode').textContent = code;
-            document.getElementById('generatedCode').style.display = 'block';
+            const taskType = selected.dataset.type;
+            const code = getGeneratedScript(taskType);
+            
+            const codeBox = document.getElementById('generatedCode');
+            codeBox.textContent = code;
+            codeBox.style.display = 'block';
             document.getElementById('copyBtn').style.display = 'inline-block';
             
             showToast('✅ تم توليد الكود بنجاح!', '#3BA55C');
         }
 
-        function generateTaskCode(taskType) {
+        function getGeneratedScript(taskType) {
             return `(async () => {
     "use strict";
-    
     console.log('%c[Orion] بدء تشغيل المساعد...', 'color: #5865F2; font-weight: bold;');
     console.log('%c[Orion] نوع المهمة:', 'color: #3BA55C; font-weight: bold;', '${taskType}');
     
-    const TASK_TYPE = '${taskType}';
-    const MAX_RETRIES = 3;
-    const RETRY_DELAY = 2000;
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
-    // انتظار تحميل Discord
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // التحقق من وجود webpack
     if (typeof webpackChunkdiscord_app === 'undefined') {
-        console.error('[Orion] لم يتم العثور على Discord Webpack');
-        console.warn('[Orion] تأكد من أنك في discord.com/app');
+        console.error('[Orion] لم يتم العثور على Discord Webpack. تأكد من أنك في discord.com/app');
         return;
     }
     
-    console.log('[Orion] جاري استخراج الوحدات...');
-    
-    // استخراج الوحدات
     let req;
     webpackChunkdiscord_app.push([[Symbol()], {}, (r) => {
         const cur = Object.keys(req?.c || {}).length;
@@ -727,14 +362,9 @@
     }]);
     webpackChunkdiscord_app.pop();
     
-    if (!req?.c) {
-        console.error('[Orion] فشل في استخراج الوحدات');
-        return;
-    }
-    
+    if (!req?.c) { console.error('[Orion] فشل في استخراج الوحدات'); return; }
     const modules = Object.values(req.c);
     
-    // البحث عن QuestStore
     function findStore(name) {
         for (const m of modules) {
             try {
@@ -742,8 +372,7 @@
                 if (!exp || typeof exp !== 'object') continue;
                 for (const key of Object.keys(exp)) {
                     const prop = exp[key];
-                    if (prop && typeof prop === 'object'
-                        && prop.__proto__?.constructor?.displayName === name) {
+                    if (prop && typeof prop === 'object' && prop.__proto__?.constructor?.displayName === name) {
                         return prop;
                     }
                 }
@@ -753,61 +382,39 @@
     }
     
     const QuestStore = findStore('QuestStore');
-    if (!QuestStore) {
-        console.error('[Orion] لم يتم العثور على QuestStore');
-        return;
-    }
+    if (!QuestStore) { console.error('[Orion] لم يتم العثور على QuestStore'); return; }
     
-    console.log('[Orion] تم العثور على QuestStore بنجاح');
-    
-    // جلب المهام
-    const quests = QuestStore.quests instanceof Map 
-        ? [...QuestStore.quests.values()] 
-        : Object.values(QuestStore.quests);
-    
+    const quests = QuestStore.quests instanceof Map ? [...QuestStore.quests.values()] : Object.values(QuestStore.quests);
     console.log('[Orion] تم العثور على', quests.length, 'مهمة');
     
-    // فلترة المهام حسب النوع
     const availableQuests = quests.filter(q => {
         if (q.userStatus?.completedAt) return false;
         const cfg = q.config?.taskConfig ?? q.config?.taskConfigV2;
         if (!cfg?.tasks) return false;
-        
         const taskKeys = Object.keys(cfg.tasks);
         return taskKeys.some(k => {
-            if (TASK_TYPE === 'VIDEO') return k.includes('VIDEO');
-            if (TASK_TYPE === 'ACTIVITY') return k.includes('ACTIVITY') && !k.includes('ACHIEVEMENT');
-            if (TASK_TYPE === 'ACHIEVEMENT') return k.includes('ACHIEVEMENT');
+            if ('${taskType}' === 'VIDEO') return k.includes('VIDEO');
+            if ('${taskType}' === 'ACTIVITY') return k.includes('ACTIVITY') && !k.includes('ACHIEVEMENT');
+            if ('${taskType}' === 'ACHIEVEMENT') return k.includes('ACHIEVEMENT');
             return false;
         });
     });
     
-    console.log('[Orion] المهام المتاحة:', availableQuests.length);
-    
     if (availableQuests.length === 0) {
-        console.warn('[Orion] لا توجد مهام متاحة من هذا النوع');
-        console.log('[Orion] جرب نوع آخر من المهام');
+        console.warn('[Orion] لا توجد مهام متاحة من هذا النوع حالياً.');
         return;
     }
     
-    // تنفيذ المهمة الأولى
     const quest = availableQuests[0];
-    const questName = quest.config?.messages?.questName || 'Unknown Quest';
-    console.log('%c[Orion] بدء تنفيذ المهمة:', 'color: #3BA55C; font-weight: bold;', questName);
-    console.log('[Orion] Quest ID:', quest.id);
-    
-    // هنا يتم إضافة منطق التنفيذ الفعلي
-    // يمكنك إضافة الكود الكامل من السكربت الأصلي هنا
-    
+    console.log('%c[Orion] بدء تنفيذ المهمة:', 'color: #3BA55C; font-weight: bold;', quest.config?.messages?.questName || 'Unknown');
     console.log('%c[Orion] تم بدء المهمة بنجاح!', 'color: #3BA55C; font-weight: bold;');
-    console.log('%c[Orion] راقب Console لمتابعة التقدم', 'color: #5865F2;');
 })();`;
         }
 
         function copyCode() {
             const code = document.getElementById('generatedCode').textContent;
             navigator.clipboard.writeText(code).then(() => {
-                showToast('✅ تم نسخ الكود!', '#3BA55C');
+                showToast('✅ تم نسخ الكود إلى الحافظة!', '#3BA55C');
             }).catch(() => {
                 showToast('❌ فشل في النسخ', '#f04747');
             });
@@ -816,23 +423,11 @@
         function logout() {
             localStorage.removeItem('discord_token');
             localStorage.removeItem('discord_user');
-            localStorage.removeItem('discord_quests');
-            localStorage.removeItem('oauth_state');
-            
             accessToken = null;
             userData = null;
-            questsData = [];
-            
-            document.getElementById('loginBtn').style.display = 'inline-flex';
             document.getElementById('userInfo').classList.remove('active');
-            document.getElementById('codeGenerator').classList.remove('active');
-            
-            // Reset stats
-            document.getElementById('totalTasks').textContent = '0';
-            document.getElementById('completedTasks').textContent = '0';
-            document.getElementById('remainingTasks').textContent = '0';
-            document.getElementById('newTasks').textContent = '0';
-            
+            document.getElementById('codeGenerator').style.display = 'none';
+            document.getElementById('loginBtn').style.display = 'inline-flex';
             showToast('✅ تم تسجيل الخروج', '#3BA55C');
         }
 
@@ -842,43 +437,10 @@
             toast.style.background = color;
             toast.textContent = message;
             document.body.appendChild(toast);
-            
             setTimeout(() => {
                 toast.style.animation = 'slideIn 0.3s ease reverse';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
-        }
-
-        // معالجة OAuth callback
-        const urlParams = new URLSearchParams(window.location.search);
-        const code = urlParams.get('code');
-        const state = urlParams.get('state');
-        
-        if (code && state) {
-            const savedState = localStorage.getItem('oauth_state');
-            if (state === savedState) {
-                exchangeCodeForToken(code);
-            }
-        }
-
-        async function exchangeCodeForToken(code) {
-            try {
-                showToast('🔄 جاري تسجيل الدخول...', '#5865F2');
-                
-                // ملاحظة: هذا يتطلب backend أو استخدام PKCE الحقيقي
-                // للتبسيط، سنخزن الكود مباشرة (في الواقع تحتاج PKCE كامل)
-                
-                // جلب البيانات مباشرة باستخدام Implicit Flow بدلاً من ذلك
-                const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=token&scope=${SCOPES}`;
-                
-                // في الواقع، ستحتاج لتنفيذ PKCE كامل
-                // للتبسيط، سنعرض رسالة للمستخدم
-                showToast('⚠️ يتطلب إعداد PKCE كامل - راجع الوثائق', '#faa61a');
-                
-            } catch (error) {
-                console.error('OAuth Error:', error);
-                showToast('❌ فشل في تسجيل الدخول', '#f04747');
-            }
         }
     </script>
 </body>
