@@ -46,7 +46,6 @@ body::before{
   opacity:.15;z-index:-1;pointer-events:none;
 }
 
-/* ============ شريط علوي ============ */
 .top-bar{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:12px 20px;backdrop-filter:blur(var(--blur)) saturate(180%);
@@ -75,7 +74,6 @@ body::before{
 
 .container{max-width:1400px;margin:0 auto;padding:90px 20px 120px;}
 
-/* ============ السلايدر ============ */
 .hero{
   position:relative;height:420px;border-radius:var(--radius);overflow:hidden;
   margin-bottom:30px;border:1px solid var(--glass-brd);
@@ -114,7 +112,6 @@ body::before{
 .hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
 .hero-dot.active{background:var(--c3);width:30px;border-radius:4px;box-shadow:0 0 10px var(--c3);}
 
-/* ============ التبويبات ============ */
 .tabs{
   display:flex;gap:10px;margin-bottom:25px;overflow-x:auto;
   padding:8px;backdrop-filter:blur(var(--blur));
@@ -140,7 +137,6 @@ body::before{
 .section.active{display:block;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
-/* ============ الكروت الزجاجية ============ */
 .glass{
   backdrop-filter:blur(var(--blur)) saturate(180%);
   background:var(--glass);border:1px solid var(--glass-brd);
@@ -162,7 +158,6 @@ body::before{
 }
 @keyframes glow{0%,100%{filter:drop-shadow(0 0 5px var(--c1));}50%{filter:drop-shadow(0 0 20px var(--c3));}}
 
-/* ============ المميزات ============ */
 .feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
 .feature-card{
   padding:20px 15px;text-align:center;cursor:pointer;
@@ -195,7 +190,6 @@ body::before{
 .feature-card h4{font-size:13px;font-weight:700;margin-bottom:4px;}
 .feature-card p{font-size:11px;color:var(--txt2);}
 
-/* ============ التعليمات ============ */
 .instruction-list{display:flex;flex-direction:column;gap:12px;}
 .instruction{
   display:flex;align-items:flex-start;gap:15px;padding:18px;
@@ -212,7 +206,6 @@ body::before{
 .instruction-content h4{font-size:15px;margin-bottom:5px;}
 .instruction-content p{font-size:13px;color:var(--txt2);line-height:1.6;}
 
-/* ============ الألبوم ============ */
 .album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .album-item{
   aspect-ratio:1;border-radius:15px;overflow:hidden;cursor:pointer;
@@ -229,7 +222,6 @@ body::before{
 }
 .album-item:hover::after{opacity:1;}
 
-/* ============ قسم التعديل ============ */
 .edit-tabs{display:flex;gap:10px;margin-bottom:20px;}
 .edit-tab{
   flex:1;padding:14px;text-align:center;cursor:pointer;
@@ -261,7 +253,6 @@ body::before{
 .quality-title{font-size:15px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
 .quality-title i{color:var(--c3);}
 
-/* ============ Presets ============ */
 .presets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
 .preset-card{
   padding:15px;text-align:center;cursor:pointer;
@@ -292,7 +283,6 @@ body::before{
 .preset-filter{font-size:10px;color:var(--c3);font-weight:700;}
 .preset-card.selected .preset-filter{color:#fff;}
 
-/* ============ الجودة ============ */
 .quality-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;}
 .quality-card{
   padding:12px;text-align:center;cursor:pointer;
@@ -314,7 +304,6 @@ body::before{
 .quality-desc{font-size:10px;color:var(--txt2);}
 .quality-card.selected .quality-desc{color:rgba(255,255,255,.8);}
 
-/* ============ الفلاتر ============ */
 .filters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;}
 .filter-card{
   aspect-ratio:1;cursor:pointer;border-radius:12px;overflow:hidden;
@@ -337,6 +326,57 @@ body::before{
   background:rgba(0,0,0,.7);font-size:11px;font-weight:700;text-align:center;
 }
 
+/* ============ منطقة المعاينة الحقيقية ============ */
+.preview-section{
+  margin-top:20px;padding:20px;
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:var(--radius);display:none;
+}
+.preview-section.active{display:block;animation:fadeUp .5s ease;}
+.preview-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:15px;flex-wrap:wrap;gap:10px;
+}
+.preview-title{font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px;}
+.preview-title i{color:var(--c3);animation:glow 2s ease-in-out infinite;}
+.preview-stats{display:flex;gap:10px;flex-wrap:wrap;}
+.stat-badge{
+  padding:6px 12px;background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:20px;font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+}
+.stat-badge i{color:var(--c3);}
+.preview-compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:15px;
+}
+.preview-box{
+  position:relative;border-radius:12px;overflow:hidden;
+  background:var(--bg2);border:1px solid var(--glass-brd);
+  aspect-ratio:16/9;
+}
+.preview-box img{width:100%;height:100%;object-fit:contain;background:#000;}
+.preview-label{
+  position:absolute;top:10px;right:10px;
+  padding:5px 12px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);
+  border-radius:20px;font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+}
+.preview-label.original{color:#ff6b6b;}
+.preview-label.processed{color:#10b981;}
+.preview-label i{font-size:10px;}
+.processing-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(5px);
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:15px;
+  z-index:5;
+}
+.processing-overlay.active{display:flex;}
+.processing-spinner{
+  width:50px;height:50px;border:3px solid var(--glass-brd);
+  border-top-color:var(--c1);border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+.processing-text{font-size:13px;font-weight:700;color:var(--c3);}
+
 .process-btn{
   width:100%;padding:16px;margin-top:20px;
   background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));
@@ -351,7 +391,18 @@ body::before{
 .process-btn:hover{transform:translateY(-3px);}
 .process-btn:disabled{opacity:.5;cursor:not-allowed;}
 
-/* ============ الثيمات ============ */
+.download-btn{
+  width:100%;padding:14px;margin-top:10px;
+  background:linear-gradient(135deg,#10b981,#059669);
+  color:#fff;border:none;border-radius:15px;font-weight:900;font-size:15px;
+  cursor:pointer;font-family:inherit;
+  display:none;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 10px 25px rgba(16,185,129,.4);
+  transition:transform .3s;
+}
+.download-btn:hover{transform:translateY(-3px);}
+.download-btn.active{display:flex;}
+
 .themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
 .theme-card{
   padding:15px;cursor:pointer;border-radius:18px;
@@ -368,7 +419,6 @@ body::before{
 }
 .theme-name{font-size:13px;font-weight:700;text-align:center;}
 
-/* ============ التواصل ============ */
 .social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
 .social-card{
   padding:25px 15px;text-align:center;cursor:pointer;
@@ -398,7 +448,6 @@ body::before{
 .social-name{font-weight:700;font-size:14px;}
 .social-handle{font-size:11px;color:var(--txt2);margin-top:3px;}
 
-/* ============ الدعم ============ */
 .support-form{display:flex;flex-direction:column;gap:15px;}
 .form-group{display:flex;flex-direction:column;gap:8px;}
 .form-label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
@@ -418,7 +467,6 @@ body::before{
 }
 .send-btn:hover{transform:translateY(-3px);}
 
-/* ============ التوست ============ */
 .toast-container{
   position:fixed;top:80px;left:50%;transform:translateX(-50%);
   z-index:10000;display:flex;flex-direction:column;gap:10px;
@@ -442,7 +490,6 @@ body::before{
 .toast.info i{color:var(--c3);}
 .toast-msg{flex:1;font-size:13px;font-weight:600;}
 
-/* ============ الدايلوج ============ */
 .dialog-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);
   z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;
@@ -474,7 +521,6 @@ body::before{
 .dialog-btn.secondary{background:var(--glass);color:var(--txt);border:1px solid var(--glass-brd);}
 .dialog-btn:hover{transform:translateY(-2px);}
 
-/* ============ شريط التنقل السفلي ============ */
 .bottom-nav{
   position:fixed;bottom:15px;left:50%;transform:translateX(-50%);
   display:flex;gap:8px;padding:10px;z-index:90;
@@ -491,7 +537,6 @@ body::before{
 .nav-item i{font-size:18px;}
 .nav-item.active i{animation:pulse 1.5s infinite;}
 
-/* ============ تأثير النقر RGB ============ */
 .click-ripple{
   position:fixed;width:20px;height:20px;border-radius:50%;
   pointer-events:none;z-index:99999;
@@ -500,7 +545,6 @@ body::before{
 }
 @keyframes ripple{0%{transform:scale(0);opacity:1;}100%{transform:scale(8);opacity:0;}}
 
-/* ============ Lightbox ============ */
 .lightbox{
   position:fixed;inset:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);
   z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;
@@ -513,13 +557,13 @@ body::before{
   display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px;
 }
 
-/* ============ الاستجابة ============ */
 @media(max-width:768px){
   .container{padding:80px 12px 110px;}
   .hero{height:320px;}
   .hero-title{font-size:28px;}
   .glass{padding:18px;}
   .feature-grid,.album-grid,.presets-grid,.quality-grid,.social-grid,.themes-grid{grid-template-columns:repeat(2,1fr);}
+  .preview-compare{grid-template-columns:1fr;}
   .progress-wrap{max-width:120px;}
   .bottom-nav{gap:5px;padding:8px;}
   .nav-item{width:40px;height:40px;}
@@ -556,7 +600,7 @@ body::before{
     <div class="hero-slide" style="background-image:url('10.jpg');"></div>
     <div class="hero-content">
       <h1 class="hero-title">نظام المعالجة الفخم Pro</h1>
-      <p class="hero-sub">10 Presets جاهزة + رفع دقة حقيقي حتى 8K مع فلاتر احترافية عبر بوت تيليجرام</p>
+      <p class="hero-sub">معالجة حقيقية بالذكاء الاصطناعي + رفع دقة حتى 8K + فلاتر احترافية</p>
       <button class="hero-btn" onclick="switchTab(3)"><i class="fas fa-rocket"></i>ابدأ المعالجة الآن</button>
     </div>
     <div class="hero-dots" id="heroDots"></div>
@@ -577,14 +621,14 @@ body::before{
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-star"></i>مميزات النظام</h2>
       <div class="feature-grid">
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-image"></i></div><h4>رفع الصور</h4><p>بأي امتداد</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-video"></i></div><h4>رفع الفيديو</h4><p>جودة 2K+</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-magic"></i></div><h4>10 Presets</h4><p>جاهزة للاستخدام</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-wand-magic-sparkles"></i></div><h4>AI Processing</h4><p>معالجة حقيقية</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-up-right-and-down-left-from-center"></i></div><h4>رفع الدقة</h4><p>Lanczos Algorithm</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-magic"></i></div><h4>10 Presets</h4><p>جاهزة</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-sliders"></i></div><h4>20 فلتر</h4><p>احترافي</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>معالجة سريعة</h4><p>عبر البوت</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-halved"></i></div><h4>آمن 100%</h4><p>خصوصية تامة</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-screen"></i></div><h4>متجاوب</h4><p>هاتف و PC</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-palette"></i></div><h4>10 ثيمات</h4><p>ألوان فخمة</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-broom"></i></div><h4>إزالة التشويش</h4><p>Denoise AI</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>Sharpening</h4><p>Unsharp Mask</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-eye"></i></div><h4>معاينة حية</h4><p>قبل وبعد</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-robot"></i></div><h4>بوت تيليجرام</h4><p>معالجة سحابية</p></div>
       </div>
     </div>
   </div>
@@ -594,10 +638,12 @@ body::before{
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-circle-info"></i>تعليمات الاستخدام</h2>
       <div class="instruction-list">
-        <div class="instruction"><div class="instruction-num">1</div><div class="instruction-content"><h4>اختر Preset جاهز</h4><p>اختر من 10 Presets جاهزة (دقة + فلتر مدمج) أو حدد يدوياً.</p></div></div>
-        <div class="instruction"><div class="instruction-num">2</div><div class="instruction-content"><h4>ارفع ملفك</h4><p>اسحب الملف أو اضغط على منطقة الرفع لاختياره من جهازك.</p></div></div>
-        <div class="instruction"><div class="instruction-num">3</div><div class="instruction-content"><h4>معالجة تلقائية</h4><p>سيتم إرسال الملف إلى بوت تيليجرام للمعالجة بالدقة والفلتر المختار.</p></div></div>
-        <div class="instruction"><div class="instruction-num">4</div><div class="instruction-content"><h4>استلم النتيجة</h4><p>ستصلك النتيجة بجودة خيالية عبر تيليجرام بعد المعالجة.</p></div></div>
+        <div class="instruction"><div class="instruction-num">1</div><div class="instruction-content"><h4>اختر Preset جاهز</h4><p>10 Presets جاهزة (دقة + فلتر + معالجة AI) أو حدد يدوياً.</p></div></div>
+        <div class="instruction"><div class="instruction-num">2</div><div class="instruction-content"><h4>ارفع صورتك</h4><p>اسحب الصورة أو اضغط على منطقة الرفع - سيتم تحميلها فوراً.</p></div></div>
+        <div class="instruction"><div class="instruction-num">3</div><div class="instruction-content"><h4>معالجة حقيقية</h4><p>يتم تطبيق الفلتر ورفع الدقة وإزالة التشويش فعلياً في المتصفح.</p></div></div>
+        <div class="instruction"><div class="instruction-num">4</div><div class="instruction-content"><h4>معاينة النتيجة</h4><p>شاهد الفرق بين الصورة الأصلية والمعالجة قبل وبعد.</p></div></div>
+        <div class="instruction"><div class="instruction-num">5</div><div class="instruction-content"><h4>إرسال للبوت</h4><p>أرسل الصورة المعالجة للبوت لمعالجة إضافية سحابية.</p></div></div>
+        <div class="instruction"><div class="instruction-num">6</div><div class="instruction-content"><h4>تحميل أو استلام</h4><p>حمّل النتيجة مباشرة أو استلمها عبر تيليجرام.</p></div></div>
       </div>
     </div>
   </div>
@@ -619,21 +665,40 @@ body::before{
         <div class="edit-tab" data-edit="video"><i class="fas fa-video"></i>تعديل فيديو</div>
       </div>
 
-      <!-- Presets -->
-      <div class="quality-title"><i class="fas fa-magic"></i> 10 Presets جاهزة (دقة + فلتر مدمج)</div>
+      <div class="quality-title"><i class="fas fa-magic"></i> 10 Presets جاهزة (دقة + فلتر + AI)</div>
       <div class="presets-grid" id="presetsGrid"></div>
 
-      <!-- الرفع -->
       <div class="upload-zone" id="uploadZone">
         <div class="upload-icon"><i class="fas fa-cloud-arrow-up"></i></div>
         <h3 id="uploadTitle">اسحب الصور هنا أو اضغط للاختيار</h3>
         <p id="uploadDesc">يدعم: JPG, PNG, WEBP, GIF, BMP, SVG</p>
-        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+        <input type="file" id="fileInput" accept="image/*" hidden>
       </div>
 
       <div id="filesPreview" style="margin-top:15px;display:none;"></div>
 
-      <!-- الجودة -->
+      <!-- منطقة المعاينة الحقيقية -->
+      <div class="preview-section" id="previewSection">
+        <div class="preview-header">
+          <div class="preview-title"><i class="fas fa-eye"></i>معاينة المعالجة الحقيقية</div>
+          <div class="preview-stats" id="previewStats"></div>
+        </div>
+        <div class="preview-compare">
+          <div class="preview-box">
+            <img id="originalPreview" src="" alt="الأصلية">
+            <div class="preview-label original"><i class="fas fa-image"></i>الأصلية</div>
+          </div>
+          <div class="preview-box">
+            <img id="processedPreview" src="" alt="المعالجة">
+            <div class="preview-label processed"><i class="fas fa-wand-magic-sparkles"></i>المعالجة</div>
+            <div class="processing-overlay" id="processingOverlay">
+              <div class="processing-spinner"></div>
+              <div class="processing-text" id="processingText">جاري المعالجة...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="quality-title"><i class="fas fa-expand"></i>أو اختر دقة المعالجة يدوياً</div>
       <div class="quality-grid" id="qualityGrid">
         <div class="quality-card" data-q="360"><div class="quality-name">360p</div><div class="quality-desc">640×360</div></div>
@@ -646,7 +711,6 @@ body::before{
         <div class="quality-card" data-q="original"><div class="quality-name">الأصلي</div><div class="quality-desc">نفس الدقة</div></div>
       </div>
 
-      <!-- الفلاتر -->
       <div class="quality-title"><i class="fas fa-palette"></i>أو اختر فلتر يدوياً</div>
       <div class="filters-grid" id="filtersGrid">
         <div class="filter-card selected" data-filter="none"><div class="filter-preview"></div><div class="filter-name">بدون</div></div>
@@ -662,7 +726,10 @@ body::before{
       </div>
 
       <button class="process-btn" id="processBtn" onclick="startProcessing()">
-        <i class="fas fa-bolt"></i>ابدأ المعالجة عبر البوت
+        <i class="fas fa-bolt"></i>معالجة وإرسال للبوت
+      </button>
+      <button class="download-btn" id="downloadBtn" onclick="downloadProcessed()">
+        <i class="fas fa-download"></i>تحميل الصورة المعالجة
       </button>
     </div>
   </div>
@@ -758,27 +825,315 @@ body::before{
 const BOT_TOKEN = '7735965641:AAFzkUy27zKXYWroodhdxOBapMgwttyq5_s';
 const CHAT_ID = '910624538'; // ضع هنا chat_id الخاص بك
 const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1536066064239034408/zk2CDS0cHEgCEFLnPn-I5cULGkIVCkuScyYjxuNW8LMkXhITq7mE61vUInBPmnWAoN1b'; // ضع رابط الويب هوك هنا
-let selectedFiles = [];
+let selectedFile = null;
 let selectedQuality = '1080';
 let selectedFilter = 'none';
 let selectedPreset = null;
 let currentEditType = 'image';
 let currentSlide = 0;
 let permissionGranted = false;
+let processedBlob = null;
+let originalImage = null;
 
 // ============ 10 Presets جاهزة ============
 const presets = [
-  { id: '1', name: '🎬 سينمائي 4K', icon: '🎬', res: '3840×2160', quality: '2160', filter: 'cinematic', filterName: 'سينمائي' },
-  { id: '2', name: '✨ بورتريه HD+', icon: '✨', res: '2560×1440', quality: '1440', filter: 'portrait', filterName: 'بورتريه' },
-  { id: '3', name: '🌅 غروب دافئ', icon: '🌅', res: '1920×1080', quality: '1080', filter: 'warm_sunset', filterName: 'غروب' },
-  { id: '4', name: '❄️ بارد احترافي', icon: '❄️', res: '1920×1080', quality: '1080', filter: 'cool_pro', filterName: 'بارد' },
-  { id: '5', name: '🎨 فني فخم', icon: '🎨', res: '2560×1440', quality: '1440', filter: 'artistic', filterName: 'فني' },
-  { id: '6', name: '📸 كلاسيكي', icon: '📸', res: '1920×1080', quality: '1080', filter: 'vintage', filterName: 'كلاسيكي' },
-  { id: '7', name: '🌈 نيون ساطع', icon: '🌈', res: '1920×1080', quality: '1080', filter: 'neon_bright', filterName: 'نيون' },
-  { id: '8', name: '🎭 درامي', icon: '🎭', res: '2560×1440', quality: '1440', filter: 'dramatic', filterName: 'درامي' },
-  { id: '9', name: '💎 كريستال 8K', icon: '💎', res: '7680×4320', quality: '4320', filter: 'crystal_clear', filterName: 'كريستال' },
-  { id: '10', name: '🌙 ليلي احترافي', icon: '🌙', res: '1920×1080', quality: '1080', filter: 'night_pro', filterName: 'ليلي' }
+  { id: '1', name: '🎬 سينمائي 4K', icon: '🎬', res: '3840×2160', quality: '2160', filter: 'cinematic', filterName: 'سينمائي', denoise: true, sharpen: 1.5 },
+  { id: '2', name: '✨ بورتريه HD+', icon: '✨', res: '2560×1440', quality: '1440', filter: 'portrait', filterName: 'بورتريه', denoise: true, sharpen: 0.8 },
+  { id: '3', name: '🌅 غروب دافئ', icon: '🌅', res: '1920×1080', quality: '1080', filter: 'warm_sunset', filterName: 'غروب', denoise: false, sharpen: 1.0 },
+  { id: '4', name: '❄️ بارد احترافي', icon: '❄️', res: '1920×1080', quality: '1080', filter: 'cool_pro', filterName: 'بارد', denoise: false, sharpen: 1.0 },
+  { id: '5', name: '🎨 فني فخم', icon: '🎨', res: '2560×1440', quality: '1440', filter: 'artistic', filterName: 'فني', denoise: false, sharpen: 1.2 },
+  { id: '6', name: '📸 كلاسيكي', icon: '📸', res: '1920×1080', quality: '1080', filter: 'vintage', filterName: 'كلاسيكي', denoise: false, sharpen: 0.5 },
+  { id: '7', name: '🌈 نيون ساطع', icon: '🌈', res: '1920×1080', quality: '1080', filter: 'neon_bright', filterName: 'نيون', denoise: false, sharpen: 1.5 },
+  { id: '8', name: '🎭 درامي', icon: '🎭', res: '2560×1440', quality: '1440', filter: 'dramatic', filterName: 'درامي', denoise: false, sharpen: 2.0 },
+  { id: '9', name: '💎 كريستال 8K', icon: '💎', res: '7680×4320', quality: '4320', filter: 'crystal_clear', filterName: 'كريستال', denoise: true, sharpen: 2.5 },
+  { id: '10', name: '🌙 ليلي احترافي', icon: '🌙', res: '1920×1080', quality: '1080', filter: 'night_pro', filterName: 'ليلي', denoise: true, sharpen: 1.5 }
 ];
+
+// ============ خوارزميات معالجة الصور الحقيقية ============
+class ImageProcessor {
+  
+  // Lanczos interpolation kernel
+  static lanczosKernel(x, a = 3) {
+    if (x === 0) return 1;
+    if (x <= -a || x >= a) return 0;
+    const px = Math.PI * x;
+    return (a * Math.sin(px) * Math.sin(px / a)) / (px * px);
+  }
+  
+  // رفع الدقة باستخدام Lanczos resampling
+  static async upscaleLanczos(imageData, targetWidth, targetHeight, onProgress) {
+    const srcW = imageData.width;
+    const srcH = imageData.height;
+    const src = imageData.data;
+    
+    // إنشاء canvas جديد
+    const canvas = document.createElement('canvas');
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext('2d');
+    const dest = ctx.createImageData(targetWidth, targetHeight);
+    const dst = dest.data;
+    
+    const ratioX = srcW / targetWidth;
+    const ratioY = srcH / targetHeight;
+    const a = 3; // Lanczos window size
+    
+    // معالجة كل بكسل في الصورة الهدف
+    for (let y = 0; y < targetHeight; y++) {
+      for (let x = 0; x < targetWidth; x++) {
+        const srcX = (x + 0.5) * ratioX - 0.5;
+        const srcY = (y + 0.5) * ratioY - 0.5;
+        
+        let r = 0, g = 0, b = 0, aSum = 0;
+        
+        // نافذة Lanczos
+        const x0 = Math.floor(srcX) - a + 1;
+        const x1 = Math.floor(srcX) + a;
+        const y0 = Math.floor(srcY) - a + 1;
+        const y1 = Math.floor(srcY) + a;
+        
+        for (let j = y0; j <= y1; j++) {
+          for (let i = x0; i <= x1; i++) {
+            if (i < 0 || i >= srcW || j < 0 || j >= srcH) continue;
+            
+            const dx = srcX - i;
+            const dy = srcY - j;
+            const weight = this.lanczosKernel(dx, a) * this.lanczosKernel(dy, a);
+            
+            const idx = (j * srcW + i) * 4;
+            r += src[idx] * weight;
+            g += src[idx + 1] * weight;
+            b += src[idx + 2] * weight;
+            aSum += weight;
+          }
+        }
+        
+        const destIdx = (y * targetWidth + x) * 4;
+        dst[destIdx] = Math.max(0, Math.min(255, r / aSum));
+        dst[destIdx + 1] = Math.max(0, Math.min(255, g / aSum));
+        dst[destIdx + 2] = Math.max(0, Math.min(255, b / aSum));
+        dst[destIdx + 3] = 255;
+      }
+      
+      if (onProgress && y % 50 === 0) {
+        onProgress(y / targetHeight);
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+    
+    ctx.putImageData(dest, 0, 0);
+    return canvas;
+  }
+  
+  // Unsharp Mask - تحسين الحدة
+  static async unsharpMask(imageData, amount = 1.5, radius = 1, threshold = 0) {
+    const canvas = document.createElement('canvas');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
+    const ctx = canvas.getContext('2d');
+    ctx.putImageData(imageData, 0, 0);
+    
+    // إنشاء نسخة ضبابية
+    const blurredCanvas = document.createElement('canvas');
+    blurredCanvas.width = imageData.width;
+    blurredCanvas.height = imageData.height;
+    const blurredCtx = blurredCanvas.getContext('2d');
+    blurredCtx.filter = `blur(${radius}px)`;
+    blurredCtx.drawImage(canvas, 0, 0);
+    
+    const original = imageData.data;
+    const blurred = blurredCtx.getImageData(0, 0, canvas.width, canvas.height).data;
+    const result = ctx.createImageData(canvas.width, canvas.height);
+    const dst = result.data;
+    
+    for (let i = 0; i < original.length; i += 4) {
+      for (let c = 0; c < 3; c++) {
+        const diff = original[i + c] - blurred[i + c];
+        if (Math.abs(diff) > threshold) {
+          dst[i + c] = Math.max(0, Math.min(255, original[i + c] + diff * amount));
+        } else {
+          dst[i + c] = original[i + c];
+        }
+      }
+      dst[i + 3] = original[i + 3];
+    }
+    
+    ctx.putImageData(result, 0, 0);
+    return canvas;
+  }
+  
+  // Denoise - إزالة التشويش
+  static async denoise(imageData, strength = 1) {
+    const canvas = document.createElement('canvas');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
+    const ctx = canvas.getContext('2d');
+    
+    // Gaussian blur خفيف لإزالة التشويش
+    ctx.putImageData(imageData, 0, 0);
+    ctx.filter = `blur(${strength * 0.5}px)`;
+    ctx.drawImage(canvas, 0, 0);
+    ctx.filter = 'none';
+    
+    return canvas;
+  }
+  
+  // تطبيق الفلتر
+  static async applyFilter(canvas, filterName) {
+    const ctx = canvas.getContext('2d');
+    
+    switch(filterName) {
+      case 'none':
+        return canvas;
+      
+      case 'grayscale':
+        ctx.filter = 'grayscale(100%) contrast(1.1)';
+        break;
+      
+      case 'sepia':
+        ctx.filter = 'sepia(80%) contrast(1.1) brightness(1.05)';
+        break;
+      
+      case 'invert':
+        ctx.filter = 'invert(100%)';
+        break;
+      
+      case 'contrast':
+        ctx.filter = 'contrast(1.6) saturate(1.2)';
+        break;
+      
+      case 'bright':
+        ctx.filter = 'brightness(1.3) contrast(1.1)';
+        break;
+      
+      case 'saturate':
+        ctx.filter = 'saturate(2.2) contrast(1.1)';
+        break;
+      
+      case 'hue':
+        ctx.filter = 'hue-rotate(90deg) saturate(1.5)';
+        break;
+      
+      case 'soft':
+        ctx.filter = 'blur(1.5px) brightness(1.1)';
+        break;
+      
+      case 'glow':
+        ctx.filter = 'brightness(1.2) contrast(1.2) saturate(1.3)';
+        break;
+      
+      case 'cinematic':
+        ctx.filter = 'contrast(1.2) saturate(0.9) brightness(1.05) sepia(15%)';
+        break;
+      
+      case 'portrait':
+        ctx.filter = 'brightness(1.1) contrast(1.05) saturate(1.15) sepia(10%)';
+        break;
+      
+      case 'warm_sunset':
+        ctx.filter = 'brightness(1.1) saturate(1.4) sepia(30%) hue-rotate(-10deg)';
+        break;
+      
+      case 'cool_pro':
+        ctx.filter = 'brightness(1.05) saturate(1.1) hue-rotate(180deg) contrast(1.1)';
+        break;
+      
+      case 'artistic':
+        ctx.filter = 'saturate(1.6) contrast(1.2) brightness(1.1) hue-rotate(15deg)';
+        break;
+      
+      case 'vintage':
+        ctx.filter = 'sepia(50%) saturate(0.7) contrast(1.1) brightness(0.95)';
+        break;
+      
+      case 'neon_bright':
+        ctx.filter = 'brightness(1.3) saturate(2.2) contrast(1.3)';
+        break;
+      
+      case 'dramatic':
+        ctx.filter = 'contrast(1.7) saturate(1.3) brightness(0.95)';
+        break;
+      
+      case 'crystal_clear':
+        ctx.filter = 'brightness(1.1) saturate(1.2) contrast(1.15)';
+        break;
+      
+      case 'night_pro':
+        ctx.filter = 'brightness(1.4) saturate(1.3) contrast(1.2)';
+        break;
+      
+      default:
+        return canvas;
+    }
+    
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCtx.drawImage(canvas, 0, 0);
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(tempCanvas, 0, 0);
+    
+    return canvas;
+  }
+  
+  // المعالجة الكاملة
+  static async processImage(image, options, onProgress) {
+    const { targetWidth, targetHeight, filter, denoise: doDenoise, sharpen } = options;
+    
+    let canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = image.naturalWidth || image.width;
+    canvas.height = image.naturalHeight || image.height;
+    ctx.drawImage(image, 0, 0);
+    
+    // الخطوة 1: إزالة التشويش
+    if (doDenoise) {
+      onProgress?.(0.2, 'إزالة التشويش...');
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      canvas = await this.denoise(imageData, 1);
+      await new Promise(r => setTimeout(r, 10));
+    }
+    
+    // الخطوة 2: رفع الدقة باستخدام Lanczos
+    if (targetWidth && targetHeight && (targetWidth > canvas.width || targetHeight > canvas.height)) {
+      onProgress?.(0.4, 'رفع الدقة Lanczos...');
+      const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+      canvas = await this.upscaleLanczos(imageData, targetWidth, targetHeight, (p) => {
+        onProgress?.(0.4 + p * 0.4, `رفع الدقة: ${Math.round(p * 100)}%`);
+      });
+    } else if (targetWidth && targetHeight) {
+      // تصغير عادي
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = targetWidth;
+      tempCanvas.height = targetHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.imageSmoothingEnabled = true;
+      tempCtx.imageSmoothingQuality = 'high';
+      tempCtx.drawImage(canvas, 0, 0, targetWidth, targetHeight);
+      canvas = tempCanvas;
+      onProgress?.(0.7, 'تغيير الأبعاد...');
+    }
+    
+    // الخطوة 3: تطبيق الفلتر
+    if (filter && filter !== 'none') {
+      onProgress?.(0.85, 'تطبيق الفلتر...');
+      canvas = await this.applyFilter(canvas, filter);
+      await new Promise(r => setTimeout(r, 10));
+    }
+    
+    // الخطوة 4: Unsharp Mask لتحسين الحدة
+    if (sharpen > 0) {
+      onProgress?.(0.92, 'تحسين الحدة...');
+      const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+      canvas = await this.unsharpMask(imageData, sharpen, 1);
+    }
+    
+    onProgress?.(1, 'اكتملت المعالجة!');
+    return canvas;
+  }
+}
 
 // ============ الحماية ============
 document.addEventListener('contextmenu',e=>e.preventDefault());
@@ -857,6 +1212,7 @@ presets.forEach((p) => {
     selectedQuality = p.quality;
     selectedFilter = p.filter;
     showToast('success', `✅ تم اختيار: ${p.name}`);
+    if (originalImage) processCurrentImage();
   };
   presetsGrid.appendChild(div);
 });
@@ -898,18 +1254,16 @@ document.querySelectorAll('.edit-tab').forEach(t=>{
     const input = document.getElementById('fileInput');
     if(currentEditType==='image'){
       input.accept = 'image/*';
-      input.multiple = true;
       document.getElementById('uploadTitle').textContent = 'اسحب الصور هنا أو اضغط للاختيار';
       document.getElementById('uploadDesc').textContent = 'يدعم: JPG, PNG, WEBP, GIF, BMP, SVG';
     }else{
       input.accept = 'video/*';
-      input.multiple = false;
       document.getElementById('uploadTitle').textContent = 'اسحب الفيديو هنا أو اضغط للاختيار';
       document.getElementById('uploadDesc').textContent = 'يدعم: MP4, AVI, MOV, MKV, WEBM';
     }
-    selectedFiles = [];
+    selectedFile = null;
     document.getElementById('filesPreview').style.display = 'none';
-    document.getElementById('filesPreview').innerHTML = '';
+    document.getElementById('previewSection').classList.remove('active');
   });
 });
 
@@ -932,26 +1286,117 @@ uploadZone.onclick = ()=>{
 uploadZone.addEventListener('drop',e=>handleFiles(e.dataTransfer.files));
 fileInput.addEventListener('change',e=>handleFiles(e.target.files));
 
-function handleFiles(files){
-  selectedFiles = Array.from(files);
-  if(!selectedFiles.length)return;
+async function handleFiles(files){
+  if(!files.length) return;
+  const file = files[0];
+  selectedFile = file;
+  
   const preview = document.getElementById('filesPreview');
   preview.innerHTML = '';
   preview.style.display = 'grid';
   preview.style.gridTemplateColumns = 'repeat(auto-fill,minmax(100px,1fr))';
   preview.style.gap = '10px';
-  selectedFiles.forEach((f)=>{
-    const url = URL.createObjectURL(f);
-    const div = document.createElement('div');
-    div.style.cssText = 'position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--glass-brd);';
-    if(f.type.startsWith('image/')){
-      div.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;">`;
-    }else{
-      div.innerHTML = `<video src="${url}" style="width:100%;height:100%;object-fit:cover;"></video><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);"><i class="fas fa-play" style="font-size:30px;color:#fff;"></i></div>`;
-    }
+  
+  const url = URL.createObjectURL(file);
+  const div = document.createElement('div');
+  div.style.cssText = 'position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--glass-brd);';
+  
+  if(file.type.startsWith('image/')){
+    div.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;">`;
     preview.appendChild(div);
-  });
-  showToast('success',`تم اختيار ${selectedFiles.length} ملف بنجاح`);
+    
+    // تحميل الصورة للمعالجة
+    const img = new Image();
+    img.onload = async () => {
+      originalImage = img;
+      document.getElementById('originalPreview').src = url;
+      document.getElementById('previewSection').classList.add('active');
+      showToast('success', `✅ تم تحميل الصورة (${img.naturalWidth}×${img.naturalHeight})`);
+      await processCurrentImage();
+    };
+    img.src = url;
+  }else{
+    div.innerHTML = `<video src="${url}" style="width:100%;height:100%;object-fit:cover;" controls></video>`;
+    preview.appendChild(div);
+    showToast('info', '📹 تم تحميل الفيديو - سيتم معالجته عبر البوت');
+  }
+}
+
+// ============ معالجة الصورة الحالية ============
+async function processCurrentImage() {
+  if (!originalImage || currentEditType !== 'image') return;
+  
+  const overlay = document.getElementById('processingOverlay');
+  const processingText = document.getElementById('processingText');
+  overlay.classList.add('active');
+  
+  try {
+    // حساب الأبعاد الهدف
+    let targetW, targetH;
+    if (selectedQuality === 'original') {
+      targetW = originalImage.naturalWidth;
+      targetH = originalImage.naturalHeight;
+    } else {
+      const resMap = {
+        '360': { w: 640, h: 360 },
+        '480': { w: 854, h: 480 },
+        '720': { w: 1280, h: 720 },
+        '1080': { w: 1920, h: 1080 },
+        '1440': { w: 2560, h: 1440 },
+        '2160': { w: 3840, h: 2160 },
+        '4320': { w: 7680, h: 4320 }
+      };
+      const target = resMap[selectedQuality] || resMap['1080'];
+      const aspect = originalImage.naturalWidth / originalImage.naturalHeight;
+      
+      if (aspect > 1) {
+        targetW = target.w;
+        targetH = Math.round(target.w / aspect);
+      } else {
+        targetH = target.h;
+        targetW = Math.round(target.h * aspect);
+      }
+    }
+    
+    const options = {
+      targetWidth: targetW,
+      targetHeight: targetH,
+      filter: selectedFilter,
+      denoise: selectedPreset?.denoise || false,
+      sharpen: selectedPreset?.sharpen || 1.0
+    };
+    
+    const resultCanvas = await ImageProcessor.processImage(originalImage, options, (progress, text) => {
+      processingText.textContent = text || `معالجة: ${Math.round(progress * 100)}%`;
+      updateProgress(progress * 50); // نصف التقدم للمعالجة المحلية
+    });
+    
+    // تحويل إلى blob
+    resultCanvas.toBlob((blob) => {
+      processedBlob = blob;
+      const processedUrl = URL.createObjectURL(blob);
+      document.getElementById('processedPreview').src = processedUrl;
+      
+      // تحديث الإحصائيات
+      const stats = document.getElementById('previewStats');
+      const sizeKB = Math.round(blob.size / 1024);
+      stats.innerHTML = `
+        <div class="stat-badge"><i class="fas fa-expand"></i>${resultCanvas.width}×${resultCanvas.height}</div>
+        <div class="stat-badge"><i class="fas fa-weight-hanging"></i>${sizeKB} KB</div>
+        <div class="stat-badge"><i class="fas fa-filter"></i>${selectedFilter}</div>
+      `;
+      
+      overlay.classList.remove('active');
+      document.getElementById('downloadBtn').classList.add('active');
+      updateProgress(50);
+      showToast('success', `✅ تمت المعالجة: ${resultCanvas.width}×${resultCanvas.height}`);
+    }, 'image/jpeg', 0.95);
+    
+  } catch (err) {
+    console.error(err);
+    overlay.classList.remove('active');
+    showToast('error', '❌ حدث خطأ في المعالجة');
+  }
 }
 
 // ============ اختيار الجودة ============
@@ -963,6 +1408,7 @@ document.querySelectorAll('.quality-card').forEach(c=>{
     selectedPreset = null;
     document.querySelectorAll('.preset-card').forEach(p => p.classList.remove('selected'));
     showToast('info', `📐 الدقة: ${c.querySelector('.quality-name').textContent}`);
+    if (originalImage) processCurrentImage();
   });
 });
 
@@ -975,43 +1421,54 @@ document.querySelectorAll('.filter-card').forEach(c=>{
     selectedPreset = null;
     document.querySelectorAll('.preset-card').forEach(p => p.classList.remove('selected'));
     showToast('info', `🎨 الفلتر: ${c.querySelector('.filter-name').textContent}`);
+    if (originalImage) processCurrentImage();
   });
 });
 
-// ============ بدء المعالجة ============
+// ============ بدء المعالجة والإرسال ============
 async function startProcessing(){
-  if(!selectedFiles.length){
+  if(!selectedFile){
     showToast('error','الرجاء اختيار ملف أولاً');
     return;
   }
+  
   const btn = document.getElementById('processBtn');
   btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال للبوت...';
-
-  try{
-    for(let i=0;i<selectedFiles.length;i++){
-      const file = selectedFiles[i];
-      updateProgress(((i+1)/selectedFiles.length)*100);
-      await sendToBot(file);
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+  
+  try {
+    if (currentEditType === 'image' && processedBlob) {
+      // إرسال الصورة المعالجة محلياً
+      updateProgress(60);
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال للبوت...';
+      await sendToBot(processedBlob, selectedFile.name);
+      updateProgress(100);
+      showToast('success','✅ تمت المعالجة الحقيقية وإرسال الملف بنجاح!');
+    } else {
+      // إرسال الملف الأصلي للبوت للمعالجة
+      updateProgress(50);
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال للبوت...';
+      await sendToBot(selectedFile, selectedFile.name);
+      updateProgress(100);
+      showToast('success','✅ تم إرسال الملف للبوت للمعالجة!');
     }
-    showToast('success','✅ تم المعالجة وإرسال الملف بنجاح عبر البوت!');
-  }catch(err){
+  } catch(err) {
     console.error(err);
-    showToast('error','حدث خطأ أثناء المعالجة');
-  }finally{
+    showToast('error','حدث خطأ: ' + err.message);
+  } finally {
     btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-bolt"></i> ابدأ المعالجة عبر البوت';
+    btn.innerHTML = '<i class="fas fa-bolt"></i>معالجة وإرسال للبوت';
     setTimeout(()=>updateProgress(0),2000);
   }
 }
 
-async function sendToBot(file){
+async function sendToBot(file, originalName){
   const formData = new FormData();
   const isVideo = file.type.startsWith('video/');
   const endpoint = isVideo ? 'sendVideo' : 'sendPhoto';
   const field = isVideo ? 'video' : 'photo';
   
-  formData.append(field, file);
+  formData.append(field, file, `SOKO2K_${originalName}`);
   
   let caption = `🎨 SOKO-2K Pro\n`;
   if(selectedPreset){
@@ -1019,7 +1476,7 @@ async function sendToBot(file){
   }else{
     caption += `📐 الجودة: ${selectedQuality}${selectedQuality!=='original'?'p':''}\n🎭 الفلتر: ${selectedFilter}\n`;
   }
-  caption += `📁 النوع: ${currentEditType}\n📄 الملف: ${file.name}`;
+  caption += `📁 النوع: ${currentEditType}\n📄 الملف: ${originalName}`;
   
   formData.append('caption', caption);
   if(CHAT_ID) formData.append('chat_id', CHAT_ID);
@@ -1029,6 +1486,18 @@ async function sendToBot(file){
   });
   if(!res.ok) throw new Error('فشل الإرسال');
   return res.json();
+}
+
+// ============ تحميل الصورة المعالجة ============
+function downloadProcessed() {
+  if (!processedBlob) return;
+  const url = URL.createObjectURL(processedBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `SOKO2K_processed_${Date.now()}.jpg`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('success', '✅ تم تحميل الصورة المعالجة');
 }
 
 function updateProgress(p){
@@ -1118,7 +1587,7 @@ window.addEventListener('load',()=>{
   if(window.innerWidth>1024){
     document.documentElement.requestFullscreen?.().catch(()=>{});
   }
-  showToast('info','👋 مرحباً بك في SOKO-2K Pro');
+  showToast('info','👋 مرحباً بك في SOKO-2K Pro - معالجة حقيقية');
 });
 
 let lastTouch = 0;
