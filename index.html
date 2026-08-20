@@ -4,19 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <meta name="theme-color" content="#0a0a0f">
-<title>SOKO-2K | نظام المعالجة الفخم</title>
+<title>SOKO-2K | نظام المعالجة الفخم Pro</title>
 <link rel="icon" href="AA.jpg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
-/* ============ المتغيرات الأساسية ============ */
 :root{
   --c1:#ff2d75; --c2:#7c3aed; --c3:#00e5ff; --c4:#ffd60a;
   --bg1:#0a0a0f; --bg2:#141428; --glass:rgba(255,255,255,0.06);
   --glass-brd:rgba(255,255,255,0.12); --txt:#fff; --txt2:#b8b8d4;
   --radius:22px; --blur:20px;
 }
-/* ============ الثيمات العشرة ============ */
 [data-theme="neon"]{--c1:#ff2d75;--c2:#7c3aed;--c3:#00e5ff;--c4:#ffd60a;--bg1:#0a0a0f;--bg2:#141428;}
 [data-theme="lime"]{--c1:#a8ff3e;--c2:#00d9a3;--c3:#f0ff00;--c4:#ffffff;--bg1:#051a0a;--bg2:#0a2e14;}
 [data-theme="gray-purple"]{--c1:#9ca3af;--c2:#a78bfa;--c3:#c084fc;--c4:#e9d5ff;--bg1:#1a1a24;--bg2:#2a2438;}
@@ -27,7 +25,6 @@
 [data-theme="cyber"]{--c1:#00ff9d;--c2:#ff00e5;--c3:#00f0ff;--c4:#ffff00;--bg1:#000000;--bg2:#0a0a0a;}
 [data-theme="sunset"]{--c1:#ff6b6b;--c2:#feca57;--c3:#ff9ff3;--c4:#f368e0;--bg1:#1a0a2e;--bg2:#2d1b4e;}
 [data-theme="ocean"]{--c1:#0077b6;--c2:#00b4d8;--c3:#90e0ef;--c4:#caf0f8;--bg1:#03045e;--bg2:#023e8a;}
-[data-theme="gold"]{--c1:#ffd700;--c2:#ffaa00;--c3:#ffed4a;--c4:#fff8dc;--bg1:#1a1400;--bg2:#2d2400;}
 
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;
   -webkit-user-select:none;-moz-user-select:none;user-select:none;
@@ -47,12 +44,9 @@ body::before{
   background-image:url('A.jpg');
   background-size:cover;background-position:center;
   opacity:.15;z-index:-1;pointer-events:none;
-  transition:opacity .5s;
 }
-/* منع التكبير والتمرير الأفقي */
-body.locked{overflow-x:hidden;}
 
-/* ============ شريط التحميل العلوي ============ */
+/* ============ شريط علوي ============ */
 .top-bar{
   position:fixed;top:0;left:0;right:0;z-index:100;
   padding:12px 20px;backdrop-filter:blur(var(--blur)) saturate(180%);
@@ -68,10 +62,7 @@ body.locked{overflow-x:hidden;}
 }
 @keyframes spin{to{transform:rotate(360deg);}}
 .progress-wrap{flex:1;max-width:300px;display:flex;align-items:center;gap:8px;}
-.progress-bar{
-  flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden;
-  position:relative;
-}
+.progress-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden;}
 .progress-fill{
   height:100%;width:0%;
   background:linear-gradient(90deg,var(--c1),var(--c3),var(--c4));
@@ -82,15 +73,12 @@ body.locked{overflow-x:hidden;}
 @keyframes shimmer{to{background-position:-200% 0;}}
 .progress-label{font-size:11px;color:var(--c3);font-weight:700;min-width:40px;}
 
-/* ============ الحاوية الرئيسية ============ */
-.container{
-  max-width:1400px;margin:0 auto;padding:90px 20px 120px;
-}
-/* ============ السلايدر الرئيسي ============ */
+.container{max-width:1400px;margin:0 auto;padding:90px 20px 120px;}
+
+/* ============ السلايدر ============ */
 .hero{
   position:relative;height:420px;border-radius:var(--radius);overflow:hidden;
-  margin-bottom:30px;
-  border:1px solid var(--glass-brd);
+  margin-bottom:30px;border:1px solid var(--glass-brd);
   box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px color-mix(in srgb,var(--c1) 20%,transparent);
 }
 .hero-slide{
@@ -102,9 +90,7 @@ body.locked{overflow-x:hidden;}
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85) 100%);
 }
-.hero-content{
-  position:absolute;bottom:30px;right:30px;left:30px;z-index:2;
-}
+.hero-content{position:absolute;bottom:30px;right:30px;left:30px;z-index:2;}
 .hero-title{
   font-size:clamp(28px,5vw,52px);font-weight:900;
   background:linear-gradient(135deg,var(--c1),var(--c3),var(--c4));
@@ -121,21 +107,14 @@ body.locked{overflow-x:hidden;}
   box-shadow:0 10px 30px color-mix(in srgb,var(--c1) 40%,transparent);
   transition:transform .3s,box-shadow .3s;
 }
-.hero-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 15px 40px color-mix(in srgb,var(--c1) 60%,transparent);}
+.hero-btn:hover{transform:translateY(-3px) scale(1.03);}
 .hero-btn i{animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
-
-.hero-dots{
-  position:absolute;bottom:15px;left:50%;transform:translateX(-50%);
-  display:flex;gap:8px;z-index:3;
-}
-.hero-dot{
-  width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);
-  cursor:pointer;transition:all .3s;
-}
+.hero-dots{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3;}
+.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
 .hero-dot.active{background:var(--c3);width:30px;border-radius:4px;box-shadow:0 0 10px var(--c3);}
 
-/* ============ الأقسام - التبويبات ============ */
+/* ============ التبويبات ============ */
 .tabs{
   display:flex;gap:10px;margin-bottom:25px;overflow-x:auto;
   padding:8px;backdrop-filter:blur(var(--blur));
@@ -152,24 +131,21 @@ body.locked{overflow-x:hidden;}
 .tab i{font-size:16px;}
 .tab:hover{background:rgba(255,255,255,.05);color:var(--txt);}
 .tab.active{
-  background:linear-gradient(135deg,var(--c1),var(--c2));
-  color:#fff;border-color:transparent;
+  background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
   box-shadow:0 8px 25px color-mix(in srgb,var(--c1) 40%,transparent);
 }
 .tab.active i{animation:pulse 1.5s infinite;}
 
-/* ============ الكروت الزجاجية ============ */
 .section{display:none;animation:fadeUp .6s ease;}
 .section.active{display:block;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
 
+/* ============ الكروت الزجاجية ============ */
 .glass{
   backdrop-filter:blur(var(--blur)) saturate(180%);
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(180%);
   background:var(--glass);border:1px solid var(--glass-brd);
   border-radius:var(--radius);padding:25px;
-  position:relative;overflow:hidden;
-  transition:transform .4s,box-shadow .4s;
+  position:relative;overflow:hidden;transition:transform .4s,box-shadow .4s;
 }
 .glass::before{
   content:'';position:absolute;inset:0;
@@ -178,10 +154,7 @@ body.locked{overflow-x:hidden;}
 }
 .glass:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px color-mix(in srgb,var(--c1) 20%,transparent);}
 
-.section-title{
-  font-size:24px;font-weight:900;margin-bottom:20px;
-  display:flex;align-items:center;gap:12px;
-}
+.section-title{font-size:24px;font-weight:900;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
 .section-title i{
   background:linear-gradient(135deg,var(--c1),var(--c3));
   -webkit-background-clip:text;background-clip:text;color:transparent;
@@ -189,10 +162,8 @@ body.locked{overflow-x:hidden;}
 }
 @keyframes glow{0%,100%{filter:drop-shadow(0 0 5px var(--c1));}50%{filter:drop-shadow(0 0 20px var(--c3));}}
 
-/* ============ شبكة الأيقونات المميزة ============ */
-.feature-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;
-}
+/* ============ المميزات ============ */
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
 .feature-card{
   padding:20px 15px;text-align:center;cursor:pointer;
   background:var(--glass);border:1px solid var(--glass-brd);
@@ -224,7 +195,7 @@ body.locked{overflow-x:hidden;}
 .feature-card h4{font-size:13px;font-weight:700;margin-bottom:4px;}
 .feature-card p{font-size:11px;color:var(--txt2);}
 
-/* ============ قسم التعليمات ============ */
+/* ============ التعليمات ============ */
 .instruction-list{display:flex;flex-direction:column;gap:12px;}
 .instruction{
   display:flex;align-items:flex-start;gap:15px;padding:18px;
@@ -237,19 +208,15 @@ body.locked{overflow-x:hidden;}
   background:linear-gradient(135deg,var(--c1),var(--c2));
   border-radius:12px;display:flex;align-items:center;justify-content:center;
   font-weight:900;font-size:18px;
-  box-shadow:0 5px 15px color-mix(in srgb,var(--c1) 40%,transparent);
 }
 .instruction-content h4{font-size:15px;margin-bottom:5px;}
 .instruction-content p{font-size:13px;color:var(--txt2);line-height:1.6;}
 
 /* ============ الألبوم ============ */
-.album-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;
-}
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
 .album-item{
   aspect-ratio:1;border-radius:15px;overflow:hidden;cursor:pointer;
-  position:relative;border:1px solid var(--glass-brd);
-  transition:transform .4s;
+  position:relative;border:1px solid var(--glass-brd);transition:transform .4s;
 }
 .album-item:hover{transform:scale(1.05);z-index:2;}
 .album-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
@@ -291,13 +258,42 @@ body.locked{overflow-x:hidden;}
 .upload-zone h3{font-size:18px;margin-bottom:8px;}
 .upload-zone p{color:var(--txt2);font-size:13px;}
 
-/* اختيار الجودة */
-.quality-section{margin-top:20px;}
-.quality-title{font-size:15px;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.quality-title{font-size:15px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
 .quality-title i{color:var(--c3);}
-.quality-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;
+
+/* ============ Presets ============ */
+.presets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+.preset-card{
+  padding:15px;text-align:center;cursor:pointer;
+  background:var(--glass);border:2px solid var(--glass-brd);
+  border-radius:15px;transition:all .3s;position:relative;overflow:hidden;
 }
+.preset-card::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--c1) 20%,transparent),transparent);
+  transition:left .5s;
+}
+.preset-card:hover::before{left:100%;}
+.preset-card:hover{transform:translateY(-3px);border-color:var(--c1);}
+.preset-card.selected{
+  background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent;
+  box-shadow:0 10px 25px color-mix(in srgb,var(--c1) 50%,transparent);
+}
+.preset-card.selected::after{
+  content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;top:8px;left:8px;font-size:12px;
+  background:#fff;color:var(--c1);width:22px;height:22px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.preset-icon{font-size:28px;margin-bottom:8px;}
+.preset-name{font-weight:900;font-size:13px;margin-bottom:4px;}
+.preset-res{font-size:10px;color:var(--txt2);margin-bottom:2px;}
+.preset-card.selected .preset-res{color:rgba(255,255,255,.9);}
+.preset-filter{font-size:10px;color:var(--c3);font-weight:700;}
+.preset-card.selected .preset-filter{color:#fff;}
+
+/* ============ الجودة ============ */
+.quality-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;}
 .quality-card{
   padding:12px;text-align:center;cursor:pointer;
   background:var(--glass);border:1px solid var(--glass-brd);
@@ -305,8 +301,7 @@ body.locked{overflow-x:hidden;}
 }
 .quality-card:hover{transform:translateY(-3px);}
 .quality-card.selected{
-  background:linear-gradient(135deg,var(--c1),var(--c2));
-  border-color:transparent;
+  background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent;
   box-shadow:0 8px 20px color-mix(in srgb,var(--c1) 40%,transparent);
 }
 .quality-card.selected::after{
@@ -319,36 +314,29 @@ body.locked{overflow-x:hidden;}
 .quality-desc{font-size:10px;color:var(--txt2);}
 .quality-card.selected .quality-desc{color:rgba(255,255,255,.8);}
 
-/* الفلاتر */
-.filters-section{margin-top:20px;}
-.filters-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;
-}
+/* ============ الفلاتر ============ */
+.filters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;}
 .filter-card{
   aspect-ratio:1;cursor:pointer;border-radius:12px;overflow:hidden;
-  position:relative;border:2px solid transparent;transition:all .3s;
-  background:var(--glass);
+  position:relative;border:2px solid transparent;transition:all .3s;background:var(--glass);
 }
 .filter-card:hover{transform:scale(1.05);}
 .filter-card.selected{border-color:var(--c3);box-shadow:0 0 15px var(--c3);}
-.filter-preview{
-  width:100%;height:70%;background:linear-gradient(135deg,var(--c1),var(--c2));
-}
-.filter-card:nth-child(2) .filter-preview{background:linear-gradient(135deg,#ff6b6b,#feca57);filter:grayscale(100%);}
-.filter-card:nth-child(3) .filter-preview{background:linear-gradient(135deg,#48dbfb,#0abde3);filter:sepia(50%);}
-.filter-card:nth-child(4) .filter-preview{background:linear-gradient(135deg,#ff9ff3,#f368e0);filter:invert(20%);}
-.filter-card:nth-child(5) .filter-preview{background:linear-gradient(135deg,#54a0ff,#2e86de);filter:contrast(150%);}
-.filter-card:nth-child(6) .filter-preview{background:linear-gradient(135deg,#5f27cd,#341f97);filter:brightness(130%);}
-.filter-card:nth-child(7) .filter-preview{background:linear-gradient(135deg,#00d2d3,#01a3a4);filter:saturate(200%);}
-.filter-card:nth-child(8) .filter-preview{background:linear-gradient(135deg,#ee5253,#c0392b);filter:hue-rotate(90deg);}
-.filter-card:nth-child(9) .filter-preview{background:linear-gradient(135deg,#feca57,#ff9f43);filter:blur(1px);}
-.filter-card:nth-child(10) .filter-preview{background:linear-gradient(135deg,#10ac84,#01a3a4);filter:drop-shadow(0 0 5px gold);}
+.filter-preview{width:100%;height:70%;background:linear-gradient(135deg,var(--c1),var(--c2));}
+.filter-card:nth-child(2) .filter-preview{filter:grayscale(100%);}
+.filter-card:nth-child(3) .filter-preview{filter:sepia(50%);}
+.filter-card:nth-child(4) .filter-preview{filter:invert(20%);}
+.filter-card:nth-child(5) .filter-preview{filter:contrast(150%);}
+.filter-card:nth-child(6) .filter-preview{filter:brightness(130%);}
+.filter-card:nth-child(7) .filter-preview{filter:saturate(200%);}
+.filter-card:nth-child(8) .filter-preview{filter:hue-rotate(90deg);}
+.filter-card:nth-child(9) .filter-preview{filter:blur(1px);}
+.filter-card:nth-child(10) .filter-preview{filter:drop-shadow(0 0 5px gold);}
 .filter-name{
   position:absolute;bottom:0;left:0;right:0;padding:5px;
   background:rgba(0,0,0,.7);font-size:11px;font-weight:700;text-align:center;
 }
 
-/* زر المعالجة */
 .process-btn{
   width:100%;padding:16px;margin-top:20px;
   background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));
@@ -364,23 +352,15 @@ body.locked{overflow-x:hidden;}
 .process-btn:disabled{opacity:.5;cursor:not-allowed;}
 
 /* ============ الثيمات ============ */
-.themes-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;
-}
+.themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
 .theme-card{
   padding:15px;cursor:pointer;border-radius:18px;
-  position:relative;overflow:hidden;transition:all .4s;
-  border:1px solid var(--glass-brd);
+  position:relative;overflow:hidden;transition:all .4s;border:1px solid var(--glass-brd);
 }
 .theme-card:hover{transform:translateY(-5px) scale(1.03);}
 .theme-card.active{border-color:var(--c3);box-shadow:0 0 20px var(--c3);}
-.theme-preview{
-  height:80px;border-radius:12px;margin-bottom:10px;position:relative;overflow:hidden;
-}
-.theme-preview::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,var(--tc1),var(--tc2));
-}
+.theme-preview{height:80px;border-radius:12px;margin-bottom:10px;position:relative;overflow:hidden;}
+.theme-preview::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--tc1),var(--tc2));}
 .theme-preview::after{
   content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
   background:conic-gradient(from 0deg,transparent,var(--tc3),transparent);
@@ -389,9 +369,7 @@ body.locked{overflow-x:hidden;}
 .theme-name{font-size:13px;font-weight:700;text-align:center;}
 
 /* ============ التواصل ============ */
-.social-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;
-}
+.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
 .social-card{
   padding:25px 15px;text-align:center;cursor:pointer;
   border-radius:18px;transition:all .4s;position:relative;overflow:hidden;
@@ -407,16 +385,14 @@ body.locked{overflow-x:hidden;}
 .social-icon{
   width:65px;height:65px;margin:0 auto 12px;
   display:flex;align-items:center;justify-content:center;
-  border-radius:18px;font-size:30px;color:#fff;
-  background:var(--sc);position:relative;
+  border-radius:18px;font-size:30px;color:#fff;background:var(--sc);position:relative;
   box-shadow:0 10px 25px color-mix(in srgb,var(--sc) 50%,transparent);
   animation:pulseIcon 2s ease-in-out infinite;
 }
 @keyframes pulseIcon{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
 .social-icon::after{
   content:'';position:absolute;inset:-3px;border-radius:20px;
-  background:var(--sc);opacity:.3;animation:ring 2s ease-in-out infinite;
-  z-index:-1;
+  background:var(--sc);opacity:.3;animation:ring 2s ease-in-out infinite;z-index:-1;
 }
 @keyframes ring{0%,100%{transform:scale(1);opacity:.3;}50%{transform:scale(1.3);opacity:0;}}
 .social-name{font-weight:700;font-size:14px;}
@@ -470,9 +446,8 @@ body.locked{overflow-x:hidden;}
 .dialog-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);
   z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;
-  animation:fadeIn .3s;
 }
-.dialog-overlay.show{display:flex;}
+.dialog-overlay.show{display:flex;animation:fadeIn .3s;}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
 .dialog{
   background:linear-gradient(135deg,var(--bg2),var(--bg1));
@@ -511,7 +486,6 @@ body.locked{overflow-x:hidden;}
   width:45px;height:45px;border-radius:50%;cursor:pointer;
   display:flex;align-items:center;justify-content:center;
   background:transparent;color:var(--txt2);transition:all .3s;
-  position:relative;
 }
 .nav-item.active{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 5px 15px color-mix(in srgb,var(--c1) 50%,transparent);}
 .nav-item i{font-size:18px;}
@@ -524,12 +498,9 @@ body.locked{overflow-x:hidden;}
   background:radial-gradient(circle,var(--c1),var(--c2),var(--c3),transparent);
   animation:ripple .8s ease-out forwards;
 }
-@keyframes ripple{
-  0%{transform:scale(0);opacity:1;}
-  100%{transform:scale(8);opacity:0;}
-}
+@keyframes ripple{0%{transform:scale(0);opacity:1;}100%{transform:scale(8);opacity:0;}}
 
-/* ============ مودال عرض الصورة ============ */
+/* ============ Lightbox ============ */
 .lightbox{
   position:fixed;inset:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);
   z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;
@@ -548,17 +519,12 @@ body.locked{overflow-x:hidden;}
   .hero{height:320px;}
   .hero-title{font-size:28px;}
   .glass{padding:18px;}
-  .feature-grid{grid-template-columns:repeat(2,1fr);}
-  .album-grid{grid-template-columns:repeat(2,1fr);}
-  .quality-grid{grid-template-columns:repeat(2,1fr);}
-  .social-grid{grid-template-columns:repeat(2,1fr);}
-  .themes-grid{grid-template-columns:repeat(2,1fr);}
+  .feature-grid,.album-grid,.presets-grid,.quality-grid,.social-grid,.themes-grid{grid-template-columns:repeat(2,1fr);}
   .progress-wrap{max-width:120px;}
   .bottom-nav{gap:5px;padding:8px;}
   .nav-item{width:40px;height:40px;}
 }
 
-/* إخفاء شريط التمرير */
 ::-webkit-scrollbar{width:6px;height:6px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:linear-gradient(var(--c1),var(--c2));border-radius:10px;}
@@ -566,26 +532,17 @@ body.locked{overflow-x:hidden;}
 </head>
 <body data-theme="neon">
 
-<!-- شريط علوي -->
 <div class="top-bar">
-  <div class="logo">
-    <i class="fas fa-bolt"></i>
-    <span>SOKO-2K</span>
-  </div>
+  <div class="logo"><i class="fas fa-bolt"></i><span>SOKO-2K</span></div>
   <div class="progress-wrap">
     <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
     <div class="progress-label" id="progressLabel">0%</div>
   </div>
-  <div class="logo" style="font-size:12px;color:var(--c3);">
-    <i class="fas fa-crown"></i>
-    <span>PRO</span>
-  </div>
+  <div class="logo" style="font-size:12px;color:var(--c3);"><i class="fas fa-crown"></i><span>PRO</span></div>
 </div>
 
-<!-- الحاوية -->
 <div class="container">
 
-  <!-- السلايدر -->
   <div class="hero" id="hero">
     <div class="hero-slide active" style="background-image:url('1.jpg');"></div>
     <div class="hero-slide" style="background-image:url('2.jpg');"></div>
@@ -598,17 +555,13 @@ body.locked{overflow-x:hidden;}
     <div class="hero-slide" style="background-image:url('9.jpg');"></div>
     <div class="hero-slide" style="background-image:url('10.jpg');"></div>
     <div class="hero-content">
-      <h1 class="hero-title">نظام المعالجة الفخم</h1>
-      <p class="hero-sub">ارفع صورك وفيديوهاتك بأعلى جودة 2K وأكثر عبر بوت تيليجرام</p>
-      <button class="hero-btn" onclick="switchTab(3)">
-        <i class="fas fa-rocket"></i>
-        ابدأ المعالجة الآن
-      </button>
+      <h1 class="hero-title">نظام المعالجة الفخم Pro</h1>
+      <p class="hero-sub">10 Presets جاهزة + رفع دقة حقيقي حتى 8K مع فلاتر احترافية عبر بوت تيليجرام</p>
+      <button class="hero-btn" onclick="switchTab(3)"><i class="fas fa-rocket"></i>ابدأ المعالجة الآن</button>
     </div>
     <div class="hero-dots" id="heroDots"></div>
   </div>
 
-  <!-- التبويبات -->
   <div class="tabs">
     <div class="tab active" data-tab="0"><i class="fas fa-home"></i>الرئيسية</div>
     <div class="tab" data-tab="1"><i class="fas fa-book-open"></i>التعليمات</div>
@@ -619,39 +572,37 @@ body.locked{overflow-x:hidden;}
     <div class="tab" data-tab="6"><i class="fas fa-headset"></i>الدعم</div>
   </div>
 
-  <!-- القسم 0: الرئيسية -->
+  <!-- الرئيسية -->
   <div class="section active">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-star"></i>مميزات النظام</h2>
       <div class="feature-grid">
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-image"></i></div><h4>رفع الصور</h4><p>بأي امتداد</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-video"></i></div><h4>رفع الفيديو</h4><p>جودة 2K+</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-sliders"></i></div><h4>فلاتر فخم</h4><p>10 فلاتر</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-magic"></i></div><h4>10 Presets</h4><p>جاهزة للاستخدام</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-sliders"></i></div><h4>20 فلتر</h4><p>احترافي</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>معالجة سريعة</h4><p>عبر البوت</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-shield-halved"></i></div><h4>آمن 100%</h4><p>خصوصية تامة</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-mobile-screen"></i></div><h4>متجاوب</h4><p>هاتف و PC</p></div>
         <div class="feature-card"><div class="feature-icon"><i class="fas fa-palette"></i></div><h4>10 ثيمات</h4><p>ألوان فخمة</p></div>
-        <div class="feature-card"><div class="feature-icon"><i class="fas fa-download"></i></div><h4>تحميل مباشر</h4><p>بعد المعالجة</p></div>
       </div>
     </div>
   </div>
 
-  <!-- القسم 1: التعليمات -->
+  <!-- التعليمات -->
   <div class="section">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-circle-info"></i>تعليمات الاستخدام</h2>
       <div class="instruction-list">
-        <div class="instruction"><div class="instruction-num">1</div><div class="instruction-content"><h4>اختر نوع الملف</h4><p>انتقل لقسم التعديل واختر بين الصور أو الفيديوهات حسب حاجتك.</p></div></div>
-        <div class="instruction"><div class="instruction-num">2</div><div class="instruction-content"><h4>ارفع ملفك</h4><p>اسحب الملف أو اضغط على منطقة الرفع لاختياره من جهازك (يدعم جميع الامتدادات).</p></div></div>
-        <div class="instruction"><div class="instruction-num">3</div><div class="instruction-content"><h4>اختر الجودة</h4><p>حدد دقة المعالجة المطلوبة من 360p حتى 4K وأكثر.</p></div></div>
-        <div class="instruction"><div class="instruction-num">4</div><div class="instruction-content"><h4>طبق الفلتر (اختياري)</h4><p>اختر من 10 فلاتر فخمة لإضافة لمسة احترافية.</p></div></div>
-        <div class="instruction"><div class="instruction-num">5</div><div class="instruction-content"><h4>ابدأ المعالجة</h4><p>سيتم إرسال الملف إلى بوت تيليجرام لمعالجته تلقائياً.</p></div></div>
-        <div class="instruction"><div class="instruction-num">6</div><div class="instruction-content"><h4>استلم النتيجة</h4><p>ستظهر رسالة تأكيد عند اكتمال المعالجة مع رابط التحميل.</p></div></div>
+        <div class="instruction"><div class="instruction-num">1</div><div class="instruction-content"><h4>اختر Preset جاهز</h4><p>اختر من 10 Presets جاهزة (دقة + فلتر مدمج) أو حدد يدوياً.</p></div></div>
+        <div class="instruction"><div class="instruction-num">2</div><div class="instruction-content"><h4>ارفع ملفك</h4><p>اسحب الملف أو اضغط على منطقة الرفع لاختياره من جهازك.</p></div></div>
+        <div class="instruction"><div class="instruction-num">3</div><div class="instruction-content"><h4>معالجة تلقائية</h4><p>سيتم إرسال الملف إلى بوت تيليجرام للمعالجة بالدقة والفلتر المختار.</p></div></div>
+        <div class="instruction"><div class="instruction-num">4</div><div class="instruction-content"><h4>استلم النتيجة</h4><p>ستصلك النتيجة بجودة خيالية عبر تيليجرام بعد المعالجة.</p></div></div>
       </div>
     </div>
   </div>
 
-  <!-- القسم 2: الألبوم -->
+  <!-- الألبوم -->
   <div class="section">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-images"></i>ألبوم الصور</h2>
@@ -659,7 +610,7 @@ body.locked{overflow-x:hidden;}
     </div>
   </div>
 
-  <!-- القسم 3: التعديل -->
+  <!-- التعديل -->
   <div class="section">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-wand-magic-sparkles"></i>قسم التعديل</h2>
@@ -668,7 +619,11 @@ body.locked{overflow-x:hidden;}
         <div class="edit-tab" data-edit="video"><i class="fas fa-video"></i>تعديل فيديو</div>
       </div>
 
-      <!-- منطقة الرفع -->
+      <!-- Presets -->
+      <div class="quality-title"><i class="fas fa-magic"></i> 10 Presets جاهزة (دقة + فلتر مدمج)</div>
+      <div class="presets-grid" id="presetsGrid"></div>
+
+      <!-- الرفع -->
       <div class="upload-zone" id="uploadZone">
         <div class="upload-icon"><i class="fas fa-cloud-arrow-up"></i></div>
         <h3 id="uploadTitle">اسحب الصور هنا أو اضغط للاختيار</h3>
@@ -676,49 +631,43 @@ body.locked{overflow-x:hidden;}
         <input type="file" id="fileInput" accept="image/*" multiple hidden>
       </div>
 
-      <!-- معاينة الملفات -->
       <div id="filesPreview" style="margin-top:15px;display:none;"></div>
 
-      <!-- اختيار الجودة -->
-      <div class="quality-section">
-        <div class="quality-title"><i class="fas fa-expand"></i>اختر دقة المعالجة</div>
-        <div class="quality-grid" id="qualityGrid">
-          <div class="quality-card" data-q="360"><div class="quality-name">360p</div><div class="quality-desc">640×360</div></div>
-          <div class="quality-card" data-q="480"><div class="quality-name">480p</div><div class="quality-desc">854×480</div></div>
-          <div class="quality-card" data-q="720"><div class="quality-name">720p HD</div><div class="quality-desc">1280×720</div></div>
-          <div class="quality-card selected" data-q="1080"><div class="quality-name">1080p FHD</div><div class="quality-desc">1920×1080</div></div>
-          <div class="quality-card" data-q="1440"><div class="quality-name">1440p 2K</div><div class="quality-desc">2560×1440</div></div>
-          <div class="quality-card" data-q="2160"><div class="quality-name">2160p 4K</div><div class="quality-desc">3840×2160</div></div>
-          <div class="quality-card" data-q="4320"><div class="quality-name">4320p 8K</div><div class="quality-desc">7680×4320</div></div>
-          <div class="quality-card" data-q="original"><div class="quality-name">الأصلي</div><div class="quality-desc">نفس الدقة</div></div>
-        </div>
+      <!-- الجودة -->
+      <div class="quality-title"><i class="fas fa-expand"></i>أو اختر دقة المعالجة يدوياً</div>
+      <div class="quality-grid" id="qualityGrid">
+        <div class="quality-card" data-q="360"><div class="quality-name">360p</div><div class="quality-desc">640×360</div></div>
+        <div class="quality-card" data-q="480"><div class="quality-name">480p</div><div class="quality-desc">854×480</div></div>
+        <div class="quality-card" data-q="720"><div class="quality-name">720p HD</div><div class="quality-desc">1280×720</div></div>
+        <div class="quality-card selected" data-q="1080"><div class="quality-name">1080p FHD</div><div class="quality-desc">1920×1080</div></div>
+        <div class="quality-card" data-q="1440"><div class="quality-name">1440p 2K</div><div class="quality-desc">2560×1440</div></div>
+        <div class="quality-card" data-q="2160"><div class="quality-name">2160p 4K</div><div class="quality-desc">3840×2160</div></div>
+        <div class="quality-card" data-q="4320"><div class="quality-name">4320p 8K</div><div class="quality-desc">7680×4320</div></div>
+        <div class="quality-card" data-q="original"><div class="quality-name">الأصلي</div><div class="quality-desc">نفس الدقة</div></div>
       </div>
 
       <!-- الفلاتر -->
-      <div class="filters-section">
-        <div class="quality-title"><i class="fas fa-palette"></i>الفلاتر المتاحة</div>
-        <div class="filters-grid" id="filtersGrid">
-          <div class="filter-card selected" data-filter="none"><div class="filter-preview"></div><div class="filter-name">بدون</div></div>
-          <div class="filter-card" data-filter="grayscale"><div class="filter-preview"></div><div class="filter-name">أبيض وأسود</div></div>
-          <div class="filter-card" data-filter="sepia"><div class="filter-preview"></div><div class="filter-name">كلاسيكي</div></div>
-          <div class="filter-card" data-filter="invert"><div class="filter-preview"></div><div class="filter-name">سلبي</div></div>
-          <div class="filter-card" data-filter="contrast"><div class="filter-preview"></div><div class="filter-name">تباين عالي</div></div>
-          <div class="filter-card" data-filter="bright"><div class="filter-preview"></div><div class="filter-name">مشرق</div></div>
-          <div class="filter-card" data-filter="saturate"><div class="filter-preview"></div><div class="filter-name">مشبع</div></div>
-          <div class="filter-card" data-filter="hue"><div class="filter-preview"></div><div class="filter-name">ألوان</div></div>
-          <div class="filter-card" data-filter="soft"><div class="filter-preview"></div><div class="filter-name">ناعم</div></div>
-          <div class="filter-card" data-filter="glow"><div class="filter-preview"></div><div class="filter-name">توهج</div></div>
-        </div>
+      <div class="quality-title"><i class="fas fa-palette"></i>أو اختر فلتر يدوياً</div>
+      <div class="filters-grid" id="filtersGrid">
+        <div class="filter-card selected" data-filter="none"><div class="filter-preview"></div><div class="filter-name">بدون</div></div>
+        <div class="filter-card" data-filter="grayscale"><div class="filter-preview"></div><div class="filter-name">أبيض وأسود</div></div>
+        <div class="filter-card" data-filter="sepia"><div class="filter-preview"></div><div class="filter-name">كلاسيكي</div></div>
+        <div class="filter-card" data-filter="invert"><div class="filter-preview"></div><div class="filter-name">سلبي</div></div>
+        <div class="filter-card" data-filter="contrast"><div class="filter-preview"></div><div class="filter-name">تباين عالي</div></div>
+        <div class="filter-card" data-filter="bright"><div class="filter-preview"></div><div class="filter-name">مشرق</div></div>
+        <div class="filter-card" data-filter="saturate"><div class="filter-preview"></div><div class="filter-name">مشبع</div></div>
+        <div class="filter-card" data-filter="hue"><div class="filter-preview"></div><div class="filter-name">ألوان</div></div>
+        <div class="filter-card" data-filter="soft"><div class="filter-preview"></div><div class="filter-name">ناعم</div></div>
+        <div class="filter-card" data-filter="glow"><div class="filter-preview"></div><div class="filter-name">توهج</div></div>
       </div>
 
       <button class="process-btn" id="processBtn" onclick="startProcessing()">
-        <i class="fas fa-bolt"></i>
-        ابدأ المعالجة عبر البوت
+        <i class="fas fa-bolt"></i>ابدأ المعالجة عبر البوت
       </button>
     </div>
   </div>
 
-  <!-- القسم 4: الثيمات -->
+  <!-- الثيمات -->
   <div class="section">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-palette"></i>الثيمات الفخمة</h2>
@@ -726,7 +675,7 @@ body.locked{overflow-x:hidden;}
     </div>
   </div>
 
-  <!-- القسم 5: تواصل -->
+  <!-- التواصل -->
   <div class="section">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-share-nodes"></i>حساباتي</h2>
@@ -755,7 +704,7 @@ body.locked{overflow-x:hidden;}
     </div>
   </div>
 
-  <!-- القسم 6: الدعم -->
+  <!-- الدعم -->
   <div class="section">
     <div class="glass">
       <h2 class="section-title"><i class="fas fa-headset"></i>الدعم الفني</h2>
@@ -768,17 +717,13 @@ body.locked{overflow-x:hidden;}
           <label class="form-label"><i class="fas fa-envelope"></i>رسالتك</label>
           <textarea class="form-textarea" id="supportMsg" placeholder="اكتب رسالتك..." required></textarea>
         </div>
-        <button type="submit" class="send-btn">
-          <i class="fas fa-paper-plane"></i>
-          إرسال الرسالة
-        </button>
+        <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i>إرسال الرسالة</button>
       </form>
     </div>
   </div>
 
 </div>
 
-<!-- شريط التنقل السفلي -->
 <div class="bottom-nav">
   <div class="nav-item active" data-tab="0"><i class="fas fa-home"></i></div>
   <div class="nav-item" data-tab="1"><i class="fas fa-book"></i></div>
@@ -789,10 +734,8 @@ body.locked{overflow-x:hidden;}
   <div class="nav-item" data-tab="6"><i class="fas fa-headset"></i></div>
 </div>
 
-<!-- حاوي التوست -->
 <div class="toast-container" id="toastContainer"></div>
 
-<!-- الدايلوج -->
 <div class="dialog-overlay" id="dialogOverlay">
   <div class="dialog">
     <div class="dialog-icon"><i class="fas fa-folder-open"></i></div>
@@ -805,45 +748,54 @@ body.locked{overflow-x:hidden;}
   </div>
 </div>
 
-<!-- Lightbox -->
 <div class="lightbox" id="lightbox" onclick="closeLightbox()">
   <div class="lightbox-close"><i class="fas fa-xmark"></i></div>
   <img id="lightboxImg" src="">
 </div>
 
 <script>
-/* ============ المتغيرات العامة ============ */
+// ============ الإعدادات ============
 const BOT_TOKEN = '7735965641:AAFzkUy27zKXYWroodhdxOBapMgwttyq5_s';
 const CHAT_ID = '910624538'; // ضع هنا chat_id الخاص بك
 const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1536066064239034408/zk2CDS0cHEgCEFLnPn-I5cULGkIVCkuScyYjxuNW8LMkXhITq7mE61vUInBPmnWAoN1b'; // ضع رابط الويب هوك هنا
 let selectedFiles = [];
 let selectedQuality = '1080';
 let selectedFilter = 'none';
+let selectedPreset = null;
 let currentEditType = 'image';
 let currentSlide = 0;
 let permissionGranted = false;
 
-/* ============ منع التكبير والنسخ ============ */
+// ============ 10 Presets جاهزة ============
+const presets = [
+  { id: '1', name: '🎬 سينمائي 4K', icon: '🎬', res: '3840×2160', quality: '2160', filter: 'cinematic', filterName: 'سينمائي' },
+  { id: '2', name: '✨ بورتريه HD+', icon: '✨', res: '2560×1440', quality: '1440', filter: 'portrait', filterName: 'بورتريه' },
+  { id: '3', name: '🌅 غروب دافئ', icon: '🌅', res: '1920×1080', quality: '1080', filter: 'warm_sunset', filterName: 'غروب' },
+  { id: '4', name: '❄️ بارد احترافي', icon: '❄️', res: '1920×1080', quality: '1080', filter: 'cool_pro', filterName: 'بارد' },
+  { id: '5', name: '🎨 فني فخم', icon: '🎨', res: '2560×1440', quality: '1440', filter: 'artistic', filterName: 'فني' },
+  { id: '6', name: '📸 كلاسيكي', icon: '📸', res: '1920×1080', quality: '1080', filter: 'vintage', filterName: 'كلاسيكي' },
+  { id: '7', name: '🌈 نيون ساطع', icon: '🌈', res: '1920×1080', quality: '1080', filter: 'neon_bright', filterName: 'نيون' },
+  { id: '8', name: '🎭 درامي', icon: '🎭', res: '2560×1440', quality: '1440', filter: 'dramatic', filterName: 'درامي' },
+  { id: '9', name: '💎 كريستال 8K', icon: '💎', res: '7680×4320', quality: '4320', filter: 'crystal_clear', filterName: 'كريستال' },
+  { id: '10', name: '🌙 ليلي احترافي', icon: '🌙', res: '1920×1080', quality: '1080', filter: 'night_pro', filterName: 'ليلي' }
+];
+
+// ============ الحماية ============
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('selectstart',e=>e.preventDefault());
 document.addEventListener('copy',e=>e.preventDefault());
 document.addEventListener('cut',e=>e.preventDefault());
 document.addEventListener('dragstart',e=>e.preventDefault());
-// منع التكبير باللمس
 document.addEventListener('gesturestart',e=>e.preventDefault());
 document.addEventListener('gesturechange',e=>e.preventDefault());
-document.addEventListener('touchmove',function(e){
-  if(e.touches.length>1)e.preventDefault();
-},{passive:false});
-// منع Ctrl + / Ctrl -
+document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
 document.addEventListener('keydown',function(e){
   if((e.ctrlKey||e.metaKey)&&(e.key==='+'||e.key==='-'||e.key==='='||e.key==='_'))e.preventDefault();
 });
 
-/* ============ التبويبات ============ */
+// ============ التبويبات ============
 function switchTab(idx){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.tab,.nav-item').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelector(`.tab[data-tab="${idx}"]`)?.classList.add('active');
   document.querySelector(`.nav-item[data-tab="${idx}"]`)?.classList.add('active');
@@ -854,7 +806,7 @@ document.querySelectorAll('.tab,.nav-item').forEach(el=>{
   el.addEventListener('click',()=>switchTab(+el.dataset.tab));
 });
 
-/* ============ السلايدر ============ */
+// ============ السلايدر ============
 const slides = document.querySelectorAll('.hero-slide');
 const dotsContainer = document.getElementById('heroDots');
 slides.forEach((_,i)=>{
@@ -872,7 +824,7 @@ function goSlide(i){
 }
 setInterval(()=>goSlide((currentSlide+1)%slides.length),4000);
 
-/* ============ الألبوم ============ */
+// ============ الألبوم ============
 const albumGrid = document.getElementById('albumGrid');
 for(let i=1;i<=10;i++){
   const div = document.createElement('div');
@@ -885,11 +837,31 @@ function openLightbox(src){
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('show');
 }
-function closeLightbox(){
-  document.getElementById('lightbox').classList.remove('show');
-}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
 
-/* ============ الثيمات ============ */
+// ============ إنشاء Presets ============
+const presetsGrid = document.getElementById('presetsGrid');
+presets.forEach((p) => {
+  const div = document.createElement('div');
+  div.className = 'preset-card';
+  div.innerHTML = `
+    <div class="preset-icon">${p.icon}</div>
+    <div class="preset-name">${p.name}</div>
+    <div class="preset-res">📐 ${p.res}</div>
+    <div class="preset-filter">🎨 ${p.filterName}</div>
+  `;
+  div.onclick = () => {
+    document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+    div.classList.add('selected');
+    selectedPreset = p;
+    selectedQuality = p.quality;
+    selectedFilter = p.filter;
+    showToast('success', `✅ تم اختيار: ${p.name}`);
+  };
+  presetsGrid.appendChild(div);
+});
+
+// ============ الثيمات ============
 const themes = [
   {id:'neon',name:'نيون كلاسيك',c1:'#ff2d75',c2:'#7c3aed',c3:'#00e5ff'},
   {id:'lime',name:'ليموني أخضر',c1:'#a8ff3e',c2:'#00d9a3',c3:'#f0ff00'},
@@ -917,7 +889,7 @@ themes.forEach((t,i)=>{
   themesGrid.appendChild(div);
 });
 
-/* ============ قسم التعديل ============ */
+// ============ تبديل نوع التعديل ============
 document.querySelectorAll('.edit-tab').forEach(t=>{
   t.addEventListener('click',()=>{
     document.querySelectorAll('.edit-tab').forEach(x=>x.classList.remove('active'));
@@ -941,6 +913,7 @@ document.querySelectorAll('.edit-tab').forEach(t=>{
   });
 });
 
+// ============ رفع الملفات ============
 const uploadZone = document.getElementById('uploadZone');
 const fileInput = document.getElementById('fileInput');
 uploadZone.onclick = ()=>{
@@ -956,9 +929,7 @@ uploadZone.onclick = ()=>{
 ['dragleave','drop'].forEach(ev=>{
   uploadZone.addEventListener(ev,e=>{e.preventDefault();uploadZone.classList.remove('drag');});
 });
-uploadZone.addEventListener('drop',e=>{
-  handleFiles(e.dataTransfer.files);
-});
+uploadZone.addEventListener('drop',e=>handleFiles(e.dataTransfer.files));
 fileInput.addEventListener('change',e=>handleFiles(e.target.files));
 
 function handleFiles(files){
@@ -969,7 +940,7 @@ function handleFiles(files){
   preview.style.display = 'grid';
   preview.style.gridTemplateColumns = 'repeat(auto-fill,minmax(100px,1fr))';
   preview.style.gap = '10px';
-  selectedFiles.forEach((f,i)=>{
+  selectedFiles.forEach((f)=>{
     const url = URL.createObjectURL(f);
     const div = document.createElement('div');
     div.style.cssText = 'position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--glass-brd);';
@@ -983,25 +954,31 @@ function handleFiles(files){
   showToast('success',`تم اختيار ${selectedFiles.length} ملف بنجاح`);
 }
 
-/* اختيار الجودة */
+// ============ اختيار الجودة ============
 document.querySelectorAll('.quality-card').forEach(c=>{
   c.addEventListener('click',()=>{
     document.querySelectorAll('.quality-card').forEach(x=>x.classList.remove('selected'));
     c.classList.add('selected');
     selectedQuality = c.dataset.q;
+    selectedPreset = null;
+    document.querySelectorAll('.preset-card').forEach(p => p.classList.remove('selected'));
+    showToast('info', `📐 الدقة: ${c.querySelector('.quality-name').textContent}`);
   });
 });
 
-/* اختيار الفلتر */
+// ============ اختيار الفلتر ============
 document.querySelectorAll('.filter-card').forEach(c=>{
   c.addEventListener('click',()=>{
     document.querySelectorAll('.filter-card').forEach(x=>x.classList.remove('selected'));
     c.classList.add('selected');
     selectedFilter = c.dataset.filter;
+    selectedPreset = null;
+    document.querySelectorAll('.preset-card').forEach(p => p.classList.remove('selected'));
+    showToast('info', `🎨 الفلتر: ${c.querySelector('.filter-name').textContent}`);
   });
 });
 
-/* ============ المعالجة عبر البوت ============ */
+// ============ بدء المعالجة ============
 async function startProcessing(){
   if(!selectedFiles.length){
     showToast('error','الرجاء اختيار ملف أولاً');
@@ -1009,15 +986,14 @@ async function startProcessing(){
   }
   const btn = document.getElementById('processBtn');
   btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال للبوت...';
 
   try{
     for(let i=0;i<selectedFiles.length;i++){
       const file = selectedFiles[i];
-      updateProgress((i/selectedFiles.length)*100);
+      updateProgress(((i+1)/selectedFiles.length)*100);
       await sendToBot(file);
     }
-    updateProgress(100);
     showToast('success','✅ تم المعالجة وإرسال الملف بنجاح عبر البوت!');
   }catch(err){
     console.error(err);
@@ -1036,7 +1012,15 @@ async function sendToBot(file){
   const field = isVideo ? 'video' : 'photo';
   
   formData.append(field, file);
-  const caption = `🎨 SOKO-2K\n📐 الجودة: ${selectedQuality}${selectedQuality!=='original'?'p':''}\n🎭 الفلتر: ${selectedFilter}\n📁 النوع: ${currentEditType}\n📄 الملف: ${file.name}`;
+  
+  let caption = `🎨 SOKO-2K Pro\n`;
+  if(selectedPreset){
+    caption += `🎯 Preset: ${selectedPreset.name}\n📐 الدقة: ${selectedPreset.res}\n🎨 الفلتر: ${selectedPreset.filterName}\n`;
+  }else{
+    caption += `📐 الجودة: ${selectedQuality}${selectedQuality!=='original'?'p':''}\n🎭 الفلتر: ${selectedFilter}\n`;
+  }
+  caption += `📁 النوع: ${currentEditType}\n📄 الملف: ${file.name}`;
+  
   formData.append('caption', caption);
   if(CHAT_ID) formData.append('chat_id', CHAT_ID);
   
@@ -1052,7 +1036,7 @@ function updateProgress(p){
   document.getElementById('progressLabel').textContent = Math.round(p)+'%';
 }
 
-/* ============ الدعم عبر Discord ============ */
+// ============ الدعم ============
 async function sendSupport(e){
   e.preventDefault();
   const name = document.getElementById('supportName').value.trim();
@@ -1090,7 +1074,7 @@ async function sendSupport(e){
   }
 }
 
-/* ============ التوست ============ */
+// ============ التوست ============
 function showToast(type,msg){
   const container = document.getElementById('toastContainer');
   const toast = document.createElement('div');
@@ -1101,7 +1085,6 @@ function showToast(type,msg){
   setTimeout(()=>toast.remove(),3500);
 }
 
-/* ============ الدايلوج ============ */
 function closeDialog(){document.getElementById('dialogOverlay').classList.remove('show');}
 function confirmPermission(){
   permissionGranted = true;
@@ -1110,7 +1093,6 @@ function confirmPermission(){
   setTimeout(()=>fileInput.click(),300);
 }
 
-/* ============ التواصل ============ */
 const socialLinks = {
   tiktok:'https://tiktok.com/',
   telegram:'https://t.me/',
@@ -1120,10 +1102,9 @@ const socialLinks = {
 function openSocial(type,e){
   e.preventDefault();
   showToast('info',`سيتم فتح ${type} - أضف رابط حسابك لاحقاً`);
-  // window.open(socialLinks[type],'_blank');
 }
 
-/* ============ تأثير النقر RGB ============ */
+// ============ تأثير النقر RGB ============
 document.addEventListener('click',e=>{
   const r = document.createElement('div');
   r.className = 'click-ripple';
@@ -1133,16 +1114,13 @@ document.addEventListener('click',e=>{
   setTimeout(()=>r.remove(),800);
 });
 
-/* ============ فتح بملء الشاشة تلقائياً على PC ============ */
 window.addEventListener('load',()=>{
   if(window.innerWidth>1024){
-    // محاولة فتح بوضع ملء الشاشة
     document.documentElement.requestFullscreen?.().catch(()=>{});
   }
-  showToast('info','👋 مرحباً بك في SOKO-2K');
+  showToast('info','👋 مرحباً بك في SOKO-2K Pro');
 });
 
-/* ============ منع التكبير المزدوج ============ */
 let lastTouch = 0;
 document.addEventListener('touchend',e=>{
   const now = Date.now();
