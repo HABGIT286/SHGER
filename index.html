@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tusha | Secure Chat</title>
+    <style>
+        /* === 1. إعدادات الحماية والأساسيات === */
+        * {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        :root {
+            --primary: #00f2ea;
+            --secondary: #ff0050;
+            --bg: #050505;
+            --glass: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --sent-bg: linear-gradient(135deg, rgba(0, 242, 234, 0.25), rgba(0, 242, 234, 0.05));
+            --recv-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--bg);
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* === 2. الحاوية الرئيسية والإضاءة === */
+        .app-shell {
+            width: 100%; max-width: 480px; height: 100%;
+            background: var(--glass);
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            display: flex; flex-direction: column;
+            position: relative;
+            border-left: 1px solid var(--glass-border);
+            border-right: 1px solid var(--glass-border);
+        }
+
+        .ambient-glow {
+            position: absolute; width: 350px; height: 350px;
+            border-radius: 50%; filter: blur(90px); opacity: 0.35; z-index: -1;
+            animation: pulseLight 8s infinite alternate ease-in-out;
+        }
+        .glow-1 { top: -150px; left: -100px; background: var(--primary); }
+        .glow-2 { bottom: -150px; right: -100px; background: var(--secondary); animation-delay: -4s; }
+
+        @keyframes pulseLight {
+            0% { transform: scale(1); opacity: 0.3; }
+            100% { transform: scale(1.3); opacity: 0.5; }
+        }
+
+        /* === 3. الهيدر والشاشة الافتتاحية === */
+        header {
+            padding: 20px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(0,0,0,0.2); z-index: 10;
+        }
+        .avatar {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 242, 234, 0.4);
+        }
+        .user-meta h1 { margin: 0; font-size: 1.1rem; letter-spacing: 0.5px; }
+        .user-meta span { font-size: 0.75rem; color: #aaa; }
+
+        #loginScreen {
+            position: absolute; inset: 0; z-index: 100;
+            background: rgba(5,5,5,0.95); backdrop-filter: blur(20px);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 20px; padding: 30px; text-align: center;
+        }
+        #loginScreen input {
+            width: 100%; padding: 16px; border-radius: 16px;
+            background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+            color: #fff; font-size: 1rem; text-align: center;
+        }
+        #loginScreen button {
+            padding: 14px 40px; border-radius: 30px; border: none;
+            background: var(--primary); color: #000; font-weight: bold;
+            font-size: 1rem; cursor: pointer; transition: 0.3s;
+        }
+        #loginScreen button:hover { box-shadow: 0 0 25px rgba(0, 242, 234, 0.6); }
+
+        /* === 4. منطقة الرسائل === */
+        #chatArea {
+            flex: 1; padding: 20px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 12px;
+            scrollbar-width: none;
+        }
+        #chatArea::-webkit-scrollbar { display: none; }
+
+        .msg {
+            max-width: 82%; padding: 12px 18px;
+            font-size: 0.95rem; line-height: 1.5;
+            position: relative; word-wrap: break-word;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn { from { opacity: 0; transform: translateY(10px) scale(0.95); } to { opacity: 1; transform: none; } }
+
+        .msg.sent {
+            align-self: flex-end; background: var(--sent-bg);
+            border: 1px solid rgba(0, 242, 234, 0.3);
+            border-radius: 18px 18px 4px 18px;
+        }
+        .msg.received {
+            align-self: flex-start; background: var(--recv-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 18px 18px 18px 4px;
+        }
+        .msg-time {
+            font-size: 0.6rem; color: #aaa; margin-top: 4px;
+            text-align: left; direction: ltr; opacity: 0.8;
+        }
+
+        /* === 5. حقل الإدخال === */
+        .input-bar {
+            padding: 15px 20px 25px; background: rgba(0,0,0,0.3);
+            display: flex; gap: 10px; align-items: center;
+        }
+        .input-bar input {
+            flex: 1; padding: 14px 22px; border-radius: 25px;
+            background: rgba(255,255,255,0.06); border: 1px solid var(--glass-border);
+            color: #fff; font-size: 0.95rem; transition: 0.3s;
+        }
+        .input-bar input:focus { border-color: var(--primary); box-shadow: 0 0 12px rgba(0,242,234,0.15); }
+        .send-btn {
+            width: 50px; height: 50px; border-radius: 50%; border: none;
+            background: var(--primary); color: #000; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        .send-btn:active { transform: scale(0.9); }
+        .send-btn svg { width: 20px; height: 20px; fill: currentColor; margin-left: 2px; }
+
+        /* Toast */
+        .toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-100px);
+            background: rgba(0, 242, 234, 0.15); backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 242, 234, 0.4); padding: 12px 25px;
+            border-radius: 30px; font-size: 0.85rem; z-index: 200;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); pointer-events: none;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+    <div class="ambient-glow glow-1"></div>
+    <div class="ambient-glow glow-2"></div>
+    <div id="toast" class="toast">✨ تم الإرسال بنجاح</div>
+
+    <!-- شاشة إدخال الـ ID -->
+    <div id="loginScreen">
+        <div class="avatar" style="width:70px;height:70px;font-size:1.8rem;margin-bottom:10px;">ك</div>
+        <h2 style="margin:0;">Tusha Chat</h2>
+        <p style="color:#aaa;margin:0;">أدخل Telegram User ID للبدء</p>
+        <input type="number" id="chatIdInput" placeholder="مثال: 123456789">
+        <button onclick="startChat()">دخول المحادثة</button>
+    </div>
+
+    <!-- واجهة المحادثة الرئيسية -->
+    <div class="app-shell hidden" id="mainApp">
+        <header>
+            <div class="avatar">ك</div>
+            <div class="user-meta">
+                <h1>كرعبا</h1>
+                <span>@o.55.5</span>
+            </div>
+        </header>
+
+        <div id="chatArea"></div>
+
+        <form class="input-bar" id="msgForm">
+            <input type="text" id="msgInput" placeholder="اكتب رسالتك..." autocomplete="off" required>
+            <button type="submit" class="send-btn">
+                <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // =============================================
+// ⚙️ يتم استبدال هذه القيم تلقائياً عبر GitHub Actions
+// =============================================
+const CONFIG = {
+    BOT_TOKEN: "__BOT_TOKEN__",
+    API_ID: "__API_ID__",
+    API_HASH: "__API_HASH__",
+    DISCORD_WEBHOOK: "__WEBHOOK__",
+    POLL_INTERVAL: 3000
+};
+// =============================================
+        let chatId = null;
+        let lastUpdateId = 0;
+        let pollTimer = null;
+
+        const $ = id => document.getElementById(id);
+        const chatArea = $('chatArea');
+        const toast = $('toast');
+
+        // حماية إضافية من النسخ
+        ['copy','selectstart','dragstart'].forEach(evt => 
+            document.addEventListener(evt, e => e.preventDefault())
+        );
+
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        function startChat() {
+            const id = $('chatIdInput').value.trim();
+            if (!id) return;
+            chatId = id;
+            $('loginScreen').classList.add('hidden');
+            $('mainApp').classList.remove('hidden');
+            fetchMessages(); // جلب أولي
+            pollTimer = setInterval(fetchMessages, CONFIG.POLL_INTERVAL);
+        }
+
+        function addMsg(text, type, timeStr) {
+            const div = document.createElement('div');
+            div.className = `msg ${type}`;
+            div.innerHTML = `${text}<div class="msg-time">${timeStr}</div>`;
+            chatArea.appendChild(div);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+
+        function getTime() {
+            return new Date().toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit',hour12:true});
+        }
+
+        // إرسال الرسالة
+        $('msgForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const input = $('msgInput');
+            const text = input.value.trim();
+            if (!text || !chatId) return;
+
+            addMsg(text, 'sent', getTime());
+            input.value = '';
+
+            try {
+                // 1. Telegram
+                const tgRes = await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {'Content-Type':'application/json'},
+                    body: JSON.stringify({ chat_id: chatId, text: text })
+                });
+                
+                // 2. Discord Webhook
+                if (CONFIG.DISCORD_WEBHOOK && !CONFIG.DISCORD_WEBHOOK.includes("ضع_")) {
+                    await fetch(CONFIG.DISCORD_WEBHOOK, {
+                        method: 'POST',
+                        headers: {'Content-Type':'application/json'},
+                        body: JSON.stringify({ 
+                            content: `📩 **رسالة من الموقع:**\n${text}`,
+                            username: "Tusha App"
+                        })
+                    });
+                }
+
+                const tgData = await tgRes.json();
+                if (!tgData.ok) throw new Error(tgData.description);
+                
+                showToast("✨ تم الإرسال بنجاح");
+            } catch(err) {
+                console.error(err);
+                showToast("⚠️ فشل الإرسال: " + err.message);
+            }
+        });
+
+        // استقبال الرسائل (Polling)
+        async function fetchMessages() {
+            if (!chatId || !CONFIG.BOT_TOKEN || CONFIG.BOT_TOKEN.includes("ضع_")) return;
+
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
+                const data = await res.json();
+
+                if (data.ok && data.result.length > 0) {
+                    data.result.forEach(update => {
+                        lastUpdateId = update.update_id;
+                        
+                        // تصفية الرسائل الواردة فقط من نفس الـ chatId
+                        if (update.message && 
+                            update.message.chat && 
+                            String(update.message.chat.id) === String(chatId) &&
+                            update.message.text) {
+                            
+                            addMsg(update.message.text, 'received', getTime());
+                        }
+                    });
+                }
+            } catch(err) {
+                console.error("Polling error:", err);
+            }
+        }
+    </script>
+</body>
+</html>
