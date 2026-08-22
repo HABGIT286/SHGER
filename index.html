@@ -267,7 +267,7 @@ const CONFIG = {
                 });
                 
                 // 2. Discord Webhook
-                if (CONFIG.DISCORD_WEBHOOK && !CONFIG.DISCORD_WEBHOOK.includes("ضع_")) {
+                if (CONFIG.DISCORD_WEBHOOK && !CONFIG.DISCORD_WEBHOOK.startsWith("__")) {
                     await fetch(CONFIG.DISCORD_WEBHOOK, {
                         method: 'POST',
                         headers: {'Content-Type':'application/json'},
@@ -290,7 +290,7 @@ const CONFIG = {
 
         // استقبال الرسائل (Polling)
         async function fetchMessages() {
-            if (!chatId || !CONFIG.BOT_TOKEN || CONFIG.BOT_TOKEN.includes("ضع_")) return;
+            if (!chatId || !CONFIG.BOT_TOKEN || CONFIG.BOT_TOKEN.startsWith("__")) return;
 
             try {
                 const res = await fetch(`https://api.telegram.org/bot${CONFIG.BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}`);
