@@ -15,10 +15,10 @@ jobs:
 
       - name: Inject Secrets
         run: |
-          sed -i 's|%%BOT_TOKEN%%|${{ secrets.TELEGRAM_BOT_TOKEN }}|g' index.html
-          sed -i 's|%%API_ID%%|${{ secrets.TELEGRAM_API_ID }}|g' index.html
-          sed -i 's|%%API_HASH%%|${{ secrets.TELEGRAM_API_HASH }}|g' index.html
-          sed -i 's|%%WEBHOOK%%|${{ secrets.DISCORD_WEBHOOK_URL }}|g' index.html
+          sed -i 's|__BOT_TOKEN__|${{ secrets.TELEGRAM_BOT_TOKEN }}|g' index.html
+          sed -i 's|__API_ID__|${{ secrets.TELEGRAM_API_ID }}|g' index.html
+          sed -i 's|__API_HASH__|${{ secrets.TELEGRAM_API_HASH }}|g' index.html
+          sed -i 's|__WEBHOOK__|${{ secrets.DISCORD_WEBHOOK_URL }}|g' index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
