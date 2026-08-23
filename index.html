@@ -1,0 +1,1278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ff006e">
+    <title>2B | ULTIMATE GAMING HUB</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Cairo:wght@300;400;700;900&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            outline: none;
+        }
+
+        :root {
+            --primary: #ff006e;
+            --secondary: #8338ec;
+            --accent: #3a86ff;
+            --gold: #ffd700;
+            --cyan: #00f5ff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+        }
+
+        @keyframes rgbFlow {
+            0%, 100% { --current-glow: #ff006e; }
+            33% { --current-glow: #8338ec; }
+            66% { --current-glow: #3a86ff; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(3deg); }
+            66% { transform: translateY(-15px) rotate(-2deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -1000px 0; }
+            100% { background-position: 1000px 0; }
+        }
+
+        @keyframes slideLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary), 0 0 60px var(--primary); }
+            50% { box-shadow: 0 0 30px var(--secondary), 0 0 60px var(--secondary), 0 0 90px var(--secondary); }
+        }
+
+        @keyframes rotate360 {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #000;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .loader-logo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 60px rgba(255, 0, 110, 0.8), 0 0 100px rgba(131, 56, 236, 0.6);
+            animation: pulse 2s infinite, glow 3s infinite;
+            margin-bottom: 30px;
+        }
+
+        .loader-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff006e, #8338ec, #3a86ff, #00f5ff, #ffd700);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite, slideUp 1s ease;
+            letter-spacing: 10px;
+        }
+
+        .loader-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 15px;
+            letter-spacing: 8px;
+            animation: slideUp 1s ease 0.3s both;
+        }
+
+        .loader-bar {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 40px;
+            overflow: hidden;
+            position: relative;
+            animation: slideUp 1s ease 0.6s both;
+        }
+
+        .loader-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff006e, #8338ec, #3a86ff);
+            background-size: 200% 100%;
+            animation: shimmer 2s linear infinite;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        /* Background */
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('AA.jpg') center/cover;
+            z-index: -2;
+        }
+
+        .bg-dark {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 0;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .site-logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 60px rgba(255, 0, 110, 0.8), 0 0 100px rgba(131, 56, 236, 0.6);
+            margin-bottom: 30px;
+            animation: pulse 3s infinite;
+        }
+
+        .site-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff006e, #8338ec, #3a86ff, #00f5ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
+            letter-spacing: 15px;
+            text-shadow: 0 0 50px rgba(255, 0, 110, 0.5);
+        }
+
+        .site-subtitle {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 15px;
+            letter-spacing: 10px;
+        }
+
+        /* Glass Card Ultra */
+        .glass-card-ultra {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 2px solid var(--glass-border);
+            border-radius: 35px;
+            padding: 50px;
+            margin: 30px 0;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 
+                        inset 0 0 40px rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card-ultra::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                transparent 100%);
+            transform: rotate(45deg);
+            animation: shimmer 4s infinite;
+        }
+
+        .glass-card-ultra:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 35px 100px rgba(255, 0, 110, 0.4),
+                        0 0 80px rgba(131, 56, 236, 0.3);
+            border-color: rgba(255, 0, 110, 0.5);
+        }
+
+        /* Navigation Ultra */
+        .nav-ultra {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 50px;
+            justify-content: center;
+            position: sticky;
+            top: 20px;
+            z-index: 1000;
+            padding: 25px;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-btn-ultra {
+            background: linear-gradient(135deg, rgba(255, 0, 110, 0.2), rgba(131, 56, 236, 0.2));
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 20px 35px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            flex: 1;
+            min-width: 160px;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-btn-ultra::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.6s;
+        }
+
+        .nav-btn-ultra:hover::before {
+            left: 100%;
+        }
+
+        .nav-btn-ultra:hover, .nav-btn-ultra.active {
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 15px 40px rgba(255, 0, 110, 0.6);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .nav-btn-ultra i {
+            font-size: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        .nav-btn-ultra.active i {
+            animation: rotate360 1s ease;
+        }
+
+        .tab-content-ultra {
+            display: none;
+            animation: fadeInScale 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .tab-content-ultra.active {
+            display: block;
+        }
+
+        /* Album Ultra */
+        .album-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 30px;
+            height: 500px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .album-track-ultra {
+            display: flex;
+            width: 200%;
+            animation: slideLeft 30s linear infinite;
+        }
+
+        .album-item-ultra {
+            width: 10%;
+            padding: 15px;
+            flex-shrink: 0;
+        }
+
+        .album-item-ultra img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .album-item-ultra img:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 25px 60px rgba(255, 0, 110, 0.6);
+            border-color: rgba(255, 0, 110, 0.8);
+        }
+
+        .album-desc {
+            margin-top: 35px;
+            text-align: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            line-height: 2.2;
+            color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Tips Ultra */
+        .tips-grid-ultra {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .tip-card-ultra {
+            background: linear-gradient(135deg, 
+                rgba(255, 0, 110, 0.1), 
+                rgba(131, 56, 236, 0.1));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-card-ultra::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 0, 110, 0.2), 
+                rgba(131, 56, 236, 0.2));
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .tip-card-ultra:hover::after {
+            opacity: 1;
+        }
+
+        .tip-card-ultra:hover {
+            transform: translateY(-20px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(131, 56, 236, 0.5);
+            border-color: rgba(131, 56, 236, 0.6);
+        }
+
+        .tip-icon-ultra {
+            font-size: 4.5rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tip-title-ultra {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tip-text-ultra {
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, 0.85);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Themes Ultra */
+        .themes-grid-ultra {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .theme-card-ultra {
+            height: 250px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 4px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-card-ultra::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255,255,255,0.3) 0%, 
+                transparent 50%);
+        }
+
+        .theme-card-ultra:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+            border-color: rgba(255, 255, 255, 0.8);
+            z-index: 10;
+        }
+
+        .theme-gray { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .theme-white { background: linear-gradient(135deg, #e0e0e0, #ffffff); color: #333; }
+        .theme-red-purple { background: linear-gradient(135deg, #ff006e, #8338ec); }
+        .theme-orange-sky { background: linear-gradient(135deg, #ff6b35, #00d9ff); }
+        .theme-sky-purple { background: linear-gradient(135deg, #00d9ff, #8338ec); }
+        .theme-pink-purple { background: linear-gradient(135deg, #ff69b4, #8338ec); }
+        .theme-blue-red { background: linear-gradient(135deg, #3a86ff, #ff006e); }
+        .theme-gold { background: linear-gradient(135deg, #ffd700, #ff8c00); }
+        .theme-green { background: linear-gradient(135deg, #06ffa5, #00d9ff); }
+        .theme-dark { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+
+        /* Games Ultra */
+        .games-grid-ultra {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 35px;
+        }
+
+        .game-card-ultra {
+            background: linear-gradient(135deg, 
+                rgba(58, 134, 255, 0.15), 
+                rgba(131, 56, 236, 0.15));
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 45px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card-ultra::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, 
+                rgba(255,255,255,0.15) 0%, 
+                transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .game-card-ultra:hover::after {
+            opacity: 1;
+        }
+
+        .game-card-ultra:hover {
+            transform: translateY(-20px) scale(1.08);
+            box-shadow: 0 40px 100px rgba(58, 134, 255, 0.5);
+            border-color: rgba(58, 134, 255, 0.6);
+        }
+
+        .game-icon-ultra {
+            font-size: 5.5rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, #3a86ff, #8338ec, #ff006e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 20px rgba(58, 134, 255, 0.6));
+            position: relative;
+            z-index: 1;
+        }
+
+        .game-title-ultra {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.9rem;
+            color: #fff;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* PC Specs Inline */
+        .specs-section {
+            margin-top: 30px;
+        }
+
+        .specs-grid-ultra {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .spec-card-ultra {
+            background: linear-gradient(135deg, 
+                rgba(58, 134, 255, 0.1), 
+                rgba(131, 56, 236, 0.1));
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 35px;
+            text-align: center;
+            transition: all 0.4s ease;
+        }
+
+        .spec-card-ultra:hover {
+            transform: translateY(-10px);
+            background: linear-gradient(135deg, 
+                rgba(58, 134, 255, 0.2), 
+                rgba(131, 56, 236, 0.2));
+            box-shadow: 0 20px 50px rgba(58, 134, 255, 0.3);
+        }
+
+        .spec-icon-ultra {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: #3a86ff;
+            filter: drop-shadow(0 0 15px rgba(58, 134, 255, 0.6));
+        }
+
+        .spec-label-ultra {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+
+        .spec-value-ultra {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(58, 134, 255, 0.6);
+        }
+
+        /* Join Section Ultra - Vertical */
+        .join-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .discord-btn-ultra {
+            background: linear-gradient(135deg, #5865F2, #4752C4);
+            color: white;
+            border: none;
+            padding: 30px 50px;
+            border-radius: 50px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 0 auto 50px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 50px rgba(88, 101, 242, 0.5);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discord-btn-ultra::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.4), 
+                transparent);
+            transition: left 0.6s;
+        }
+
+        .discord-btn-ultra:hover::before {
+            left: 100%;
+        }
+
+        .discord-btn-ultra:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 25px 70px rgba(88, 101, 242, 0.7);
+        }
+
+        .join-steps-ultra {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .step-card-ultra {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.08), 
+                rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card-ultra::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0; bottom: 0;
+            width: 5px;
+            background: linear-gradient(180deg, #ff006e, #8338ec);
+            transform: scaleY(0);
+            transition: transform 0.4s;
+        }
+
+        .step-card-ultra:hover::before {
+            transform: scaleY(1);
+        }
+
+        .step-card-ultra:hover {
+            transform: translateX(-15px);
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.12), 
+                rgba(255, 255, 255, 0.06));
+            border-color: rgba(58, 134, 255, 0.5);
+            box-shadow: 0 15px 40px rgba(58, 134, 255, 0.3);
+        }
+
+        .step-number-ultra {
+            background: linear-gradient(135deg, #ff006e, #8338ec);
+            color: white;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 900;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(255, 0, 110, 0.5);
+        }
+
+        .step-content-ultra {
+            flex: 1;
+        }
+
+        .step-title-ultra {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .step-desc-ultra {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+        }
+
+        .step-hint {
+            display: inline-block;
+            background: rgba(255, 215, 0, 0.2);
+            border: 1px solid rgba(255, 215, 0, 0.4);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: #ffd700;
+            margin-top: 8px;
+        }
+
+        /* Social Ultra */
+        .social-grid-ultra {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 30px;
+        }
+
+        .social-card-ultra {
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.08), 
+                rgba(255, 255, 255, 0.03));
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 40px 30px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-card-ultra:hover {
+            transform: translateY(-15px) scale(1.08);
+        }
+
+        .social-card-ultra.youtube:hover { 
+            box-shadow: 0 25px 70px rgba(255, 0, 0, 0.6); 
+            border-color: #ff0000; 
+        }
+        .social-card-ultra.tiktok:hover { 
+            box-shadow: 0 25px 70px rgba(0, 242, 254, 0.6); 
+            border-color: #00f2fe; 
+        }
+        .social-card-ultra.instagram:hover { 
+            box-shadow: 0 25px 70px rgba(225, 48, 108, 0.6); 
+            border-color: #e1306c; 
+        }
+        .social-card-ultra.discord:hover { 
+            box-shadow: 0 25px 70px rgba(88, 101, 242, 0.6); 
+            border-color: #5865F2; 
+        }
+
+        .social-icon-ultra {
+            font-size: 4.5rem;
+            transition: all 0.3s;
+        }
+
+        .social-card-ultra:hover .social-icon-ultra {
+            transform: scale(1.2) rotate(8deg);
+        }
+
+        .youtube .social-icon-ultra { color: #ff0000; }
+        .tiktok .social-icon-ultra { color: #00f2fe; }
+        .instagram .social-icon-ultra { color: #e1306c; }
+        .discord .social-icon-ultra { color: #5865F2; }
+
+        .social-name-ultra {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .site-title { font-size: 3rem; letter-spacing: 8px; }
+            .site-logo { width: 140px; height: 140px; }
+            .loader-title { font-size: 3.5rem; }
+            .album-wrapper { height: 300px; }
+            .album-item-ultra img { height: 260px; }
+            .nav-ultra { gap: 10px; padding: 15px; }
+            .nav-btn-ultra { padding: 15px 20px; font-size: 0.95rem; min-width: 130px; }
+            .glass-card-ultra { padding: 30px; }
+            .step-card-ultra { flex-direction: column; text-align: center; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.4); border-radius: 5px; }
+        ::-webkit-scrollbar-thumb { 
+            background: linear-gradient(180deg, #ff006e, #8338ec, #3a86ff); 
+            border-radius: 5px; 
+        }
+    </style>
+</head>
+<body oncopy="return false" oncut="return false" oncontextmenu="return false">
+
+    <!-- Ultra Loading Screen -->
+    <div class="loader" id="loader">
+        <img src="A.jpg" alt="2B Logo" class="loader-logo" onerror="this.src='https://via.placeholder.com/200/1a1a2e/ffffff?text=2B'">
+        <div class="loader-title">2B</div>
+        <div class="loader-subtitle">ULTIMATE GAMING EXPERIENCE</div>
+        <div class="loader-bar">
+            <div class="loader-progress" id="loaderProgress"></div>
+        </div>
+    </div>
+
+    <div class="bg-overlay"></div>
+    <div class="bg-dark"></div>
+
+    <div class="container">
+        <!-- Ultra Header -->
+        <header class="header">
+            <img src="A.jpg" alt="2B" class="site-logo" onerror="this.src='https://via.placeholder.com/180'">
+            <h1 class="site-title">2B</h1>
+            <p class="site-subtitle">PREMIUM GAMING HUB</p>
+        </header>
+
+        <!-- Ultra Navigation -->
+        <nav class="nav-ultra">
+            <button class="nav-btn-ultra active" onclick="showTabUltra('home', this)">
+                <i class="fas fa-home"></i><span>الرئيسية</span>
+            </button>
+            <button class="nav-btn-ultra" onclick="showTabUltra('tips', this)">
+                <i class="fas fa-lightbulb"></i><span>نصائح</span>
+            </button>
+            <button class="nav-btn-ultra" onclick="showTabUltra('themes', this)">
+                <i class="fas fa-palette"></i><span>الثيمات</span>
+            </button>
+            <button class="nav-btn-ultra" onclick="showTabUltra('games', this)">
+                <i class="fas fa-gamepad"></i><span>الألعاب</span>
+            </button>
+            <button class="nav-btn-ultra" onclick="showTabUltra('specs', this)">
+                <i class="fas fa-microchip"></i><span>مواصفات البيسي</span>
+            </button>
+            <button class="nav-btn-ultra" onclick="showTabUltra('join', this)">
+                <i class="fas fa-user-plus"></i><span>الانضمام السريع</span>
+            </button>
+            <button class="nav-btn-ultra" onclick="showTabUltra('support', this)">
+                <i class="fas fa-headset"></i><span>الدعم</span>
+            </button>
+        </nav>
+
+        <!-- Home Tab -->
+        <div id="home" class="tab-content-ultra active">
+            <div class="glass-card-ultra">
+                <div class="album-wrapper">
+                    <div class="album-track-ultra" id="albumTrack"></div>
+                </div>
+                <div class="album-desc">
+                    <strong>مرحباً بك في 2B Gaming Hub</strong><br>
+                    وجهتك الأولى والفاخرة لعالم الألعاب الاحترافي.<br>
+                    استمتع بأفضل المحتوى الحصري، النصائح المتقدمة، والمجتمع الأقوى.
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Tab -->
+        <div id="tips" class="tab-content-ultra">
+            <div class="tips-grid-ultra">
+                <div class="tip-card-ultra">
+                    <i class="fas fa-desktop tip-icon-ultra"></i>
+                    <h3 class="tip-title-ultra">نصائح لأصحاب البيسي</h3>
+                    <p class="tip-text-ultra">حافظ على نظافة الجهاز من الغبار، حدث تعريفات كرت الشاشة شهرياً، استخدم SSD لنظام التشغيل لسرعة فائقة، وتأكد من تهوية جيدة.</p>
+                </div>
+                <div class="tip-card-ultra">
+                    <i class="fas fa-skull-crossbones tip-icon-ultra"></i>
+                    <h3 class="tip-title-ultra">أسرار ألعاب السولز</h3>
+                    <p class="tip-text-ultra">تعلم أنماط هجوم الأعداء، لا تستهلك كل الـ Stamina، استكشف كل زاوية خفية، والصبر هو مفتاح النجاح.</p>
+                </div>
+                <div class="tip-card-ultra">
+                    <i class="fas fa-crosshairs tip-icon-ultra"></i>
+                    <h3 class="tip-title-ultra">احتراف ألعاب الشوتر</h3>
+                    <p class="tip-text-ultra">تدرب على التصويب في Aim Lab، تعلم خرائط اللعب بدقة، والتواصل الصوتي مع فريقك هو مفتاح الفوز.</p>
+                </div>
+                <div class="tip-card-ultra">
+                    <i class="fas fa-tachometer-alt tip-icon-ultra"></i>
+                    <h3 class="tip-title-ultra">تحسين الأداء</h3>
+                    <p class="tip-text-ultra">أغلق البرامج الخلفية، فعل وضع اللعبة، خفض إعدادات الظلال، واستخدم Game Booster للحصول على FPS أعلى.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Themes Tab -->
+        <div id="themes" class="tab-content-ultra">
+            <div class="themes-grid-ultra">
+                <div class="theme-card-ultra theme-gray" onclick="applyTheme('gray')">رصاصي فاخر</div>
+                <div class="theme-card-ultra theme-white" onclick="applyTheme('white')">أبيض ناصع</div>
+                <div class="theme-card-ultra theme-red-purple" onclick="applyTheme('red-purple')">أحمر بنفسجي</div>
+                <div class="theme-card-ultra theme-orange-sky" onclick="applyTheme('orange-sky')">برتقالي سماوي</div>
+                <div class="theme-card-ultra theme-sky-purple" onclick="applyTheme('sky-purple')">سماوي بنفسجي</div>
+                <div class="theme-card-ultra theme-pink-purple" onclick="applyTheme('pink-purple')">وردي بنفسجي</div>
+                <div class="theme-card-ultra theme-blue-red" onclick="applyTheme('blue-red')">أزرق أحمر</div>
+                <div class="theme-card-ultra theme-gold" onclick="applyTheme('gold')">ذهبي ملكي</div>
+                <div class="theme-card-ultra theme-green" onclick="applyTheme('green')">أخضر نيون</div>
+                <div class="theme-card-ultra theme-dark" onclick="applyTheme('dark')">داكن غامض</div>
+            </div>
+        </div>
+
+        <!-- Games Tab -->
+        <div id="games" class="tab-content-ultra">
+            <div class="games-grid-ultra">
+                <div class="game-card-ultra">
+                    <i class="fas fa-dragon game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">Elden Ring</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-khanda game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">Sekiro</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-gun game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">Call of Duty</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-fire game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">God of War</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-car game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">GTA</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-ghost game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">Silent Hill</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-biohazard game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">Resident Evil</h3>
+                </div>
+                <div class="game-card-ultra">
+                    <i class="fas fa-horse game-icon-ultra"></i>
+                    <h3 class="game-title-ultra">Red Dead Redemption</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- PC Specs Tab -->
+        <div id="specs" class="tab-content-ultra">
+            <div class="glass-card-ultra specs-section">
+                <h2 style="text-align: center; font-family: 'Orbitron', sans-serif; font-size: 2.5rem; margin-bottom: 40px; background: linear-gradient(135deg, #3a86ff, #8338ec); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <i class="fas fa-microchip" style="margin-left: 15px;"></i>مواصفات البيسي الاحترافية
+                </h2>
+                <div class="specs-grid-ultra">
+                    <div class="spec-card-ultra">
+                        <i class="fas fa-microchip spec-icon-ultra"></i>
+                        <div class="spec-label-ultra">المعالج (CPU)</div>
+                        <div class="spec-value-ultra">Intel Core i9-13900K</div>
+                    </div>
+                    <div class="spec-card-ultra">
+                        <i class="fas fa-memory spec-icon-ultra"></i>
+                        <div class="spec-label-ultra">الذاكرة العشوائية (RAM)</div>
+                        <div class="spec-value-ultra">32GB DDR5 6000MHz</div>
+                    </div>
+                    <div class="spec-card-ultra">
+                        <i class="fas fa-hdd spec-icon-ultra"></i>
+                        <div class="spec-label-ultra">التخزين (Storage)</div>
+                        <div class="spec-value-ultra">2TB NVMe Gen4 SSD</div>
+                    </div>
+                    <div class="spec-card-ultra">
+                        <i class="fas fa-tv spec-icon-ultra"></i>
+                        <div class="spec-label-ultra">كرت الشاشة (GPU)</div>
+                        <div class="spec-value-ultra">NVIDIA RTX 4090 24GB</div>
+                    </div>
+                    <div class="spec-card-ultra">
+                        <i class="fas fa-plug spec-icon-ultra"></i>
+                        <div class="spec-label-ultra">مزود الطاقة (PSU)</div>
+                        <div class="spec-value-ultra">1000W 80+ Gold</div>
+                    </div>
+                    <div class="spec-card-ultra">
+                        <i class="fas fa-fan spec-icon-ultra"></i>
+                        <div class="spec-label-ultra">نظام التبريد (Cooling)</div>
+                        <div class="spec-value-ultra">Liquid Cooling 360mm RGB</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Join Tab -->
+        <div id="join" class="tab-content-ultra">
+            <div class="glass-card-ultra join-container">
+                <button class="discord-btn-ultra" onclick="window.open('https://discord.com/register?redirect_to=%2Fstore', '_blank')">
+                    <i class="fab fa-discord"></i>
+                    <span>ابدأ التسجيل في ديسكورد الآن</span>
+                </button>
+                
+                <div class="join-steps-ultra">
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">1</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Email</div>
+                            <div class="step-desc-ultra">ضع ايميل موجود في جهازك حقيقي</div>
+                            <span class="step-hint"> تلميح: استخدم Gmail أو Outlook لضمان استلام رمز التحقق</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">2</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Display Name</div>
+                            <div class="step-desc-ultra">ضع اسماً مميزاً لحسابك في ديسكورد</div>
+                            <span class="step-hint">💡 تلميح: اختر اسماً سهلاً يتعرف عليك منه الأصدقاء</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">3</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Username</div>
+                            <div class="step-desc-ultra">اكتب يوزر فريد غير مستخدم من قبل</div>
+                            <span class="step-hint">💡 تلميح: استخدم أحرف إنجليزية وأرقام لزيادة الخيارات</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">4</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Password</div>
+                            <div class="step-desc-ultra">ضع كلمة سر قوية وآمنة</div>
+                            <span class="step-hint">💡 تلميح: استخدم 8 أحرف على الأقل مع أرقام ورموز</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">5</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Date of Birth</div>
+                            <div class="step-desc-ultra">أدخل تاريخ ميلادك</div>
+                            <span class="step-hint"> تلميح: Month/Day/Year (مثال: 3/7/1999)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">6</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">الموافقة على الشروط</div>
+                            <div class="step-desc-ultra">اضغط على المربعات للموافقة على شروط الخدمة</div>
+                            <span class="step-hint">💡 تلميح: اقرأ الشروط قبل الموافقة</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">7</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Create Account</div>
+                            <div class="step-desc-ultra">اضغط على الزر الأزرق لإنشاء الحساب</div>
+                            <span class="step-hint">💡 تلميح: تأكد من صحة المعلومات قبل الضغط</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">8</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">Gmail Verification</div>
+                            <div class="step-desc-ultra">افتح تطبيق Gmail واذهب للحساب الذي سجلت به</div>
+                            <span class="step-hint">💡 تلميح: انقر على الصورة أعلى اليسار واختر الحساب</span>
+                        </div>
+                    </div>
+                    
+                    <div class="step-card-ultra">
+                        <div class="step-number-ultra">9</div>
+                        <div class="step-content-ultra">
+                            <div class="step-title-ultra">تأكيد البريد الإلكتروني</div>
+                            <div class="step-desc-ultra">انسخ الرمز من رسالة ديسكورد والصقه، أو اضغط على الرابط مباشرة</div>
+                            <span class="step-hint"> تلميح: التحقق ضروري لتفعيل الحساب بالكامل</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support Tab -->
+        <div id="support" class="tab-content-ultra">
+            <div class="social-grid-ultra">
+                <a href="https://youtube.com/@2beve?si=-VEP2fGXVvmZ7Ojp" target="_blank" class="social-card-ultra youtube">
+                    <i class="fab fa-youtube social-icon-ultra"></i>
+                    <span class="social-name-ultra">YouTube</span>
+                </a>
+                <a href="https://www.tiktok.com/@qs.g0" target="_blank" class="social-card-ultra tiktok">
+                    <i class="fab fa-tiktok social-icon-ultra"></i>
+                    <span class="social-name-ultra">TikTok</span>
+                </a>
+                <a href="https://www.instagram.com/2b__a2?igsh=YXUza3pwbGd1c2lz" target="_blank" class="social-card-ultra instagram">
+                    <i class="fab fa-instagram social-icon-ultra"></i>
+                    <span class="social-name-ultra">Instagram</span>
+                </a>
+                <a href="https://discord.gg/2b1" target="_blank" class="social-card-ultra discord">
+                    <i class="fab fa-discord social-icon-ultra"></i>
+                    <span class="social-name-ultra">Discord Server</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Loading Screen Animation
+        window.addEventListener('load', () => {
+            let progress = 0;
+            const progressBar = document.getElementById('loaderProgress');
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        document.getElementById('loader').classList.add('hidden');
+                        initAlbumUltra();
+                    }, 500);
+                }
+                progressBar.style.width = progress + '%';
+            }, 200);
+        });
+
+        // Protection
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
+        document.addEventListener('gesturestart', e => e.preventDefault());
+        document.addEventListener('touchmove', function(e) {
+            if (e.scale !== 1) e.preventDefault();
+        }, { passive: false });
+
+        // Tab System
+        function showTabUltra(tabId, btn) {
+            document.querySelectorAll('.tab-content-ultra').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn-ultra').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
+            if (navigator.vibrate) navigator.vibrate(40);
+        }
+
+        // Album System - Smooth Infinite Loop
+        function initAlbumUltra() {
+            const track = document.getElementById('albumTrack');
+            let html = '';
+            for (let i = 0; i < 20; i++) {
+                const num = (i % 10) + 1;
+                html += `
+                    <div class="album-item-ultra">
+                        <img src="${num}.jpg" alt="2B Gallery ${num}" 
+                             onerror="this.src='https://via.placeholder.com/450x450/1a1a2e/ffffff?text=2B+Image+${num}'">
+                    </div>
+                `;
+            }
+            track.innerHTML = html;
+        }
+
+        // Theme System
+        function applyTheme(themeName) {
+            const themes = {
+                'gray': { primary: '#667eea', secondary: '#764ba2' },
+                'white': { primary: '#e0e0e0', secondary: '#ffffff' },
+                'red-purple': { primary: '#ff006e', secondary: '#8338ec' },
+                'orange-sky': { primary: '#ff6b35', secondary: '#00d9ff' },
+                'sky-purple': { primary: '#00d9ff', secondary: '#8338ec' },
+                'pink-purple': { primary: '#ff69b4', secondary: '#8338ec' },
+                'blue-red': { primary: '#3a86ff', secondary: '#ff006e' },
+                'gold': { primary: '#ffd700', secondary: '#ff8c00' },
+                'green': { primary: '#06ffa5', secondary: '#00d9ff' },
+                'dark': { primary: '#1a1a2e', secondary: '#16213e' }
+            };
+            
+            const theme = themes[themeName];
+            document.documentElement.style.setProperty('--primary', theme.primary);
+            document.documentElement.style.setProperty('--secondary', theme.secondary);
+            
+            if (navigator.vibrate) navigator.vibrate(50);
+            
+            // Show notification
+            showNotification(`تم تطبيق الثيم: ${themeName}`);
+        }
+
+        // Notification System
+        function showNotification(message) {
+            const notif = document.createElement('div');
+            notif.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #ff006e, #8338ec);
+                color: white;
+                padding: 20px 30px;
+                border-radius: 15px;
+                font-family: 'Cairo', sans-serif;
+                font-weight: 700;
+                z-index: 10000;
+                box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+                animation: slideUp 0.5s ease;
+            `;
+            notif.textContent = message;
+            document.body.appendChild(notif);
+            setTimeout(() => {
+                notif.remove();
+            }, 3000);
+        }
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            const tabs = ['home', 'tips', 'themes', 'games', 'specs', 'join', 'support'];
+            const currentIndex = tabs.indexOf(document.querySelector('.tab-content-ultra.active').id);
+            
+            if (e.key === 'ArrowRight' && currentIndex > 0) {
+                const btn = document.querySelectorAll('.nav-btn-ultra')[currentIndex - 1];
+                btn.click();
+            } else if (e.key === 'ArrowLeft' && currentIndex < tabs.length - 1) {
+                const btn = document.querySelectorAll('.nav-btn-ultra')[currentIndex + 1];
+                btn.click();
+            }
+        });
+    </script>
+</body>
+</html>
