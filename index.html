@@ -6,1045 +6,332 @@
     <meta name="theme-color" content="#0a0a0a">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
     <title>2B</title>
-
-    <!-- FontAwesome -->
+    
+    <!-- أيقونات FontAwesome Pro/Free -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Cairo -->
+    <!-- خط Cairo بوزن متعددة للفخامة -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-
+    
     <style>
-
         /* =========================================
-           1. الأساسيات
+           1. الحماية والأساسيات (Security & Reset)
            ========================================= */
-
         :root {
             --primary: #8a2be2;
             --accent: #00d4ff;
             --danger: #ff0055;
-
             --glass-bg: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.08);
-
             --text-main: #ffffff;
             --text-sub: #b0b0b0;
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-
+            margin: 0; padding: 0; box-sizing: border-box;
             -webkit-user-select: none !important;
             -moz-user-select: none !important;
             -ms-user-select: none !important;
             user-select: none !important;
-
             -webkit-tap-highlight-color: transparent !important;
             -webkit-touch-callout: none !important;
-
             outline: none !important;
-
             cursor: default;
         }
 
-        a,
-        button {
-            cursor: pointer;
-        }
+        a, button { cursor: pointer; }
 
         body {
-
             font-family: 'Cairo', sans-serif;
-
-            background:
-                #050505 url('AA.jpg')
-                no-repeat center center fixed;
-
+            background: #050505 url('AA.jpg') no-repeat center center fixed;
             background-size: cover;
-
-            height: 100dvh;
+            height: 100dvh; /* دعم الشاشات الحديثة */
             width: 100vw;
-
             overflow: hidden;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
             color: var(--text-main);
-
             position: relative;
         }
 
-
-        /* =========================================
-           طبقة الخلفية
-           ========================================= */
-
+        /* طبقة تعتيم ذكية للخلفية */
         body::before {
-
             content: '';
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                radial-gradient(
-                    circle at center,
-                    rgba(0,0,0,0.4) 0%,
-                    rgba(0,0,0,0.85) 100%
-                );
-
+            position: absolute; inset: 0;
+            background: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.85) 100%);
             z-index: 0;
         }
 
-
         /* =========================================
-           حاوية الموقع
+           2. حاوية التطبيق (App Container)
            ========================================= */
-
         .app-wrapper {
-
             position: relative;
-
             z-index: 1;
-
             width: 100%;
-
             max-width: 480px;
-
             height: 100%;
-
             padding: 20px;
-
             display: flex;
-
             flex-direction: column;
-
             gap: 16px;
-
-            animation:
-                appEntry
-                0.8s
-                cubic-bezier(0.2, 0.8, 0.2, 1)
-                forwards;
+            animation: appEntry 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
         }
 
-
         /* =========================================
-           الكروت الزجاجية
+           3. الكروت الزجاجية الفاخرة (Glassmorphism)
            ========================================= */
-
         .glass-card {
-
             background: var(--glass-bg);
-
-            backdrop-filter:
-                blur(20px)
-                saturate(180%);
-
-            -webkit-backdrop-filter:
-                blur(20px)
-                saturate(180%);
-
-            border:
-                1px solid
-                var(--glass-border);
-
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid var(--glass-border);
             border-radius: 28px;
-
             padding: 30px 25px;
-
             text-align: center;
-
             position: relative;
-
             overflow: hidden;
-
-            transition:
-                all
-                0.4s
-                cubic-bezier(
-                    0.175,
-                    0.885,
-                    0.32,
-                    1.27
-                );
-
-            box-shadow:
-                0 8px 32px
-                rgba(0, 0, 0, 0.3);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
-
-        /* =========================================
-           RGB Border
-           ========================================= */
-
+        /* تأثير RGB المتحرك على الحدود */
         .glass-card::before {
-
             content: '';
-
             position: absolute;
-
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-
-            background:
-                linear-gradient(
-                    45deg,
-                    var(--primary),
-                    var(--accent),
-                    var(--danger),
-                    var(--primary)
-                );
-
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--primary), var(--accent), var(--danger), var(--primary));
             background-size: 400% 400%;
-
             border-radius: 30px;
-
             z-index: -1;
-
             opacity: 0;
-
-            animation:
-                rgbBorder
-                6s
-                ease
-                infinite;
-
-            transition:
-                opacity
-                0.4s
-                ease;
+            animation: rgbBorder 6s ease infinite;
+            transition: opacity 0.4s ease;
         }
 
-        .glass-card:hover::before,
-        .glass-card:active::before {
-            opacity: 1;
-        }
-
-        .glass-card:hover {
-
-            transform:
-                translateY(-4px);
-
-            box-shadow:
-                0 20px 40px
-                rgba(138, 43, 226, 0.15);
-        }
-
+        .glass-card:hover::before, .glass-card:active::before { opacity: 1; }
+        .glass-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(138, 43, 226, 0.15); }
 
         /* =========================================
-           Profile
+           4. البروفايل والهوية (Profile Section)
            ========================================= */
-
-        .profile-container {
-
-            position: relative;
-
-            display: inline-block;
-
-            margin-bottom: 15px;
-        }
-
-
+        .profile-container { position: relative; display: inline-block; margin-bottom: 15px; }
+        
         .profile-img {
-
-            width: 110px;
-            height: 110px;
-
+            width: 110px; height: 110px;
             border-radius: 50%;
-
             object-fit: cover;
-
-            border:
-                3px solid
-                rgba(255,255,255,0.1);
-
+            border: 3px solid rgba(255,255,255,0.1);
             padding: 3px;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--primary),
-                    var(--accent)
-                );
-
-            box-shadow:
-                0 0 30px
-                rgba(138, 43, 226, 0.4);
-
-            animation:
-                pulseGlow
-                3s
-                ease-in-out
-                infinite;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            box-shadow: 0 0 30px rgba(138, 43, 226, 0.4);
+            animation: pulseGlow 3s ease-in-out infinite;
         }
-
 
         .status-dot {
-
-            position: absolute;
-
-            bottom: 8px;
-            right: 8px;
-
-            width: 18px;
-            height: 18px;
-
+            position: absolute; bottom: 8px; right: 8px;
+            width: 18px; height: 18px;
             background: #00ff88;
-
-            border:
-                3px solid
-                #0a0a0a;
-
+            border: 3px solid #0a0a0a;
             border-radius: 50%;
-
-            box-shadow:
-                0 0 10px
-                #00ff88;
+            box-shadow: 0 0 10px #00ff88;
         }
 
-
-        h1 {
-
-            font-size: 2.2rem;
-
-            font-weight: 900;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #fff 0%,
-                    #ccc 100%
-                );
-
-            -webkit-background-clip: text;
-
-            -webkit-text-fill-color: transparent;
-
-            letter-spacing: -0.5px;
-
-            margin-bottom: 2px;
+        h1 { 
+            font-size: 2.2rem; font-weight: 900; 
+            background: linear-gradient(135deg, #fff 0%, #ccc 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px; margin-bottom: 2px;
         }
 
-
-        .username {
-
-            color: var(--accent);
-
-            font-size: 0.95rem;
-
-            font-weight: 600;
-
-            letter-spacing: 1px;
-
-            margin-bottom: 18px;
-
-            display: block;
-
-            text-shadow:
-                0 0 10px
-                rgba(0, 212, 255, 0.3);
+        .username { 
+            color: var(--accent); font-size: 0.95rem; font-weight: 600; 
+            letter-spacing: 1px; margin-bottom: 18px; display: block;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
         }
 
-
-        .bio-text {
-
-            font-size: 1rem;
-
-            line-height: 1.7;
-
-            color: var(--text-sub);
-
-            margin-bottom: 15px;
-
-            font-weight: 400;
+        .bio-text { 
+            font-size: 1rem; line-height: 1.7; color: var(--text-sub); 
+            margin-bottom: 15px; font-weight: 400;
         }
-
 
         .schedule-tag {
-
-            display: inline-flex;
-
-            align-items: center;
-
-            gap: 8px;
-
-            background:
-                rgba(255, 0, 85, 0.12);
-
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(255, 0, 85, 0.12);
             color: #ff4da6;
-
-            padding: 8px 18px;
-
-            border-radius: 50px;
-
-            font-size: 0.85rem;
-
-            font-weight: 700;
-
-            border:
-                1px solid
-                rgba(255, 0, 85, 0.2);
-
-            backdrop-filter:
-                blur(10px);
+            padding: 8px 18px; border-radius: 50px;
+            font-size: 0.85rem; font-weight: 700;
+            border: 1px solid rgba(255, 0, 85, 0.2);
+            backdrop-filter: blur(10px);
         }
 
-
         /* =========================================
-           Social Grid
+           5. شبكة الروابط الاجتماعية (Social Grid)
            ========================================= */
-
         .social-grid {
-
             display: grid;
-
-            grid-template-columns:
-                repeat(2, 1fr);
-
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
         }
 
-
         .social-link {
-
-            display: flex;
-
-            align-items: center;
-
-            justify-content: center;
-
-            gap: 10px;
-
+            display: flex; align-items: center; justify-content: center; gap: 10px;
             padding: 18px 10px;
-
             border-radius: 18px;
-
-            text-decoration: none;
-
-            color: #fff;
-
-            font-weight: 700;
-
-            font-size: 0.9rem;
-
-            background:
-                rgba(255,255,255,0.02);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.05);
-
-            transition:
-                all
-                0.3s
-                ease;
-
-            position: relative;
-
-            overflow: hidden;
+            text-decoration: none; color: #fff;
+            font-weight: 700; font-size: 0.9rem;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+            position: relative; overflow: hidden;
         }
 
+        .social-link i { font-size: 1.5rem; transition: all 0.3s ease; }
+        
+        /* ألوان المنصات */
+        .discord { --clr: #5865F2; }
+        .youtube { --clr: #FF0000; }
+        .tiktok { --clr: #00f2ea; }
+        .instagram { --clr: #E1306C; }
 
-        .social-link i {
-
-            font-size: 1.5rem;
-
-            transition:
-                all
-                0.3s
-                ease;
-        }
-
-
-        /* =========================================
-           ألوان الحسابات
-           ========================================= */
-
-        .discord {
-            --clr: #5865F2;
-        }
-
-        .youtube {
-            --clr: #FF0000;
-        }
-
-        .tiktok {
-            --clr: #00f2ea;
-        }
-
-        .instagram {
-            --clr: #E1306C;
-        }
-
-
-        .social-link i {
-
-            color: var(--clr);
-
-            filter:
-                drop-shadow(
-                    0 0 8px
-                    var(--clr)
-                );
-        }
-
-
-        /* =========================================
-           Shine
-           ========================================= */
-
+        .social-link i { color: var(--clr); filter: drop-shadow(0 0 8px var(--clr)); }
+        
         .social-link::after {
-
-            content: '';
-
-            position: absolute;
-
-            inset: 0;
-
-            background:
-                linear-gradient(
-                    135deg,
-                    transparent 40%,
-                    rgba(255,255,255,0.05) 50%,
-                    transparent 60%
-                );
-
-            transform:
-                translateX(-100%);
-
-            transition:
-                0.6s;
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.05) 50%, transparent 60%);
+            transform: translateX(-100%); transition: 0.6s;
         }
 
-
-        .social-link:hover::after {
-
-            transform:
-                translateX(100%);
+        .social-link:hover::after { transform: translateX(100%); }
+        .social-link:hover { 
+            background: rgba(255,255,255,0.06); 
+            border-color: var(--clr); 
+            transform: scale(1.03);
+            box-shadow: 0 0 20px rgba(var(--clr), 0.1);
         }
+        .social-link:hover i { transform: scale(1.2) rotate(-8deg); }
 
-
-        .social-link:hover {
-
-            background:
-                rgba(255,255,255,0.06);
-
-            border-color:
-                var(--clr);
-
-            transform:
-                scale(1.03);
-
-            box-shadow:
-                0 0 20px
-                rgba(88,101,242,0.1);
-        }
-
-
-        .social-link:hover i {
-
-            transform:
-                scale(1.2)
-                rotate(-8deg);
-        }
-
+        /* ديسكورد عرض كامل */
+        .discord-full { grid-column: span 2; background: rgba(88, 101, 242, 0.08); border-color: rgba(88, 101, 242, 0.15); }
 
         /* =========================================
-           Discord Full
+           6. الأنيميشن (Animations)
            ========================================= */
-
-        .discord-full {
-
-            grid-column:
-                span 2;
-
-            background:
-                rgba(88,101,242,0.08);
-
-            border-color:
-                rgba(88,101,242,0.15);
-        }
-
-
-        /* =========================================
-           Animations
-           ========================================= */
-
         @keyframes appEntry {
-
-            from {
-
-                opacity: 0;
-
-                transform:
-                    scale(0.95)
-                    translateY(20px);
-            }
-
-            to {
-
-                opacity: 1;
-
-                transform:
-                    scale(1)
-                    translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
-
 
         @keyframes rgbBorder {
-
-            0% {
-                background-position:
-                    0% 50%;
-            }
-
-            50% {
-                background-position:
-                    100% 50%;
-            }
-
-            100% {
-                background-position:
-                    0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-
 
         @keyframes pulseGlow {
-
-            0%,
-            100% {
-
-                box-shadow:
-                    0 0 20px
-                    rgba(138,43,226,0.3);
-            }
-
-            50% {
-
-                box-shadow:
-                    0 0 40px
-                    rgba(138,43,226,0.6),
-
-                    0 0 60px
-                    rgba(0,212,255,0.2);
-            }
+            0%, 100% { box-shadow: 0 0 20px rgba(138, 43, 226, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(138, 43, 226, 0.6), 0 0 60px rgba(0, 212, 255, 0.2); }
         }
-
 
         /* =========================================
-           Responsive
+           7. التجاوب (Responsive)
            ========================================= */
-
         @media (max-height: 750px) {
-
-            .app-wrapper {
-
-                padding: 15px;
-
-                gap: 12px;
-            }
-
-            .glass-card {
-
-                padding: 20px 18px;
-
-                border-radius: 22px;
-            }
-
-            .profile-img {
-
-                width: 90px;
-                height: 90px;
-            }
-
-            h1 {
-
-                font-size: 1.8rem;
-            }
-
-            .bio-text {
-
-                font-size: 0.9rem;
-
-                margin-bottom: 10px;
-            }
-
-            .social-link {
-
-                padding: 14px 8px;
-
-                font-size: 0.8rem;
-            }
-
-            .social-link i {
-
-                font-size: 1.3rem;
-            }
+            .app-wrapper { padding: 15px; gap: 12px; }
+            .glass-card { padding: 20px 18px; border-radius: 22px; }
+            .profile-img { width: 90px; height: 90px; }
+            h1 { font-size: 1.8rem; }
+            .bio-text { font-size: 0.9rem; margin-bottom: 10px; }
+            .social-link { padding: 14px 8px; font-size: 0.8rem; }
+            .social-link i { font-size: 1.3rem; }
         }
-
 
         @media (min-width: 768px) {
-
-            .app-wrapper {
-
-                max-width: 520px;
-            }
-
-            .glass-card {
-
-                padding: 40px 35px;
-            }
+            .app-wrapper { max-width: 520px; }
+            .glass-card { padding: 40px 35px; }
         }
-
     </style>
 </head>
-
 <body>
 
     <div class="app-wrapper">
-
-        <!-- =========================================
-             Profile Card
-             ========================================= -->
-
+        <!-- كارد البروفايل -->
         <div class="glass-card">
-
             <div class="profile-container">
-
-                <img
-                    src="A.jpg"
-                    alt="2B"
-                    class="profile-img"
-                    onerror="this.src='https://ui-avatars.com/api/?name=2B&background=8a2be2&color=fff&size=200&bold=true'"
-                >
-
+                <img src="A.jpg" alt="2B" class="profile-img" onerror="this.src='https://ui-avatars.com/api/?name=2B&background=8a2be2&color=fff&size=200&bold=true'">
                 <div class="status-dot"></div>
-
             </div>
-
-
-            <h1>كرعبا</h1>
-
-            <span class="username">
-                @2b__a2
-            </span>
-
-
+            
+            <h1>2B</h1>
+            <span class="username">@qs.g0</span>
+            
             <p class="bio-text">
-
                 واحد يريد يسوي محتوى حلو 🎮<br>
-
                 بثوث يومياً | تختيم | سوالف
-
             </p>
-
-
+            
             <div class="schedule-tag">
-
                 <i class="fas fa-broadcast-tower"></i>
-
                 البث يومياً من 7:00 م
-
             </div>
-
         </div>
 
-
-        <!-- =========================================
-             Social Links Card
-             ========================================= -->
-
-        <div
-            class="glass-card"
-            style="padding: 22px;"
-        >
-
+        <!-- كارد الروابط -->
+        <div class="glass-card" style="padding: 22px;">
             <div class="social-grid">
-
-
-                <!-- Discord -->
-
-                <a
-                    href="discord://-/invite/2b1"
-                    class="social-link discord discord-full"
-                    id="discordJoin"
-                    aria-label="فتح سيرفر Discord"
-                >
-
-                    <i class="fab fa-discord"></i>
-
-                    سيرفر الديسكورد
-
+                <a href="https://discord.gg/2b1" target="_blank" class="social-link discord discord-full">
+                    <i class="fab fa-discord"></i> سيرفر الديسكورد
                 </a>
-
-
-                <!-- YouTube -->
-
-                <a
-                    href="https://youtube.com/@2beve?si=-VEP2fGXVvmZ7Ojp"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-link youtube"
-                >
-
-                    <i class="fab fa-youtube"></i>
-
-                    يوتيوب
-
+                
+                <a href="https://youtube.com/@2beve?si=-VEP2fGXVvmZ7Ojp" target="_blank" class="social-link youtube">
+                    <i class="fab fa-youtube"></i> يوتيوب
                 </a>
-
-
-                <!-- TikTok -->
-
-                <a
-                    href="https://www.tiktok.com/@qs.g0"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-link tiktok"
-                >
-
-                    <i class="fab fa-tiktok"></i>
-
-                    تيك توك
-
+                
+                <a href="https://www.tiktok.com/@qs.g0" target="_blank" class="social-link tiktok">
+                    <i class="fab fa-tiktok"></i> تيك توك
                 </a>
-
-
-                <!-- Instagram -->
-
-                <a
-                    href="https://www.instagram.com/2b__a2?igsh=YXUza3pwbGd1c2lz"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="social-link instagram"
-                >
-
-                    <i class="fab fa-instagram"></i>
-
-                    انستقرام
-
+                
+                <a href="https://www.instagram.com/2b__a2?igsh=YXUza3pwbGd1c2lz" target="_blank" class="social-link instagram">
+                    <i class="fab fa-instagram"></i> انستقرام
                 </a>
-
-
-                <!-- Support -->
-
-                <a
-                    href="discord://-/invite/2b1"
-                    class="social-link"
-                    id="supportJoin"
-                    style="--clr: #00ff88;"
-                >
-
-                    <i class="fas fa-headset"></i>
-
-                    الدعم
-
+                
+                <a href="https://discord.com/users/1307040109962592329?utm_source=chatgpt.com" target="_blank" class="social-link" style="--clr: #00ff88;">
+                    <i class="fas fa-headset"></i> الدعم
                 </a>
-
-
             </div>
-
         </div>
-
     </div>
 
-
     <script>
-
-        /* =========================================
-           الحماية
-           ========================================= */
-
-        document.addEventListener(
-            'contextmenu',
-            e => e.preventDefault()
-        );
-
-
-        document.addEventListener(
-            'selectstart',
-            e => e.preventDefault()
-        );
-
-
-        document.addEventListener(
-            'dragstart',
-            e => e.preventDefault()
-        );
-
-
+        // === نظام الحماية المتقدم ===
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('selectstart', e => e.preventDefault());
+        document.addEventListener('dragstart', e => e.preventDefault());
+        
         document.onkeydown = function(e) {
-
             const blocked = [
-
                 e.keyCode === 123,
-
-                e.ctrlKey &&
-                e.shiftKey &&
-                ['I','C','J'].includes(
-                    String.fromCharCode(e.keyCode)
-                ),
-
-                e.ctrlKey &&
-                ['U','S','A'].includes(
-                    String.fromCharCode(e.keyCode)
-                ),
-
-                e.ctrlKey &&
-                e.keyCode === 80
+                e.ctrlKey && e.shiftKey && ['I','C','J'].includes(String.fromCharCode(e.keyCode)),
+                e.ctrlKey && ['U','S','A'].includes(String.fromCharCode(e.keyCode)),
+                e.ctrlKey && e.keyCode === 80 // Ctrl+P
             ];
-
-
-            if (
-                blocked.some(
-                    b => b
-                )
-            ) {
-
-                return false;
-            }
-
+            if(blocked.some(b => b)) return false;
         };
 
+        // === تأثير اللمس للتطبيق ===
+        document.querySelectorAll('.social-link').forEach(el => {
+            el.addEventListener('touchstart', () => el.style.transform = 'scale(0.96)', {passive: true});
+            el.addEventListener('touchend', () => el.style.transform = '', {passive: true});
+        });
 
-        /* =========================================
-           فتح Discord مباشرة
-           ========================================= */
-
-        function openDiscordDirectly(event) {
-
-            event.preventDefault();
-
-            /*
-             * Discord Deep Link
-             *
-             * لا نستخدم:
-             * https://discord.gg/2b1
-             *
-             * ولا:
-             * https://discord.com/invite/2b1
-             *
-             * بل نحاول فتح التطبيق مباشرة.
-             */
-
-            window.location.href =
-                'discord://-/invite/2b1';
-        }
-
-
-        /* زر Discord */
-
-        const discordButton =
-            document.getElementById(
-                'discordJoin'
-            );
-
-
-        if (discordButton) {
-
-            discordButton.addEventListener(
-                'click',
-                openDiscordDirectly
-            );
-
-        }
-
-
-        /* زر الدعم */
-
-        const supportButton =
-            document.getElementById(
-                'supportJoin'
-            );
-
-
-        if (supportButton) {
-
-            supportButton.addEventListener(
-                'click',
-                openDiscordDirectly
-            );
-
-        }
-
-
-        /* =========================================
-           تأثير اللمس
-           ========================================= */
-
-        document
-            .querySelectorAll('.social-link')
-            .forEach(el => {
-
-                el.addEventListener(
-                    'touchstart',
-                    () => {
-
-                        el.style.transform =
-                            'scale(0.96)';
-
-                    },
-                    {
-                        passive: true
-                    }
-                );
-
-
-                el.addEventListener(
-                    'touchend',
-                    () => {
-
-                        el.style.transform =
-                            '';
-
-                    },
-                    {
-                        passive: true
-                    }
-                );
-
-            });
-
-
-        /* =========================================
-           التحقق من الصور
-           ========================================= */
-
+        // === التحقق من الصور ===
         window.onload = () => {
-
-            const img =
-                document.querySelector(
-                    '.profile-img'
-                );
-
-
-            if (
-                !img.complete ||
-                img.naturalHeight === 0
-            ) {
-
-                console.warn(
-                    'تأكد من وجود A.jpg و AA.jpg في نفس المجلد'
-                );
-
+            const img = document.querySelector('.profile-img');
+            if(!img.complete || img.naturalHeight === 0) {
+                console.warn('تأكد من وجود A.jpg و AA.jpg في نفس المجلد');
             }
-
         };
-
     </script>
-
 </body>
 </html>
