@@ -11,16 +11,15 @@ import shutil
 import tempfile
 import subprocess
 import sys
-
-from urllib.parse import urlparse, quote
+from pathlib import Path
+from urllib.parse import urljoin
 
 import aiohttp
-
 from telegram import (
     Update,
     InlineKeyboardButton,
     InlineKeyboardMarkup,
-    InputMediaPhoto,
+    InputFile,
 )
 from telegram.constants import ChatAction
 from telegram.ext import (
@@ -32,95 +31,54 @@ from telegram.ext import (
     filters,
 )
 
-
 # =========================================================
-# CONFIG
+# SOKO TK
+# TikTok Downloader - Multi Engine
 # =========================================================
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
 WELCOME_IMAGE = os.getenv("JPG", "").strip()
 
-DEV_USERNAME = "FDF01"
+if not BOT_TOKEN:
+    raise RuntimeError("BOT_TOKEN غير موجود في GitHub Secrets")
 
-TIMEOUT = aiohttp.ClientTimeout(
-    total=90,
-    connect=20,
-    sock_read=60,
-)
-
-MAX_PHOTOS = 20
-
-TEMP_PREFIX = "soko_tk_"
-
-
-# =========================================================
-# LOGGING
-# =========================================================
+# ---------------------------------------------------------
+# Logging
+# ---------------------------------------------------------
 
 logging.basicConfig(
-    level=logging.INFO,
     format="%(asctime)s | %(levelname)s | %(message)s",
+    level=logging.INFO,
 )
 
 logger = logging.getLogger("SOKO-TK")
 
+# ---------------------------------------------------------
+# Settings
+# ---------------------------------------------------------
 
-# =========================================================
-# USER AGENTS
-# =========================================================
+DOWNLOAD_TIMEOUT = 180
+MAX_VIDEO_SIZE = 49 * 1024 * 1024
+MAX_AUDIO_SIZE = 49 * 1024 * 1024
+MAX_IMAGE_SIZE = 15 * 1024 * 1024
+
+TEMP_ROOT = Path(tempfile.gettempdir()) / "soko_tk"
+TEMP_ROOT.mkdir(parents=True, exist_ok=True)
 
 USER_AGENTS = [
-    (
-        "Mozilla/5.0 (Linux; Android 15) "
-        "AppleWebKit/537.36 "
-        "(KHTML, like Gecko) "
-        "Chrome/139.0.0.0 Mobile Safari/537.36"
-    ),
-    (
-        "Mozilla/5.0 (Linux; Android 14) "
-        "AppleWebKit/537.36 "
-        "(KHTML, like Gecko) "
-        "Chrome/138.0.0.0 Mobile Safari/537.36"
-    ),
-    (
-        "Mozilla/5.0 (X11; Linux x86_64) "
-        "AppleWebKit/537.36 "
-        "(KHTML, like Gecko) "
-        "Chrome/139.0.0.0 Safari/537.36"
-    ),
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",
+
+    "Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) "
+    "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 "
+    "Mobile/15E148 Safari/604.1",
+
+    "Mozilla/5.0 (Linux; Android 15; Pixel 8) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
 ]
-
-
-def ua():
-    return random.choice(USER_AGENTS)
-
-
-# =========================================================
-# HEADERS
-# =========================================================
-
-def browser_headers(
-    referer="https://snaptik.app/"
-):
-    return {
-        "User-Agent": ua(),
-        "Accept": (
-            "text/html,application/xhtml+xml,"
-            "application/xml;q=0.9,"
-            "image/avif,image/webp,*/*;q=0.8"
-        ),
-        "Accept-Language": (
-            "ar-EG,ar;q=0.9,en-US;q=0.8,en;q=0.7"
-        ),
-        "Referer": referer,
-        "Cache-Control": "no-cache",
-        "Pragma": "no-cache",
-    }
-
-
-# =========================================================
-# TIKTOK URL
-# =========================================================
 
 TIKTOK_HOSTS = {
     "tiktok.com",
@@ -132,491 +90,1355 @@ TIKTOK_HOSTS = {
     "www.tiktokv.com",
 }
 
+# =========================================================
+# General helpers
+# =========================================================
 
-def is_tiktok_url(url):
+def random_ua():
+    return random.choice(USER_AGENTS)
 
-    try:
-        host = (
-            urlparse(url).hostname or ""
-        ).lower()
 
-        return (
-            host in TIKTOK_HOSTS
-            or host.endswith(".tiktok.com")
-            or host.endswith(".tiktokv.com")
-        )
+def clean_text(value):
+    if value is None:
+        return ""
 
-    except Exception:
-        return False
+    if isinstance(value, (dict, list)):
+        return ""
+
+    value = html.unescape(str(value))
+    value = re.sub(r"<[^>]+>", "", value)
+    return value.strip()
+
+
+def safe_filename(name, fallback="soko_tk"):
+    name = clean_text(name)
+
+    if not name:
+        name = fallback
+
+    name = re.sub(r'[\\/:*?"<>|]+', "_", name)
+    name = re.sub(r"\s+", " ", name).strip()
+
+    return name[:100]
 
 
 def extract_tiktok_url(text):
-
     if not text:
         return None
 
-    matches = re.findall(
-        r"https?://[^\s<>\"]+",
-        text,
-        flags=re.I,
+    pattern = re.compile(
+        r"https?://[^\s<>\"']+",
+        re.IGNORECASE,
     )
 
-    for url in matches:
+    candidates = pattern.findall(text)
 
-        url = url.rstrip(
-            ".,!?؛،)>]}\"'"
-        )
+    for url in candidates:
+        url = url.rstrip(".,!?)]}>")
 
-        if is_tiktok_url(url):
-            return url
+        try:
+            from urllib.parse import urlparse
+
+            host = urlparse(url).hostname
+
+            if not host:
+                continue
+
+            host = host.lower()
+
+            if host in TIKTOK_HOSTS or host.endswith(".tiktok.com"):
+                return url
+
+        except Exception:
+            continue
 
     return None
 
 
-# =========================================================
-# RESOLVE SHORT URL
-# =========================================================
+def is_probably_media_url(url):
+    if not isinstance(url, str):
+        return False
 
-async def resolve_url(
-    session,
-    url,
-):
+    u = url.lower()
 
-    host = (
-        urlparse(url).hostname or ""
-    ).lower()
-
-    if host not in {
-        "vt.tiktok.com",
-        "vm.tiktok.com",
-    }:
-        return url
-
-    try:
-
-        async with session.get(
-            url,
-            headers=browser_headers(),
-            allow_redirects=True,
-        ) as response:
-
-            final_url = str(
-                response.url
-            )
-
-            if is_tiktok_url(
-                final_url
-            ):
-
-                logger.info(
-                    "SHORT URL -> %s",
-                    final_url,
-                )
-
-                return final_url
-
-    except Exception as exc:
-
-        logger.warning(
-            "Short URL resolve failed: %s",
-            exc,
-        )
-
-    return url
-
-
-# =========================================================
-# OEmbed
-# =========================================================
-
-async def get_oembed(
-    session,
-    tiktok_url,
-):
-
-    endpoint = (
-        "https://www.tiktok.com/oembed"
+    return (
+        u.startswith("http://")
+        or u.startswith("https://")
     )
 
-    try:
 
-        async with session.get(
-            endpoint,
-            params={
-                "url": tiktok_url,
-            },
-            headers={
-                **browser_headers(
-                    "https://snaptik.app/"
-                ),
-                "Accept": "*/*",
-                "Origin": "https://snaptik.app",
-            },
-            timeout=TIMEOUT,
-        ) as response:
-
-            text = await response.text()
-
-            logger.info(
-                "oEmbed status=%s",
-                response.status,
-            )
-
-            if response.status != 200:
-                return None
-
-            try:
-                return json.loads(text)
-
-            except Exception:
-                return None
-
-    except Exception as exc:
-
-        logger.warning(
-            "oEmbed failed: %s",
-            exc,
-        )
-
+def classify_media_url(url):
+    if not is_probably_media_url(url):
         return None
 
+    u = url.lower()
 
-# =========================================================
-# SNAP TIK TOKEN
-# =========================================================
-
-async def get_snaptik_token(
-    session,
-):
-
-    try:
-
-        headers = {
-            **browser_headers(
-                "https://snaptik.app/ar3"
-            ),
-            "Accept": "*/*",
-            "Content-Type": "application/json",
-            "Origin": "https://snaptik.app",
-            "X-Requested-With": "XMLHttpRequest",
-        }
-
-        async with session.post(
-            "https://snaptik.app/api/token",
-            headers=headers,
-            data=b"",
-            timeout=TIMEOUT,
-        ) as response:
-
-            text = await response.text()
-
-            logger.info(
-                "SnapTik token status=%s",
-                response.status,
-            )
-
-            if response.status >= 400:
-                return None
-
-            try:
-                data = json.loads(text)
-
-            except Exception:
-
-                # أحيانًا قد يرجع النص مباشرة
-                if (
-                    len(text.strip()) > 10
-                    and len(text.strip()) < 10000
-                ):
-                    return text.strip()
-
-                return None
-
-            # البحث المرن عن token
-            return find_token(data)
-
-    except Exception as exc:
-
-        logger.warning(
-            "SnapTik token error: %s",
-            exc,
-        )
-
-        return None
-
-
-def find_token(data):
-
-    if isinstance(data, str):
-
-        value = data.strip()
-
-        if value:
-            return value
-
-        return None
-
-    if isinstance(data, dict):
-
-        preferred = [
-            "token",
-            "x-token",
-            "x_token",
-            "key",
-            "value",
-        ]
-
-        for key in preferred:
-
-            value = data.get(key)
-
-            if isinstance(value, str):
-                if value.strip():
-                    return value.strip()
-
-        for value in data.values():
-
-            result = find_token(value)
-
-            if result:
-                return result
-
-    elif isinstance(data, list):
-
-        for item in data:
-
-            result = find_token(item)
-
-            if result:
-                return result
-
-    return None
-
-
-# =========================================================
-# GENERIC URL FINDER
-# =========================================================
-
-def find_urls(
-    value,
-    found=None,
-):
-
-    if found is None:
-        found = []
-
-    if isinstance(value, str):
-
-        for match in re.findall(
-            r'https?://[^\s"\'<>]+',
-            value,
-            flags=re.I,
-        ):
-
-            match = match.rstrip(
-                "\"'<>),"
-            )
-
-            if match not in found:
-                found.append(match)
-
-    elif isinstance(value, dict):
-
-        for item in value.values():
-            find_urls(
-                item,
-                found,
-            )
-
-    elif isinstance(value, list):
-
-        for item in value:
-            find_urls(
-                item,
-                found,
-            )
-
-    return found
-
-
-# =========================================================
-# MEDIA CLASSIFIER
-# =========================================================
-
-def media_type_from_url(url):
-
-    lower = url.lower()
-
-    if (
-        ".mp4" in lower
-        or "video" in lower
-        or "rapidcdn" in lower
-        or "snapxcdn" in lower
-        or "cdn.snaptik" in lower
-    ):
+    if any(x in u for x in [
+        ".mp4",
+        ".mov",
+        ".webm",
+        ".m3u8",
+        "video",
+        "videoplay",
+        "playwm",
+        "play/",
+    ]):
         return "video"
 
-    if (
-        ".mp3" in lower
-        or ".m4a" in lower
-        or "audio" in lower
-        or "music" in lower
-    ):
+    if any(x in u for x in [
+        ".mp3",
+        ".m4a",
+        ".aac",
+        ".wav",
+        ".ogg",
+        "audio",
+        "music",
+    ]):
         return "audio"
 
-    if (
-        ".jpg" in lower
-        or ".jpeg" in lower
-        or ".png" in lower
-        or ".webp" in lower
-        or ".avif" in lower
-        or "image" in lower
-        or "cover" in lower
-        or "photo" in lower
-    ):
+    if any(x in u for x in [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp",
+        ".avif",
+        "image",
+        "photo",
+        "cover",
+    ]):
         return "image"
 
     return None
 
 
 # =========================================================
-# SNAP TIK EXTRACT
+# HTTP
+# =========================================================
+
+def build_headers(referer=None):
+    headers = {
+        "User-Agent": random_ua(),
+        "Accept": "*/*",
+        "Accept-Language": "ar-IQ,ar;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Connection": "keep-alive",
+    }
+
+    if referer:
+        headers["Referer"] = referer
+
+    return headers
+
+
+async def http_get_bytes(
+    session,
+    url,
+    headers=None,
+    timeout=DOWNLOAD_TIMEOUT,
+):
+    try:
+        request_headers = build_headers()
+
+        if headers:
+            request_headers.update(headers)
+
+        timeout_obj = aiohttp.ClientTimeout(
+            total=timeout,
+            connect=30,
+            sock_read=timeout,
+        )
+
+        async with session.get(
+            url,
+            headers=request_headers,
+            timeout=timeout_obj,
+            allow_redirects=True,
+        ) as response:
+
+            data = await response.read()
+
+            return {
+                "ok": response.status < 400,
+                "status": response.status,
+                "url": str(response.url),
+                "content_type": response.headers.get(
+                    "Content-Type",
+                    "",
+                ),
+                "content_length": response.headers.get(
+                    "Content-Length",
+                    "",
+                ),
+                "data": data,
+            }
+
+    except Exception as e:
+        logger.warning("HTTP GET failed: %s", e)
+        return None
+
+
+async def http_get_text(
+    session,
+    url,
+    headers=None,
+    timeout=45,
+):
+    result = await http_get_bytes(
+        session,
+        url,
+        headers=headers,
+        timeout=timeout,
+    )
+
+    if not result:
+        return None
+
+    try:
+        result["text"] = result["data"].decode(
+            "utf-8",
+            errors="ignore",
+        )
+    except Exception:
+        result["text"] = ""
+
+    return result
+
+
+# =========================================================
+# TikTok URL resolving
+# =========================================================
+
+async def resolve_tiktok_url(session, url):
+    try:
+        timeout_obj = aiohttp.ClientTimeout(
+            total=40,
+            connect=15,
+        )
+
+        async with session.get(
+            url,
+            headers=build_headers(),
+            allow_redirects=True,
+            timeout=timeout_obj,
+        ) as response:
+
+            final_url = str(response.url)
+
+            if final_url.startswith("http"):
+                return final_url
+
+    except Exception as e:
+        logger.warning("TikTok redirect failed: %s", e)
+
+    return url
+
+
+# =========================================================
+# oEmbed
+# =========================================================
+
+async def get_oembed(session, url):
+    endpoint = "https://www.tiktok.com/oembed"
+
+    try:
+        result = await http_get_text(
+            session,
+            endpoint,
+            headers={
+                "Accept": "application/json",
+                "Referer": "https://www.tiktok.com/",
+            },
+            timeout=30,
+        )
+
+        # oEmbed endpoint needs ?url=
+        if result:
+            pass
+
+        timeout_obj = aiohttp.ClientTimeout(
+            total=30,
+            connect=15,
+        )
+
+        async with session.get(
+            endpoint,
+            params={"url": url},
+            headers=build_headers(
+                "https://www.tiktok.com/"
+            ),
+            timeout=timeout_obj,
+        ) as response:
+
+            if response.status >= 400:
+                return {}
+
+            return await response.json(
+                content_type=None
+            )
+
+    except Exception as e:
+        logger.warning("oEmbed failed: %s", e)
+        return {}
+
+
+# =========================================================
+# Recursive JSON URL extraction
+# =========================================================
+
+def recursive_collect(obj, found=None):
+    if found is None:
+        found = []
+
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+            recursive_collect(value, found)
+
+    elif isinstance(obj, list):
+        for value in obj:
+            recursive_collect(value, found)
+
+    elif isinstance(obj, str):
+        value = obj.strip()
+
+        if (
+            value.startswith("http://")
+            or value.startswith("https://")
+        ):
+            found.append(value)
+
+        # URLs embedded in strings
+        for match in re.findall(
+            r'https?://[^\s"\'<>]+',
+            value,
+            flags=re.I,
+        ):
+            found.append(
+                html.unescape(match).rstrip(
+                    ".,;)]}>"
+                )
+            )
+
+    return found
+
+
+def unique_urls(urls):
+    result = []
+    seen = set()
+
+    for url in urls:
+        if not isinstance(url, str):
+            continue
+
+        url = html.unescape(url).strip()
+
+        if not url:
+            continue
+
+        if url in seen:
+            continue
+
+        seen.add(url)
+        result.append(url)
+
+    return result
+
+
+# =========================================================
+# Metadata
+# =========================================================
+
+def recursive_find_values(obj, keys):
+    results = []
+
+    if isinstance(obj, dict):
+        for key, value in obj.items():
+
+            key_l = str(key).lower()
+
+            if key_l in keys:
+                if isinstance(value, (str, int, float)):
+                    results.append(value)
+
+            results.extend(
+                recursive_find_values(value, keys)
+            )
+
+    elif isinstance(obj, list):
+        for item in obj:
+            results.extend(
+                recursive_find_values(item, keys)
+            )
+
+    return results
+
+
+def first_value(obj, keys, default=""):
+    values = recursive_find_values(
+        obj,
+        {x.lower() for x in keys},
+    )
+
+    for value in values:
+        value = clean_text(value)
+
+        if value:
+            return value
+
+    return default
+
+
+def extract_metadata(oembed, payloads):
+    data = {
+        "author": "",
+        "username": "",
+        "description": "",
+        "duration": "",
+        "views": "",
+        "likes": "",
+        "comments": "",
+        "shares": "",
+        "thumbnail": "",
+    }
+
+    if isinstance(oembed, dict):
+
+        data["author"] = (
+            oembed.get("author_name")
+            or ""
+        )
+
+        data["username"] = (
+            oembed.get("author_unique_id")
+            or ""
+        )
+
+        data["description"] = (
+            oembed.get("title")
+            or ""
+        )
+
+        data["thumbnail"] = (
+            oembed.get("thumbnail_url")
+            or ""
+        )
+
+    for payload in payloads:
+
+        if not isinstance(payload, (dict, list)):
+            continue
+
+        data["author"] = (
+            data["author"]
+            or first_value(
+                payload,
+                {
+                    "author",
+                    "authorname",
+                    "nickname",
+                    "unique_id",
+                    "uniqueid",
+                },
+            )
+        )
+
+        data["username"] = (
+            data["username"]
+            or first_value(
+                payload,
+                {
+                    "unique_id",
+                    "uniqueid",
+                    "username",
+                    "author_unique_id",
+                },
+            )
+        )
+
+        data["description"] = (
+            data["description"]
+            or first_value(
+                payload,
+                {
+                    "description",
+                    "desc",
+                    "title",
+                    "caption",
+                },
+            )
+        )
+
+        data["duration"] = (
+            data["duration"]
+            or first_value(
+                payload,
+                {
+                    "duration",
+                    "duration_ms",
+                },
+            )
+        )
+
+        data["views"] = (
+            data["views"]
+            or first_value(
+                payload,
+                {
+                    "playcount",
+                    "play_count",
+                    "views",
+                    "view_count",
+                },
+            )
+        )
+
+        data["likes"] = (
+            data["likes"]
+            or first_value(
+                payload,
+                {
+                    "diggcount",
+                    "digg_count",
+                    "likes",
+                    "like_count",
+                },
+            )
+        )
+
+        data["comments"] = (
+            data["comments"]
+            or first_value(
+                payload,
+                {
+                    "commentcount",
+                    "comment_count",
+                    "comments",
+                },
+            )
+        )
+
+        data["shares"] = (
+            data["shares"]
+            or first_value(
+                payload,
+                {
+                    "sharecount",
+                    "share_count",
+                    "shares",
+                },
+            )
+        )
+
+        data["thumbnail"] = (
+            data["thumbnail"]
+            or first_value(
+                payload,
+                {
+                    "thumbnail",
+                    "thumbnail_url",
+                    "cover",
+                    "origin_cover",
+                    "preview",
+                },
+            )
+        )
+
+    # duration normalization
+    try:
+        if data["duration"]:
+            d = float(
+                str(data["duration"])
+            )
+
+            if d > 1000:
+                d /= 1000
+
+            seconds = int(d)
+
+            data["duration"] = (
+                f"{seconds // 60:02d}:"
+                f"{seconds % 60:02d}"
+            )
+    except Exception:
+        pass
+
+    return data
+
+
+# =========================================================
+# SnapTik
 # =========================================================
 
 async def snaptik_extract(
     session,
     tiktok_url,
-    token=None,
 ):
+    payloads = []
+    media_urls = []
 
-    endpoint = (
-        "https://snaptik.app/api/extract"
-    )
+    # -----------------------------------------------------
+    # Token endpoint
+    # -----------------------------------------------------
+
+    token = None
+
+    token_headers = {
+        "Origin": "https://snaptik.app",
+        "Referer": "https://snaptik.app/ar3",
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+        "Accept": "application/json, text/plain, */*",
+    }
+
+    token_bodies = [
+        {"url": tiktok_url},
+        {"url": tiktok_url, "lang": "ar"},
+        {"url": tiktok_url, "lang": "en"},
+    ]
+
+    for body in token_bodies:
+
+        try:
+            timeout_obj = aiohttp.ClientTimeout(
+                total=40,
+                connect=15,
+            )
+
+            async with session.post(
+                "https://snaptik.app/api/token",
+                json=body,
+                headers=token_headers,
+                timeout=timeout_obj,
+            ) as response:
+
+                text_body = await response.text(
+                    errors="ignore"
+                )
+
+                try:
+                    payload = json.loads(text_body)
+                except Exception:
+                    payload = {
+                        "raw": text_body
+                    }
+
+                payloads.append(payload)
+
+                candidates = recursive_find_values(
+                    payload,
+                    {
+                        "token",
+                        "x-token",
+                        "xtoken",
+                    },
+                )
+
+                if candidates:
+                    token = str(
+                        candidates[0]
+                    ).strip()
+
+                if token:
+                    break
+
+        except Exception as e:
+            logger.warning(
+                "SnapTik token error: %s",
+                e,
+            )
+
+    # -----------------------------------------------------
+    # Extract attempts
+    # -----------------------------------------------------
 
     attempts = []
 
-    # الطلب الأساسي
-    attempts.append(
-        {
-            "url": endpoint,
-            "params": {
-                "url": tiktok_url,
-            },
-        }
-    )
-
-    # مع token
     if token:
-
-        attempts.append(
+        attempts.extend([
             {
-                "url": endpoint,
-                "params": {
-                    "url": tiktok_url,
-                    "token": token,
-                },
-            }
-        )
-
-        attempts.append(
+                "url": tiktok_url,
+                "token": token,
+            },
             {
-                "url": endpoint,
-                "params": {
-                    "url": tiktok_url,
-                    "x-token": token,
-                },
-            }
-        )
+                "url": tiktok_url,
+                "x-token": token,
+            },
+            {
+                "url": tiktok_url,
+                "X-Token": token,
+            },
+        ])
 
-    for attempt in attempts:
+    attempts.extend([
+        {"url": tiktok_url},
+        {"query": tiktok_url},
+    ])
+
+    for body in attempts:
 
         try:
-
             headers = {
-                **browser_headers(
-                    "https://snaptik.app/ar3"
-                ),
-                "Accept": (
-                    "application/json,"
-                    "text/plain,*/*"
-                ),
                 "Origin": "https://snaptik.app",
-                "X-Requested-With":
-                    "XMLHttpRequest",
+                "Referer": "https://snaptik.app/ar3",
+                "Content-Type": "application/json",
+                "X-Requested-With": "XMLHttpRequest",
+                "Accept": "application/json, text/plain, */*",
             }
 
             if token:
                 headers["X-Token"] = token
 
-            async with session.get(
-                attempt["url"],
-                params=attempt["params"],
+            timeout_obj = aiohttp.ClientTimeout(
+                total=60,
+                connect=15,
+            )
+
+            async with session.post(
+                "https://snaptik.app/api/extract",
+                json=body,
                 headers=headers,
-                timeout=TIMEOUT,
+                timeout=timeout_obj,
             ) as response:
 
-                text = await response.text()
-
-                logger.info(
-                    "SnapTik extract status=%s",
-                    response.status,
+                raw = await response.text(
+                    errors="ignore"
                 )
 
-                if response.status >= 400:
-                    continue
-
                 try:
+                    payload = json.loads(raw)
+                except Exception:
+                    payload = {
+                        "raw": raw
+                    }
 
-                    data = json.loads(
-                        text
+                payloads.append(payload)
+
+                urls = recursive_collect(payload)
+
+                media_urls.extend(urls)
+
+                # Also scan raw response
+                media_urls.extend(
+                    re.findall(
+                        r'https?://[^\s"\'<>]+',
+                        raw,
+                        flags=re.I,
                     )
+                )
 
-                    if data:
-                        return data
+        except Exception as e:
+            logger.warning(
+                "SnapTik extract failed: %s",
+                e,
+            )
+
+    return {
+        "payloads": payloads,
+        "media_urls": unique_urls(
+            media_urls
+        ),
+    }
+
+
+# =========================================================
+# Direct media download
+# =========================================================
+
+def looks_like_video(data, content_type, url):
+    ct = (content_type or "").lower()
+    u = (url or "").lower()
+
+    if "video/" in ct:
+        return True
+
+    if any(x in ct for x in [
+        "application/octet-stream",
+        "binary/octet-stream",
+    ]):
+        if any(x in u for x in [
+            ".mp4",
+            "video",
+            "rapidcdn",
+            "snapxcdn",
+        ]):
+            return True
+
+    if data[:4] == b"ftyp":
+        return True
+
+    if len(data) > 12 and b"ftyp" in data[:64]:
+        return True
+
+    return False
+
+
+def looks_like_audio(data, content_type, url):
+    ct = (content_type or "").lower()
+    u = (url or "").lower()
+
+    if "audio/" in ct:
+        return True
+
+    if any(ext in u for ext in [
+        ".mp3",
+        ".m4a",
+        ".aac",
+        ".ogg",
+        ".wav",
+    ]):
+        return True
+
+    if data[:3] == b"ID3":
+        return True
+
+    return False
+
+
+def looks_like_image(data, content_type, url):
+    ct = (content_type or "").lower()
+    u = (url or "").lower()
+
+    if "image/" in ct:
+        return True
+
+    if data.startswith(b"\xff\xd8\xff"):
+        return True
+
+    if data.startswith(b"\x89PNG"):
+        return True
+
+    if data.startswith(b"RIFF") and b"WEBP" in data[:16]:
+        return True
+
+    if any(ext in u for ext in [
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp",
+    ]):
+        return True
+
+    return False
+
+
+async def download_media_to_file(
+    session,
+    url,
+    output_dir,
+    referer=None,
+):
+    if not is_probably_media_url(url):
+        return None
+
+    try:
+        headers = build_headers(
+            referer or "https://www.tiktok.com/"
+        )
+
+        # Important headers for TikTok CDN
+        headers.update({
+            "Accept": "*/*",
+            "Range": "bytes=0-",
+        })
+
+        timeout_obj = aiohttp.ClientTimeout(
+            total=DOWNLOAD_TIMEOUT,
+            connect=30,
+            sock_read=DOWNLOAD_TIMEOUT,
+        )
+
+        async with session.get(
+            url,
+            headers=headers,
+            allow_redirects=True,
+            timeout=timeout_obj,
+        ) as response:
+
+            status = response.status
+            content_type = response.headers.get(
+                "Content-Type",
+                "",
+            )
+
+            if status >= 400:
+                logger.warning(
+                    "Media HTTP %s: %s",
+                    status,
+                    url[:150],
+                )
+                return None
+
+            final_url = str(response.url)
+
+            # Read incrementally to disk
+            temp_path = output_dir / (
+                "media_" +
+                str(random.randint(100000, 999999)) +
+                ".bin"
+            )
+
+            total = 0
+
+            with open(
+                temp_path,
+                "wb",
+            ) as file:
+
+                async for chunk in response.content.iter_chunked(
+                    1024 * 256
+                ):
+                    if not chunk:
+                        continue
+
+                    total += len(chunk)
+
+                    # Prevent enormous files
+                    if total > 200 * 1024 * 1024:
+                        logger.warning(
+                            "Media too large: %s",
+                            final_url[:150],
+                        )
+
+                        file.close()
+
+                        try:
+                            temp_path.unlink()
+                        except Exception:
+                            pass
+
+                        return None
+
+                    file.write(chunk)
+
+            if total < 1024:
+                try:
+                    temp_path.unlink()
+                except Exception:
+                    pass
+
+                return None
+
+            with open(
+                temp_path,
+                "rb",
+            ) as file:
+                head = file.read(512)
+
+            media_type = None
+
+            if looks_like_video(
+                head,
+                content_type,
+                final_url,
+            ):
+                media_type = "video"
+
+            elif looks_like_audio(
+                head,
+                content_type,
+                final_url,
+            ):
+                media_type = "audio"
+
+            elif looks_like_image(
+                head,
+                content_type,
+                final_url,
+            ):
+                media_type = "image"
+
+            else:
+                # Some CDN endpoints return octet-stream.
+                # Let ffprobe identify it later.
+                media_type = await detect_with_ffprobe(
+                    temp_path
+                )
+
+            if not media_type:
+                try:
+                    text_sample = head.decode(
+                        "utf-8",
+                        errors="ignore",
+                    ).lower()
+
+                    if (
+                        "<html" in text_sample
+                        or "<!doctype" in text_sample
+                    ):
+                        temp_path.unlink(
+                            missing_ok=True
+                        )
+                        return None
 
                 except Exception:
+                    pass
 
-                    # قد تكون HTML تحتوي روابط CDN
-                    if (
-                        "rapidcdn"
-                        in text.lower()
-                        or "snapxcdn"
-                        in text.lower()
-                        or "tiktokcdn"
-                        in text.lower()
-                    ):
-                        return {
-                            "_raw_html":
-                                text
-                        }
+                temp_path.unlink(
+                    missing_ok=True
+                )
 
-        except Exception as exc:
+                return None
 
-            logger.warning(
-                "SnapTik extraction failed: %s",
-                exc,
+            extension = {
+                "video": ".mp4",
+                "audio": ".mp3",
+                "image": ".jpg",
+            }.get(
+                media_type,
+                ".bin",
             )
+
+            final_path = output_dir / (
+                "soko_media" + extension
+            )
+
+            try:
+                temp_path.rename(
+                    final_path
+                )
+            except Exception:
+                shutil.move(
+                    str(temp_path),
+                    str(final_path),
+                )
+
+            return {
+                "path": final_path,
+                "type": media_type,
+                "size": total,
+                "url": final_url,
+                "content_type": content_type,
+            }
+
+    except Exception as e:
+        logger.warning(
+            "Direct media download failed: %s",
+            e,
+        )
+
+        return None
+
+
+# =========================================================
+# FFprobe / FFmpeg
+# =========================================================
+
+async def detect_with_ffprobe(path):
+    ffprobe = shutil.which("ffprobe")
+
+    if not ffprobe:
+        return None
+
+    try:
+        process = await asyncio.create_subprocess_exec(
+            ffprobe,
+            "-v",
+            "error",
+            "-show_entries",
+            "format=format_name",
+            "-of",
+            "default=noprint_wrappers=1:nokey=1",
+            str(path),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        stdout, _ = await process.communicate()
+
+        fmt = stdout.decode(
+            "utf-8",
+            errors="ignore",
+        ).strip().lower()
+
+        if not fmt:
+            return None
+
+        if any(x in fmt for x in [
+            "mp4",
+            "mov",
+            "webm",
+            "matroska",
+            "mpegts",
+        ]):
+            return "video"
+
+        if any(x in fmt for x in [
+            "mp3",
+            "aac",
+            "ogg",
+            "wav",
+            "flac",
+            "m4a",
+        ]):
+            return "audio"
+
+    except Exception:
+        pass
 
     return None
 
 
 # =========================================================
-# MEDIA FROM SNAPTIK
+# yt-dlp fallback
 # =========================================================
 
-def extract_snap_media(data):
+async def ensure_ytdlp():
+    try:
+        import yt_dlp
 
+        return True
+    except ImportError:
+        pass
+
+    try:
+        process = await asyncio.create_subprocess_exec(
+            sys.executable,
+            "-m",
+            "pip",
+            "install",
+            "-U",
+            "--pre",
+            "yt-dlp",
+            "curl-cffi",
+            "yt-dlp-ejs",
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        await process.communicate()
+
+        import importlib
+
+        importlib.invalidate_caches()
+
+        return True
+
+    except Exception as e:
+        logger.warning(
+            "Could not install yt-dlp: %s",
+            e,
+        )
+
+        return False
+
+
+async def ytdlp_download(
+    url,
+    output_dir,
+):
+    if not await ensure_ytdlp():
+        return None
+
+    output_template = str(
+        output_dir /
+        "ytdlp_%(id)s.%(ext)s"
+    )
+
+    command = [
+        sys.executable,
+        "-m",
+        "yt_dlp",
+
+        "--no-playlist",
+        "--no-warnings",
+        "--ignore-errors",
+
+        "--retries",
+        "3",
+
+        "--fragment-retries",
+        "3",
+
+        "--concurrent-fragments",
+        "4",
+
+        "--http-chunk-size",
+        "10M",
+
+        "-f",
+        "bv*+ba/b",
+
+        "--merge-output-format",
+        "mp4",
+
+        "--restrict-filenames",
+
+        "-o",
+        output_template,
+
+        url,
+    ]
+
+    try:
+        logger.info(
+            "Starting yt-dlp fallback..."
+        )
+
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        stdout, stderr = await process.communicate()
+
+        out = (
+            stdout.decode(
+                "utf-8",
+                errors="ignore",
+            )
+            + "\n"
+            + stderr.decode(
+                "utf-8",
+                errors="ignore",
+            )
+        )
+
+        logger.info(
+            "yt-dlp exit=%s",
+            process.returncode,
+        )
+
+        if process.returncode != 0:
+            logger.warning(
+                "yt-dlp failed: %s",
+                out[-2000:],
+            )
+
+            return None
+
+        files = list(
+            output_dir.glob(
+                "ytdlp_*"
+            )
+        )
+
+        files = [
+            x for x in files
+            if x.is_file()
+            and x.stat().st_size > 1024
+        ]
+
+        if not files:
+            return None
+
+        files.sort(
+            key=lambda x: x.stat().st_mtime,
+            reverse=True,
+        )
+
+        selected = files[0]
+
+        detected = await detect_with_ffprobe(
+            selected
+        )
+
+        if not detected:
+            detected = "video"
+
+        return {
+            "path": selected,
+            "type": detected,
+            "size": selected.stat().st_size,
+            "url": url,
+            "content_type": "",
+        }
+
+    except Exception as e:
+        logger.warning(
+            "yt-dlp exception: %s",
+            e,
+        )
+
+        return None
+
+
+# =========================================================
+# Audio extraction from video
+# =========================================================
+
+async def extract_audio_from_video(
+    video_path,
+    output_dir,
+):
+    ffmpeg = shutil.which("ffmpeg")
+
+    if not ffmpeg:
+        return None
+
+    output = output_dir / "soko_audio.mp3"
+
+    command = [
+        ffmpeg,
+        "-y",
+        "-i",
+        str(video_path),
+
+        "-vn",
+
+        "-acodec",
+        "libmp3lame",
+
+        "-b:a",
+        "128k",
+
+        str(output),
+    ]
+
+    try:
+        process = await asyncio.create_subprocess_exec(
+            *command,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+
+        _, stderr = await process.communicate()
+
+        if (
+            process.returncode == 0
+            and output.exists()
+            and output.stat().st_size > 1024
+        ):
+            return output
+
+        logger.warning(
+            "Audio extraction failed: %s",
+            stderr.decode(
+                "utf-8",
+                errors="ignore",
+            )[-1000:],
+        )
+
+    except Exception as e:
+        logger.warning(
+            "ffmpeg audio error: %s",
+            e,
+        )
+
+    return None
+
+
+# =========================================================
+# Find best media
+# =========================================================
+
+async def download_best_media(
+    session,
+    tiktok_url,
+    snap_result,
+    workdir,
+):
+    media_urls = snap_result.get(
+        "media_urls",
+        [],
+    )
+
+    # Prioritize video URLs
     videos = []
     audios = []
     images = []
 
-    urls = find_urls(data)
+    for url in media_urls:
 
-    for url in urls:
-
-        kind = media_type_from_url(
-            url
-        )
+        kind = classify_media_url(url)
 
         if kind == "video":
             videos.append(url)
@@ -627,919 +1449,441 @@ def extract_snap_media(data):
         elif kind == "image":
             images.append(url)
 
-    # raw HTML fallback
-    if isinstance(data, dict):
+    # Unknown CDN links are also worth trying
+    unknown = [
+        u for u in media_urls
+        if not classify_media_url(u)
+    ]
 
-        raw = data.get(
-            "_raw_html",
-            "",
+    videos.extend(unknown)
+
+    # -----------------------------------------------------
+    # Direct download - multiple URLs
+    # -----------------------------------------------------
+
+    video_file = None
+
+    tried = set()
+
+    for url in videos:
+
+        if url in tried:
+            continue
+
+        tried.add(url)
+
+        logger.info(
+            "Trying direct video: %s",
+            url[:180],
         )
 
-        if raw:
+        result = await download_media_to_file(
+            session,
+            url,
+            workdir,
+            referer="https://www.tiktok.com/",
+        )
 
-            for url in re.findall(
-                r'https?://[^"\'<>\s]+',
-                raw,
-                flags=re.I,
-            ):
+        if result and result["type"] == "video":
+            video_file = result
+            break
 
-                url = url.rstrip(
-                    "\"'<>),"
-                )
+    # -----------------------------------------------------
+    # Audio direct
+    # -----------------------------------------------------
 
-                kind = media_type_from_url(
-                    url
-                )
+    audio_file = None
 
-                if kind == "video":
-                    videos.append(url)
+    for url in audios:
 
-                elif kind == "audio":
-                    audios.append(url)
-
-                elif kind == "image":
-                    images.append(url)
-
-    return (
-        unique(videos),
-        unique(audios),
-        unique(images),
-    )
-
-
-# =========================================================
-# UNIQUE
-# =========================================================
-
-def unique(items):
-
-    result = []
-    seen = set()
-
-    for item in items:
-
-        if not item:
+        if url in tried:
             continue
 
-        if item in seen:
-            continue
+        tried.add(url)
 
-        seen.add(item)
-        result.append(item)
+        result = await download_media_to_file(
+            session,
+            url,
+            workdir,
+            referer="https://www.tiktok.com/",
+        )
 
-    return result
+        if result and result["type"] == "audio":
+            audio_file = result
+            break
 
+    # -----------------------------------------------------
+    # yt-dlp fallback
+    # -----------------------------------------------------
 
-# =========================================================
-# EXTRACT OEmbed METADATA
-# =========================================================
+    if not video_file:
 
-def metadata_from_oembed(
-    oembed,
-):
+        video_file = await ytdlp_download(
+            tiktok_url,
+            workdir,
+        )
 
-    if not isinstance(
-        oembed,
-        dict,
+    # -----------------------------------------------------
+    # Extract audio from video
+    # -----------------------------------------------------
+
+    if (
+        video_file
+        and not audio_file
+        and video_file["type"] == "video"
     ):
-        return {}
+        extracted = (
+            await extract_audio_from_video(
+                video_file["path"],
+                workdir,
+            )
+        )
+
+        if extracted:
+            audio_file = {
+                "path": extracted,
+                "type": "audio",
+                "size": extracted.stat().st_size,
+                "url": "",
+                "content_type": "audio/mpeg",
+            }
+
+    # -----------------------------------------------------
+    # Images / Photo mode
+    # -----------------------------------------------------
+
+    image_files = []
+
+    for url in images[:20]:
+
+        result = await download_media_to_file(
+            session,
+            url,
+            workdir,
+            referer="https://www.tiktok.com/",
+        )
+
+        if (
+            result
+            and result["type"] == "image"
+        ):
+            image_files.append(
+                result
+            )
 
     return {
-        "title":
-            oembed.get(
-                "title"
-            )
-            or "غير متوفر",
-
-        "author":
-            oembed.get(
-                "author_name"
-            )
-            or "غير متوفر",
-
-        "username":
-            oembed.get(
-                "author_url"
-            )
-            or "غير متوفر",
-
-        "thumbnail":
-            oembed.get(
-                "thumbnail_url"
-            ),
+        "video": video_file,
+        "audio": audio_file,
+        "images": image_files,
     }
 
 
 # =========================================================
-# METADATA GENERIC
+# Formatting
 # =========================================================
-
-def find_first(
-    data,
-    keys,
-):
-
-    keys = {
-        x.lower()
-        for x in keys
-    }
-
-    def walk(value):
-
-        if isinstance(
-            value,
-            dict,
-        ):
-
-            for key, item in value.items():
-
-                if (
-                    str(key).lower()
-                    in keys
-                ):
-
-                    if isinstance(
-                        item,
-                        (
-                            str,
-                            int,
-                            float,
-                        ),
-                    ):
-
-                        text = str(
-                            item
-                        ).strip()
-
-                        if text:
-                            return text
-
-                result = walk(item)
-
-                if result:
-                    return result
-
-        elif isinstance(
-            value,
-            list,
-        ):
-
-            for item in value:
-
-                result = walk(item)
-
-                if result:
-                    return result
-
-        return None
-
-    return walk(data)
-
 
 def format_number(value):
+    if value is None:
+        return "—"
+
+    value = clean_text(value)
+
+    if not value:
+        return "—"
 
     try:
-
-        number = int(
-            float(value)
+        n = float(
+            str(value).replace(",", "")
         )
+
+        if n >= 1_000_000_000:
+            return f"{n / 1_000_000_000:.1f}B"
+
+        if n >= 1_000_000:
+            return f"{n / 1_000_000:.1f}M"
+
+        if n >= 1_000:
+            return f"{n / 1_000:.1f}K"
+
+        if n.is_integer():
+            return str(int(n))
 
     except Exception:
+        pass
 
-        return (
-            str(value)
-            if value
-            else "غير متوفر"
-        )
-
-    if number >= 1_000_000_000:
-        return f"{number / 1_000_000_000:.1f}B"
-
-    if number >= 1_000_000:
-        return f"{number / 1_000_000:.1f}M"
-
-    if number >= 1_000:
-        return f"{number / 1_000:.1f}K"
-
-    return f"{number:,}"
+    return value
 
 
-def format_duration(value):
-
-    try:
-
-        seconds = int(
-            float(value)
-        )
-
-    except Exception:
-
-        return "غير متوفر"
-
-    minutes = seconds // 60
-    seconds = seconds % 60
-
-    return (
-        f"{minutes:02d}:"
-        f"{seconds:02d}"
-    )
-
-
-def build_metadata(
-    oembed,
-    data,
-):
-
-    result = (
-        metadata_from_oembed(
-            oembed
-        )
-    )
-
-    title = (
-        find_first(
-            data,
-            {
-                "title",
-                "desc",
-                "description",
-                "caption",
-            },
-        )
-        or result.get(
-            "title"
-        )
-        or "غير متوفر"
-    )
-
+def build_result_text(metadata):
     author = (
-        find_first(
-            data,
-            {
-                "author_name",
-                "nickname",
-                "author",
-                "creator",
-                "uploader",
-            },
-        )
-        or result.get(
-            "author"
-        )
-        or "غير متوفر"
+        metadata.get("author")
+        or "غير معروف"
     )
 
     username = (
-        find_first(
-            data,
-            {
-                "username",
-                "unique_id",
-                "uniqueid",
-                "author_unique_id",
-            },
-        )
-        or result.get(
-            "username"
-        )
-        or "غير متوفر"
+        metadata.get("username")
+        or "غير معروف"
     )
 
-    duration = find_first(
-        data,
-        {
-            "duration",
-            "duration_ms",
-        },
+    if username and not username.startswith("@"):
+        username = "@" + username
+
+    description = (
+        metadata.get("description")
+        or "لا يوجد وصف"
     )
 
-    views = find_first(
-        data,
-        {
-            "views",
-            "view_count",
-            "play_count",
-        },
-    )
-
-    likes = find_first(
-        data,
-        {
-            "likes",
-            "like_count",
-            "digg_count",
-        },
-    )
-
-    comments = find_first(
-        data,
-        {
-            "comments",
-            "comment_count",
-        },
-    )
-
-    shares = find_first(
-        data,
-        {
-            "shares",
-            "share_count",
-        },
-    )
-
-    thumbnail = (
-        result.get(
-            "thumbnail"
-        )
-        or find_first(
-            data,
-            {
-                "thumbnail",
-                "thumbnail_url",
-                "cover",
-                "cover_url",
-            },
-        )
-    )
-
-    return {
-        "title": str(title),
-        "author": str(author),
-        "username": str(username),
-        "duration":
-            format_duration(
-                duration
-            )
-            if duration
-            else "غير متوفر",
-        "views":
-            format_number(
-                views
-            ),
-        "likes":
-            format_number(
-                likes
-            ),
-        "comments":
-            format_number(
-                comments
-            ),
-        "shares":
-            format_number(
-                shares
-            ),
-        "thumbnail":
-            thumbnail,
-    }
-
-
-# =========================================================
-# RESULT TEXT
-# =========================================================
-
-def result_text(meta):
-
-    title = html.escape(
-        meta["title"]
-    )
-
-    author = html.escape(
-        meta["author"]
-    )
-
-    username = html.escape(
-        meta["username"]
+    duration = (
+        metadata.get("duration")
+        or "—"
     )
 
     return (
         "╔════════════════════╗\n"
         "      🌌 SOKO TK RESULT\n"
         "╚════════════════════╝\n\n"
+
         f"👤 صاحب المنشور: {author}\n"
         f"🔖 المستخدم: {username}\n"
-        f"⏱️ المدة: {meta['duration']}\n"
-        f"👁️ المشاهدات: {meta['views']}\n"
-        f"❤️ الإعجابات: {meta['likes']}\n"
-        f"💬 التعليقات: {meta['comments']}\n"
-        f"🔁 المشاركات: {meta['shares']}\n\n"
-        f"📝 الوصف:\n{title}\n\n"
+        f"⏱️ المدة: {duration}\n"
+        f"👁️ المشاهدات: "
+        f"{format_number(metadata.get('views'))}\n"
+        f"❤️ الإعجابات: "
+        f"{format_number(metadata.get('likes'))}\n"
+        f"💬 التعليقات: "
+        f"{format_number(metadata.get('comments'))}\n"
+        f"🔁 المشاركات: "
+        f"{format_number(metadata.get('shares'))}\n\n"
+
+        f"📝 الوصف:\n"
+        f"{description[:1000]}\n\n"
+
         "━━━━━━━━━━━━━━━━━━━━\n"
         "🚀 SOKO TK"
     )
 
 
 # =========================================================
-# DIRECT RAPIDCDN DOWNLOAD
+# Telegram sending
 # =========================================================
 
-async def download_direct(
-    session,
-    url,
-    directory,
-):
-
-    try:
-
-        filename = (
-            "soko_media_"
-            + str(
-                random.randint(
-                    100000,
-                    999999,
-                )
-            )
-        )
-
-        path = os.path.join(
-            directory,
-            filename,
-        )
-
-        headers = {
-            "User-Agent": (
-                "TelegramBot "
-                "(like TwitterBot)"
-            ),
-            "Referer":
-                "https://snaptik.app/",
-        }
-
-        async with session.get(
-            url,
-            headers=headers,
-            allow_redirects=True,
-            timeout=aiohttp.ClientTimeout(
-                total=180,
-                connect=30,
-                sock_read=120,
-            ),
-        ) as response:
-
-            if response.status >= 400:
-
-                logger.warning(
-                    "CDN status=%s",
-                    response.status,
-                )
-
-                return None
-
-            content_type = (
-                response.headers.get(
-                    "Content-Type",
-                    "",
-                ).lower()
-            )
-
-            extension = ".mp4"
-
-            if (
-                "audio" in content_type
-            ):
-                extension = ".mp3"
-
-            elif (
-                "jpeg" in content_type
-            ):
-                extension = ".jpg"
-
-            elif (
-                "png" in content_type
-            ):
-                extension = ".png"
-
-            path += extension
-
-            with open(
-                path,
-                "wb",
-            ) as file:
-
-                async for chunk in response.content.iter_chunked(
-                    1024 * 256
-                ):
-
-                    if chunk:
-                        file.write(
-                            chunk
-                        )
-
-            if (
-                os.path.exists(path)
-                and os.path.getsize(path)
-                > 0
-            ):
-
-                logger.info(
-                    "Downloaded CDN media: %s",
-                    path,
-                )
-
-                return path
-
-    except Exception as exc:
-
-        logger.warning(
-            "Direct CDN download failed: %s",
-            exc,
-        )
-
-    return None
-
-
-# =========================================================
-# YT-DLP FALLBACK
-# =========================================================
-
-def ensure_ytdlp():
-
-    try:
-
-        import yt_dlp
-
-        return yt_dlp
-
-    except ImportError:
-
-        subprocess.run(
-            [
-                sys.executable,
-                "-m",
-                "pip",
-                "install",
-                "-U",
-                "yt-dlp",
-            ],
-            check=False,
-        )
-
-        import yt_dlp
-
-        return yt_dlp
-
-
-def ytdlp_download(
-    url,
-    directory,
-):
-
-    try:
-
-        yt_dlp = ensure_ytdlp()
-
-        output = os.path.join(
-            directory,
-            "%(id)s.%(ext)s",
-        )
-
-        options = {
-            "quiet": True,
-            "no_warnings": True,
-            "noplaylist": True,
-            "nocheckcertificate": True,
-            "retries": 2,
-            "fragment_retries": 2,
-            "socket_timeout": 30,
-            "outtmpl": output,
-            "format":
-                "bv*+ba/b",
-            "merge_output_format":
-                "mp4",
-            "http_headers": {
-                "User-Agent": ua(),
-                "Accept-Language":
-                    "en-US,en;q=0.9",
-            },
-        }
-
-        with yt_dlp.YoutubeDL(
-            options
-        ) as ydl:
-
-            info = ydl.extract_info(
-                url,
-                download=True,
-            )
-
-            prepared = (
-                ydl.prepare_filename(
-                    info
-                )
-            )
-
-            mp4 = os.path.splitext(
-                prepared
-            )[0] + ".mp4"
-
-            if os.path.isfile(
-                mp4
-            ):
-                return mp4
-
-            if os.path.isfile(
-                prepared
-            ):
-                return prepared
-
-        for name in os.listdir(
-            directory
-        ):
-
-            path = os.path.join(
-                directory,
-                name,
-            )
-
-            if (
-                os.path.isfile(path)
-                and name.lower().endswith(
-                    (
-                        ".mp4",
-                        ".webm",
-                        ".mkv",
-                        ".mov",
-                    )
-                )
-            ):
-                return path
-
-    except Exception as exc:
-
-        logger.warning(
-            "yt-dlp fallback failed: %s",
-            exc,
-        )
-
-    return None
-
-
-# =========================================================
-# SEND VIDEO
-# =========================================================
-
-async def send_video_file(
+async def send_video(
     bot,
     chat_id,
-    path,
+    file_path,
 ):
+    size = file_path.stat().st_size
+
+    if size > MAX_VIDEO_SIZE:
+        return False, "large"
 
     try:
-
         await bot.send_chat_action(
             chat_id=chat_id,
             action=ChatAction.UPLOAD_VIDEO,
         )
 
         with open(
-            path,
+            file_path,
             "rb",
         ) as file:
 
             await bot.send_video(
                 chat_id=chat_id,
-                video=file,
+                video=InputFile(file),
                 supports_streaming=True,
-                read_timeout=180,
-                write_timeout=180,
-                connect_timeout=60,
+                read_timeout=120,
+                write_timeout=120,
+                connect_timeout=30,
+                pool_timeout=30,
             )
 
-        return True
+        return True, "ok"
 
-    except Exception as exc:
-
+    except Exception as e:
         logger.warning(
-            "Telegram video upload failed: %s",
-            exc,
+            "Telegram video send failed: %s",
+            e,
         )
 
-        return False
+        return False, str(e)
 
 
-# =========================================================
-# SEND AUDIO
-# =========================================================
-
-async def send_audio_file(
+async def send_audio(
     bot,
     chat_id,
-    path,
+    file_path,
 ):
+    size = file_path.stat().st_size
+
+    if size > MAX_AUDIO_SIZE:
+        return False, "large"
 
     try:
-
         await bot.send_chat_action(
             chat_id=chat_id,
-            action=ChatAction.UPLOAD_AUDIO,
+            action=ChatAction.UPLOAD_DOCUMENT,
         )
 
         with open(
-            path,
+            file_path,
             "rb",
         ) as file:
 
             await bot.send_audio(
                 chat_id=chat_id,
-                audio=file,
-                performer="SOKO TK",
-                title="TikTok Audio",
-                read_timeout=180,
-                write_timeout=180,
-                connect_timeout=60,
+                audio=InputFile(file),
+                read_timeout=120,
+                write_timeout=120,
+                connect_timeout=30,
+                pool_timeout=30,
             )
 
-        return True
+        return True, "ok"
 
-    except Exception as exc:
-
+    except Exception as e:
         logger.warning(
-            "Telegram audio upload failed: %s",
-            exc,
+            "Telegram audio send failed: %s",
+            e,
         )
 
-        return False
+        return False, str(e)
 
 
-# =========================================================
-# SEND PHOTOS
-# =========================================================
-
-async def send_photos(
+async def send_images(
     bot,
     chat_id,
     images,
 ):
+    sent = 0
 
-    images = unique(
-        images
-    )[:MAX_PHOTOS]
+    for image in images[:20]:
 
-    if not images:
-        return False
+        path = image["path"]
 
-    for start in range(
-        0,
-        len(images),
-        10,
-    ):
-
-        chunk = images[
-            start:start + 10
-        ]
+        if (
+            not path.exists()
+            or path.stat().st_size > MAX_IMAGE_SIZE
+        ):
+            continue
 
         try:
-
-            if len(chunk) == 1:
+            with open(
+                path,
+                "rb",
+            ) as file:
 
                 await bot.send_photo(
                     chat_id=chat_id,
-                    photo=chunk[0],
+                    photo=InputFile(file),
+                    read_timeout=60,
+                    write_timeout=60,
                 )
 
-            else:
+            sent += 1
 
-                media = [
-                    InputMediaPhoto(
-                        media=url
-                    )
-                    for url in chunk
-                ]
-
-                await bot.send_media_group(
-                    chat_id=chat_id,
-                    media=media,
-                )
-
-        except Exception as exc:
-
+        except Exception as e:
             logger.warning(
-                "Photo group failed: %s",
-                exc,
+                "Image send failed: %s",
+                e,
             )
 
-            for image in chunk:
-
-                try:
-
-                    await bot.send_photo(
-                        chat_id=chat_id,
-                        photo=image,
-                    )
-
-                except Exception:
-                    pass
-
-    return True
+    return sent
 
 
 # =========================================================
-# START
+# Start
 # =========================================================
 
-async def start(
-    update: Update,
-    context: ContextTypes.DEFAULT_TYPE,
-):
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user = update.effective_user
 
-    if not user:
-        return
+    name = (
+        user.full_name
+        if user
+        else "غير معروف"
+    )
+
+    user_id = (
+        user.id
+        if user
+        else "—"
+    )
 
     text = (
         "𐚁‌⇄❮𝗦𝗢𝗞𝗢❯\n"
         "╔════════════════════╗\n"
         "      🌌 DOWNLOAD VIDEO TIKTOK\n"
         "╚════════════════════╝\n\n"
+
         "𝗦𝗢𝗞𝗢・TK 🎧 ❮❯\n"
         "🎵 تنزيل صوت - فيديو - ستوري - تيكتوك\n"
         "🖼️ صور ومعلومات كاملة\n\n"
-        "━━━━━━━━━━━━━━━━━━━━\n"
-        f"👤 الاسم: "
-        f"{html.escape(user.full_name or 'User')}\n"
-        f"🆔 ID: <code>{user.id}</code>\n"
-        "━━━━━━━━━━━━━━━━━━━━\n\n"
+
+        f"👤 الاسم: {name}\n"
+        f"🆔 ID: {user_id}\n\n"
+
         "📥 أرسل رابط TikTok الآن."
     )
 
-    keyboard = InlineKeyboardMarkup(
+    keyboard = InlineKeyboardMarkup([
         [
-            [
-                InlineKeyboardButton(
-                    "👨‍💻 DEV",
-                    url="https://t.me/FDF01",
-                )
-            ],
-            [
-                InlineKeyboardButton(
-                    "ℹ️ طريقة الاستخدام",
-                    callback_data="help",
-                )
-            ],
+            InlineKeyboardButton(
+                "👨‍💻 Developer",
+                url="https://t.me/FDF01",
+            )
         ]
-    )
+    ])
 
     if WELCOME_IMAGE:
 
         try:
-
             await update.message.reply_photo(
                 photo=WELCOME_IMAGE,
                 caption=text,
-                parse_mode="HTML",
                 reply_markup=keyboard,
             )
-
             return
 
-        except Exception as exc:
-
+        except Exception as e:
             logger.warning(
                 "Welcome image failed: %s",
-                exc,
+                e,
             )
 
     await update.message.reply_text(
         text,
-        parse_mode="HTML",
         reply_markup=keyboard,
     )
 
 
 # =========================================================
-# HELP
+# Help
 # =========================================================
 
-async def callback(
+async def help_command(
     update: Update,
     context: ContextTypes.DEFAULT_TYPE,
 ):
 
-    query = update.callback_query
-
-    if not query:
-        return
-
-    await query.answer()
-
-    if query.data == "help":
-
-        await query.message.reply_text(
-            "📥 أرسل أي رابط TikTok.\n\n"
-            "مدعوم:\n"
-            "• www.tiktok.com\n"
-            "• tiktok.com\n"
-            "• vt.tiktok.com\n"
-            "• vm.tiktok.com\n"
-            "• m.tiktok.com\n"
-            "• روابط المشاركة والتحويل\n\n"
-            "SOKO يحاول عدة طرق لاستخراج "
-            "الفيديو أو الصوت أو الصور."
-        )
+    await update.message.reply_text(
+        "🎧 SOKO TK\n\n"
+        "أرسل رابط منشور TikTok فقط.\n\n"
+        "يدعم:\n"
+        "• tiktok.com\n"
+        "• www.tiktok.com\n"
+        "• vt.tiktok.com\n"
+        "• vm.tiktok.com\n"
+        "• m.tiktok.com\n"
+        "• روابط المشاركة\n\n"
+        "📥 يحاول تنزيل الفيديو مباشرة، "
+        "ثم يستخدم محركًا احتياطيًا إذا لزم الأمر."
+    )
 
 
 # =========================================================
-# MAIN TIKTOK HANDLER
+# TikTok handler
 # =========================================================
 
 async def handle_tiktok(
@@ -1547,321 +1891,307 @@ async def handle_tiktok(
     context: ContextTypes.DEFAULT_TYPE,
 ):
 
-    if not update.message:
+    message = update.effective_message
+
+    if not message or not message.text:
         return
 
-    url = extract_tiktok_url(
-        update.message.text or ""
+    tiktok_url = extract_tiktok_url(
+        message.text
     )
 
-    if not url:
+    if not tiktok_url:
 
-        await update.message.reply_text(
-            "❌ أرسل رابط TikTok صالح."
+        await message.reply_text(
+            "❌ لم أجد رابط TikTok صالحًا.\n\n"
+            "أرسل رابط المنشور مثل:\n"
+            "https://www.tiktok.com/...\n"
+            "https://vt.tiktok.com/..."
         )
 
         return
 
-    processing = await update.message.reply_text(
-        "🚀 <b>SOKO TK</b>\n\n"
-        "🔗 تم استلام الرابط.\n"
-        "🔍 جاري التحليل...\n"
-        "⚡ سأجرب أكثر من طريقة تلقائيًا.",
-        parse_mode="HTML",
+    processing = await message.reply_text(
+        "⏳ جاري تحليل رابط TikTok...\n"
+        "🔎 استخراج بيانات المنشور والوسائط..."
     )
 
-    temp_dir = tempfile.mkdtemp(
-        prefix=TEMP_PREFIX
+    workdir = Path(
+        tempfile.mkdtemp(
+            prefix="soko_",
+            dir=str(TEMP_ROOT),
+        )
     )
 
     try:
 
+        timeout_obj = aiohttp.ClientTimeout(
+            total=DOWNLOAD_TIMEOUT,
+            connect=30,
+            sock_read=DOWNLOAD_TIMEOUT,
+        )
+
+        connector = aiohttp.TCPConnector(
+            limit=20,
+            ttl_dns_cache=300,
+            ssl=False,
+        )
+
         async with aiohttp.ClientSession(
-            timeout=TIMEOUT
+            timeout=timeout_obj,
+            connector=connector,
         ) as session:
 
-            # =============================================
-            # 1. Resolve URL
-            # =============================================
+            # -------------------------------------------------
+            # Resolve short URL
+            # -------------------------------------------------
 
-            final_url = await resolve_url(
-                session,
-                url,
+            await processing.edit_text(
+                "⏳ جاري الوصول إلى TikTok...\n"
+                "🔗 معالجة الرابط..."
             )
 
-            # =============================================
-            # 2. OEmbed
-            # =============================================
+            resolved_url = await resolve_tiktok_url(
+                session,
+                tiktok_url,
+            )
+
+            logger.info(
+                "Original URL: %s",
+                tiktok_url,
+            )
+
+            logger.info(
+                "Resolved URL: %s",
+                resolved_url,
+            )
+
+            # -------------------------------------------------
+            # oEmbed
+            # -------------------------------------------------
 
             oembed = await get_oembed(
                 session,
-                final_url,
+                resolved_url,
             )
 
-            # =============================================
-            # 3. SnapTik token
-            # =============================================
-
-            token = await get_snaptik_token(
-                session
-            )
-
-            # =============================================
-            # 4. SnapTik extraction
-            # =============================================
-
-            snap_data = await snaptik_extract(
-                session,
-                final_url,
-                token,
-            )
-
-            # =============================================
-            # 5. Media extraction
-            # =============================================
-
-            videos = []
-            audios = []
-            images = []
-
-            if snap_data:
-
-                (
-                    videos,
-                    audios,
-                    images,
-                ) = extract_snap_media(
-                    snap_data
-                )
-
-            # =============================================
-            # 6. Metadata
-            # =============================================
-
-            meta = build_metadata(
-                oembed,
-                snap_data or {},
-            )
-
-            caption = result_text(
-                meta
-            )
-
-            # =============================================
-            # 7. Photo mode
-            # =============================================
-
-            if images:
-
-                await processing.edit_text(
-                    caption,
-                    parse_mode="HTML",
-                )
-
-                await send_photos(
-                    context.bot,
-                    update.effective_chat.id,
-                    images,
-                )
-
-                # لا نرجع هنا لأن بعض استجابات
-                # TikTok قد تحتوي صور + فيديو.
-                if not videos:
-                    return
-
-            # =============================================
-            # 8. Download CDN video
-            # =============================================
-
-            video_path = None
-
-            for video_url in videos[:5]:
-
-                video_path = (
-                    await download_direct(
-                        session,
-                        video_url,
-                        temp_dir,
-                    )
-                )
-
-                if video_path:
-                    break
-
-            # =============================================
-            # 9. Fallback yt-dlp
-            # =============================================
-
-            if not video_path:
-
-                await processing.edit_text(
-                    "⚡ <b>SOKO TK</b>\n\n"
-                    "🔄 الطريقة الأولى لم تُرجع "
-                    "ملفًا صالحًا.\n"
-                    "🛠️ جاري تجربة محرك احتياطي...",
-                    parse_mode="HTML",
-                )
-
-                video_path = await asyncio.to_thread(
-                    ytdlp_download,
-                    final_url,
-                    temp_dir,
-                )
-
-            # =============================================
-            # 10. Send metadata
-            # =============================================
+            # -------------------------------------------------
+            # SnapTik
+            # -------------------------------------------------
 
             await processing.edit_text(
-                caption,
-                parse_mode="HTML",
+                "🔎 تم الوصول إلى المنشور.\n"
+                "⚡ جاري البحث عن رابط الوسائط المباشر..."
             )
 
-            # =============================================
-            # 11. Send video
-            # =============================================
+            snap = await snaptik_extract(
+                session,
+                resolved_url,
+            )
 
-            video_sent = False
+            payloads = snap.get(
+                "payloads",
+                [],
+            )
 
-            if video_path:
+            metadata = extract_metadata(
+                oembed,
+                payloads,
+            )
 
-                video_sent = (
-                    await send_video_file(
-                        context.bot,
-                        update.effective_chat.id,
-                        video_path,
-                    )
-                )
+            # -------------------------------------------------
+            # Download media
+            # -------------------------------------------------
 
-            # =============================================
-            # 12. Audio
-            # =============================================
+            await processing.edit_text(
+                "📦 تم استخراج معلومات المنشور.\n"
+                "⬇️ جاري تنزيل الوسائط إلى السيرفر...\n"
+                "🔄 سيتم تجربة أكثر من مسار عند الحاجة."
+            )
 
-            audio_path = None
+            media = await download_best_media(
+                session,
+                resolved_url,
+                snap,
+                workdir,
+            )
 
-            # إذا كان المصدر أعاد Audio URL
-            for audio_url in audios[:3]:
+            video = media.get("video")
+            audio = media.get("audio")
+            images = media.get("images") or []
 
-                audio_path = (
-                    await download_direct(
-                        session,
-                        audio_url,
-                        temp_dir,
-                    )
-                )
+            # -------------------------------------------------
+            # Result metadata
+            # -------------------------------------------------
 
-                if audio_path:
-                    break
+            result_text = build_result_text(
+                metadata
+            )
 
-            if audio_path:
+            # -------------------------------------------------
+            # Video
+            # -------------------------------------------------
 
-                await send_audio_file(
+            if video:
+
+                ok, reason = await send_video(
                     context.bot,
-                    update.effective_chat.id,
-                    audio_path,
+                    message.chat_id,
+                    video["path"],
                 )
 
-            # =============================================
-            # 13. Thumbnail
-            # =============================================
+                if not ok:
 
-            if (
-                meta.get(
-                    "thumbnail"
-                )
-                and not images
-            ):
+                    if reason == "large":
+                        await message.reply_text(
+                            result_text
+                            + "\n\n"
+                            "⚠️ الفيديو تم تنزيله بنجاح، "
+                            "لكن حجمه أكبر من الحد الذي "
+                            "يمكن للبوت إرساله مباشرة."
+                        )
 
-                try:
+                    else:
+                        await message.reply_text(
+                            result_text
+                            + "\n\n"
+                            "⚠️ تم تنزيل الفيديو على السيرفر، "
+                            "لكن Telegram رفض إرسال الملف."
+                        )
 
-                    await context.bot.send_photo(
-                        chat_id=update.effective_chat.id,
-                        photo=meta[
-                            "thumbnail"
-                        ],
+                else:
+                    await message.reply_text(
+                        result_text
                     )
 
-                except Exception:
-                    pass
+            # -------------------------------------------------
+            # Images / Photo mode
+            # -------------------------------------------------
 
-            # =============================================
-            # 14. Nothing worked
-            # =============================================
+            elif images:
 
-            if (
-                not video_sent
-                and not audio_path
-                and not images
-            ):
-
-                await update.message.reply_text(
-                    "❌ لم يتم استخراج الوسائط.\n\n"
-                    "🔍 تم تجربة:\n"
-                    "• TikTok oEmbed\n"
-                    "• SnapTik Token\n"
-                    "• SnapTik Extract\n"
-                    "• CDN/RapidCDN\n"
-                    "• yt-dlp\n\n"
-                    "قد تكون استجابة TikTok/SnapTik "
-                    "تغيّرت أو أن هذا المنشور يحتاج "
-                    "طريقة وصول مختلفة."
+                await message.reply_text(
+                    result_text
+                    + "\n\n"
+                    f"🖼️ وضع الصور: {len(images)} صورة"
                 )
 
-    except Exception as exc:
+                await send_images(
+                    context.bot,
+                    message.chat_id,
+                    images,
+                )
+
+            # -------------------------------------------------
+            # No video but audio
+            # -------------------------------------------------
+
+            elif audio:
+
+                await message.reply_text(
+                    result_text
+                    + "\n\n"
+                    "🎵 تم العثور على الصوت فقط."
+                )
+
+            # -------------------------------------------------
+            # Completely failed
+            # -------------------------------------------------
+
+            else:
+
+                await message.reply_text(
+                    result_text
+                    + "\n\n"
+                    "⚠️ حصلت على معلومات المنشور، "
+                    "لكن لم أستطع تنزيل ملف الوسائط.\n\n"
+                    "🔄 تمت تجربة رابط الوسائط المباشر "
+                    "ومحرك التنزيل الاحتياطي.\n\n"
+                    "قد يكون المنشور محميًا أو أن TikTok "
+                    "غيّر طريقة تسليم الملف لهذا المنشور."
+                )
+
+            # -------------------------------------------------
+            # Audio
+            # -------------------------------------------------
+
+            if audio:
+
+                # Don't send audio if too large
+                if (
+                    audio["path"].exists()
+                    and audio["path"].stat().st_size
+                    <= MAX_AUDIO_SIZE
+                ):
+                    await send_audio(
+                        context.bot,
+                        message.chat_id,
+                        audio["path"],
+                    )
+
+        try:
+            await processing.delete()
+        except Exception:
+            pass
+
+    except Exception as e:
 
         logger.exception(
-            "SOKO TK error: %s",
-            exc,
+            "Main TikTok handler failed"
         )
 
         try:
-
             await processing.edit_text(
                 "❌ حدث خطأ أثناء معالجة الرابط.\n\n"
-                "🔄 جرّب الرابط مرة أخرى."
+                "🔄 جرّب إرسال الرابط مرة أخرى."
             )
-
         except Exception:
             pass
 
     finally:
 
-        shutil.rmtree(
-            temp_dir,
-            ignore_errors=True,
-        )
+        # -----------------------------------------------------
+        # Cleanup
+        # -----------------------------------------------------
+
+        try:
+            shutil.rmtree(
+                workdir,
+                ignore_errors=True,
+            )
+        except Exception:
+            pass
 
 
 # =========================================================
-# ERROR
+# Buttons
 # =========================================================
 
-async def error_handler(
-    update,
-    context,
+async def button_callback(
+    update: Update,
+    context: ContextTypes.DEFAULT_TYPE,
 ):
 
-    logger.error(
-        "Telegram error: %s",
-        context.error,
-    )
+    query = update.callback_query
+
+    if query:
+        await query.answer()
 
 
 # =========================================================
-# MAIN
+# Main
 # =========================================================
 
 def main():
 
-    if not BOT_TOKEN:
-
-        raise RuntimeError(
-            "BOT_TOKEN غير موجود في GitHub Secrets."
-        )
+    logger.info(
+        "Starting SOKO TK..."
+    )
 
     application = (
         Application.builder()
         .token(BOT_TOKEN)
+        .concurrent_updates(True)
         .build()
     )
 
@@ -1873,8 +2203,15 @@ def main():
     )
 
     application.add_handler(
+        CommandHandler(
+            "help",
+            help_command,
+        )
+    )
+
+    application.add_handler(
         CallbackQueryHandler(
-            callback,
+            button_callback
         )
     )
 
@@ -1886,17 +2223,13 @@ def main():
         )
     )
 
-    application.add_error_handler(
-        error_handler
-    )
-
     logger.info(
-        "SOKO TK started."
+        "SOKO TK is running."
     )
 
     application.run_polling(
-        drop_pending_updates=True,
         allowed_updates=Update.ALL_TYPES,
+        drop_pending_updates=True,
     )
 
 
