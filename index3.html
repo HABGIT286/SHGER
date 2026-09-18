@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<title>SOKO-2K | نظام المعالجة الفخم Pro</title>
+<link rel="icon" href="AA.jpg">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --c1:#ff2d75; --c2:#7c3aed; --c3:#00e5ff; --c4:#ffd60a;
+  --bg1:#0a0a0f; --bg2:#141428; --glass:rgba(255,255,255,0.06);
+  --glass-brd:rgba(255,255,255,0.12); --txt:#fff; --txt2:#b8b8d4;
+  --radius:22px; --blur:20px;
+}
+[data-theme="neon"]{--c1:#ff2d75;--c2:#7c3aed;--c3:#00e5ff;--c4:#ffd60a;--bg1:#0a0a0f;--bg2:#141428;}
+[data-theme="lime"]{--c1:#a8ff3e;--c2:#00d9a3;--c3:#f0ff00;--c4:#ffffff;--bg1:#051a0a;--bg2:#0a2e14;}
+[data-theme="gray-purple"]{--c1:#9ca3af;--c2:#a78bfa;--c3:#c084fc;--c4:#e9d5ff;--bg1:#1a1a24;--bg2:#2a2438;}
+[data-theme="maroon"]{--c1:#ff4d6d;--c2:#c9184a;--c3:#ff758f;--c4:#ffb3c1;--bg1:#1a0508;--bg2:#2d0a12;}
+[data-theme="purple-sky"]{--c1:#a855f7;--c2:#06b6d4;--c3:#8b5cf6;--c4:#67e8f9;--bg1:#0a0520;--bg2:#1e1b4b;}
+[data-theme="sky-blue"]{--c1:#38bdf8;--c2:#0ea5e9;--c3:#7dd3fc;--c4:#bae6fd;--bg1:#020617;--bg2:#0c1e3e;}
+[data-theme="pink-orange"]{--c1:#ff6b9d;--c2:#ff9a3c;--c3:#ffc072;--c4:#ffd6a5;--bg1:#1a0a14;--bg2:#2d1a24;}
+[data-theme="cyber"]{--c1:#00ff9d;--c2:#ff00e5;--c3:#00f0ff;--c4:#ffff00;--bg1:#000000;--bg2:#0a0a0a;}
+[data-theme="sunset"]{--c1:#ff6b6b;--c2:#feca57;--c3:#ff9ff3;--c4:#f368e0;--bg1:#1a0a2e;--bg2:#2d1b4e;}
+[data-theme="ocean"]{--c1:#0077b6;--c2:#00b4d8;--c3:#90e0ef;--c4:#caf0f8;--bg1:#03045e;--bg2:#023e8a;}
+
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;
+  -webkit-user-select:none;-moz-user-select:none;user-select:none;
+  -webkit-touch-callout:none;}
+html,body{overflow-x:hidden;overscroll-behavior:none;}
+body{
+  font-family:'Cairo','Tajawal',sans-serif;
+  background:var(--bg1);color:var(--txt);min-height:100vh;
+  background-image:
+    radial-gradient(circle at 20% 20%,color-mix(in srgb,var(--c1) 25%,transparent),transparent 50%),
+    radial-gradient(circle at 80% 80%,color-mix(in srgb,var(--c2) 25%,transparent),transparent 50%),
+    radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--c3) 15%,transparent),transparent 60%);
+  background-attachment:fixed;transition:all .8s ease;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url('A.jpg');
+  background-size:cover;background-position:center;
+  opacity:.15;z-index:-1;pointer-events:none;
+}
+
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:12px 20px;backdrop-filter:blur(var(--blur)) saturate(180%);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(180%);
+  background:var(--glass);border-bottom:1px solid var(--glass-brd);
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:18px;}
+.logo i{
+  background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:spin 4s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.progress-wrap{flex:1;max-width:300px;display:flex;align-items:center;gap:8px;}
+.progress-bar{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:10px;overflow:hidden;}
+.progress-fill{
+  height:100%;width:0%;
+  background:linear-gradient(90deg,var(--c1),var(--c3),var(--c4));
+  background-size:200% 100%;animation:shimmer 2s linear infinite;
+  transition:width .4s ease;border-radius:10px;
+  box-shadow:0 0 10px var(--c1);
+}
+@keyframes shimmer{to{background-position:-200% 0;}}
+.progress-label{font-size:11px;color:var(--c3);font-weight:700;min-width:40px;}
+
+.container{max-width:1400px;margin:0 auto;padding:90px 20px 120px;}
+
+.hero{
+  position:relative;height:420px;border-radius:var(--radius);overflow:hidden;
+  margin-bottom:30px;border:1px solid var(--glass-brd);
+  box-shadow:0 20px 60px rgba(0,0,0,.5),0 0 40px color-mix(in srgb,var(--c1) 20%,transparent);
+}
+.hero-slide{
+  position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;
+  background-size:cover;background-position:center;
+}
+.hero-slide.active{opacity:1;}
+.hero-slide::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.85) 100%);
+}
+.hero-content{position:absolute;bottom:30px;right:30px;left:30px;z-index:2;}
+.hero-title{
+  font-size:clamp(28px,5vw,52px);font-weight:900;
+  background:linear-gradient(135deg,var(--c1),var(--c3),var(--c4));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 30px color-mix(in srgb,var(--c1) 50%,transparent);
+  margin-bottom:10px;letter-spacing:-1px;
+}
+.hero-sub{font-size:15px;color:var(--txt2);margin-bottom:20px;}
+.hero-btn{
+  display:inline-flex;align-items:center;gap:10px;padding:14px 28px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#fff;border:none;border-radius:50px;font-weight:700;cursor:pointer;
+  font-family:inherit;font-size:15px;
+  box-shadow:0 10px 30px color-mix(in srgb,var(--c1) 40%,transparent);
+  transition:transform .3s,box-shadow .3s;
+}
+.hero-btn:hover{transform:translateY(-3px) scale(1.03);}
+.hero-btn i{animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.3);}}
+.hero-dots{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3;}
+.hero-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s;}
+.hero-dot.active{background:var(--c3);width:30px;border-radius:4px;box-shadow:0 0 10px var(--c3);}
+
+.tabs{
+  display:flex;gap:10px;margin-bottom:25px;overflow-x:auto;
+  padding:8px;backdrop-filter:blur(var(--blur));
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:var(--radius);scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex-shrink:0;padding:12px 20px;border-radius:15px;cursor:pointer;
+  display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;
+  background:transparent;color:var(--txt2);border:1px solid transparent;
+  transition:all .3s;white-space:nowrap;
+}
+.tab i{font-size:16px;}
+.tab:hover{background:rgba(255,255,255,.05);color:var(--txt);}
+.tab.active{
+  background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;
+  box-shadow:0 8px 25px color-mix(in srgb,var(--c1) 40%,transparent);
+}
+.tab.active i{animation:pulse 1.5s infinite;}
+
+.section{display:none;animation:fadeUp .6s ease;}
+.section.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+.glass{
+  backdrop-filter:blur(var(--blur)) saturate(180%);
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:var(--radius);padding:25px;
+  position:relative;overflow:hidden;transition:transform .4s,box-shadow .4s;
+}
+.glass::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c1) 10%,transparent),transparent 50%);
+  pointer-events:none;
+}
+.glass:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,.4),0 0 30px color-mix(in srgb,var(--c1) 20%,transparent);}
+
+.section-title{font-size:24px;font-weight:900;margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.section-title i{
+  background:linear-gradient(135deg,var(--c1),var(--c3));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  font-size:28px;animation:glow 2s ease-in-out infinite;
+}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 5px var(--c1));}50%{filter:drop-shadow(0 0 20px var(--c3));}}
+
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
+.feature-card{
+  padding:20px 15px;text-align:center;cursor:pointer;
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:18px;transition:all .4s;position:relative;overflow:hidden;
+}
+.feature-card::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,var(--c1),var(--c2),var(--c3),var(--c1));
+  opacity:0;transition:opacity .4s;animation:rotate 4s linear infinite;
+}
+.feature-card::after{
+  content:'';position:absolute;inset:2px;background:var(--bg2);border-radius:16px;z-index:0;
+}
+.feature-card:hover::before{opacity:.6;}
+.feature-card>*{position:relative;z-index:1;}
+@keyframes rotate{to{transform:rotate(360deg);}}
+.feature-icon{
+  width:55px;height:55px;margin:0 auto 10px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:15px;font-size:24px;color:#fff;
+  box-shadow:0 8px 20px color-mix(in srgb,var(--c1) 40%,transparent);
+  animation:bounce 3s ease-in-out infinite;
+}
+@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.feature-card:nth-child(2) .feature-icon{animation-delay:.2s;background:linear-gradient(135deg,var(--c2),var(--c3));}
+.feature-card:nth-child(3) .feature-icon{animation-delay:.4s;background:linear-gradient(135deg,var(--c3),var(--c4));}
+.feature-card:nth-child(4) .feature-icon{animation-delay:.6s;background:linear-gradient(135deg,var(--c4),var(--c1));}
+.feature-card h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.feature-card p{font-size:11px;color:var(--txt2);}
+
+.instruction-list{display:flex;flex-direction:column;gap:12px;}
+.instruction{
+  display:flex;align-items:flex-start;gap:15px;padding:18px;
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:18px;transition:all .3s;
+}
+.instruction:hover{transform:translateX(-5px);border-color:var(--c1);}
+.instruction-num{
+  flex-shrink:0;width:40px;height:40px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:18px;
+}
+.instruction-content h4{font-size:15px;margin-bottom:5px;}
+.instruction-content p{font-size:13px;color:var(--txt2);line-height:1.6;}
+
+.album-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+.album-item{
+  aspect-ratio:1;border-radius:15px;overflow:hidden;cursor:pointer;
+  position:relative;border:1px solid var(--glass-brd);transition:transform .4s;
+}
+.album-item:hover{transform:scale(1.05);z-index:2;}
+.album-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+.album-item:hover img{transform:scale(1.15);}
+.album-item::after{
+  content:'\f00e';font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--c1) 70%,transparent),color-mix(in srgb,var(--c2) 70%,transparent));
+  color:#fff;font-size:30px;opacity:0;transition:opacity .3s;
+}
+.album-item:hover::after{opacity:1;}
+
+.edit-tabs{display:flex;gap:10px;margin-bottom:20px;}
+.edit-tab{
+  flex:1;padding:14px;text-align:center;cursor:pointer;
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:15px;font-weight:700;transition:all .3s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.edit-tab.active{background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent;}
+.edit-tab i{font-size:18px;}
+
+.upload-zone{
+  padding:40px 20px;text-align:center;
+  border:2px dashed var(--glass-brd);border-radius:var(--radius);
+  background:var(--glass);cursor:pointer;transition:all .3s;
+}
+.upload-zone:hover{border-color:var(--c1);background:color-mix(in srgb,var(--c1) 5%,var(--glass));}
+.upload-zone.drag{border-color:var(--c3);background:color-mix(in srgb,var(--c3) 10%,var(--glass));}
+.upload-icon{
+  width:80px;height:80px;margin:0 auto 15px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-size:35px;color:#fff;animation:float 3s ease-in-out infinite;
+  box-shadow:0 10px 30px color-mix(in srgb,var(--c1) 50%,transparent);
+}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.upload-zone h3{font-size:18px;margin-bottom:8px;}
+.upload-zone p{color:var(--txt2);font-size:13px;}
+
+.quality-title{font-size:15px;font-weight:700;margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
+.quality-title i{color:var(--c3);}
+
+.presets-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-bottom:20px;}
+.preset-card{
+  padding:15px;text-align:center;cursor:pointer;
+  background:var(--glass);border:2px solid var(--glass-brd);
+  border-radius:15px;transition:all .3s;position:relative;overflow:hidden;
+}
+.preset-card::before{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,color-mix(in srgb,var(--c1) 20%,transparent),transparent);
+  transition:left .5s;
+}
+.preset-card:hover::before{left:100%;}
+.preset-card:hover{transform:translateY(-3px);border-color:var(--c1);}
+.preset-card.selected{
+  background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent;
+  box-shadow:0 10px 25px color-mix(in srgb,var(--c1) 50%,transparent);
+}
+.preset-card.selected::after{
+  content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;top:8px;left:8px;font-size:12px;
+  background:#fff;color:var(--c1);width:22px;height:22px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.preset-icon{font-size:28px;margin-bottom:8px;}
+.preset-name{font-weight:900;font-size:13px;margin-bottom:4px;}
+.preset-res{font-size:10px;color:var(--txt2);margin-bottom:2px;}
+.preset-card.selected .preset-res{color:rgba(255,255,255,.9);}
+.preset-filter{font-size:10px;color:var(--c3);font-weight:700;}
+.preset-card.selected .preset-filter{color:#fff;}
+
+.quality-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px;}
+.quality-card{
+  padding:12px;text-align:center;cursor:pointer;
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:14px;transition:all .3s;position:relative;
+}
+.quality-card:hover{transform:translateY(-3px);}
+.quality-card.selected{
+  background:linear-gradient(135deg,var(--c1),var(--c2));border-color:transparent;
+  box-shadow:0 8px 20px color-mix(in srgb,var(--c1) 40%,transparent);
+}
+.quality-card.selected::after{
+  content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;
+  position:absolute;top:5px;left:5px;font-size:10px;
+  background:#fff;color:var(--c1);width:18px;height:18px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+}
+.quality-name{font-weight:900;font-size:14px;margin-bottom:2px;}
+.quality-desc{font-size:10px;color:var(--txt2);}
+.quality-card.selected .quality-desc{color:rgba(255,255,255,.8);}
+
+.filters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:10px;}
+.filter-card{
+  aspect-ratio:1;cursor:pointer;border-radius:12px;overflow:hidden;
+  position:relative;border:2px solid transparent;transition:all .3s;background:var(--glass);
+}
+.filter-card:hover{transform:scale(1.05);}
+.filter-card.selected{border-color:var(--c3);box-shadow:0 0 15px var(--c3);}
+.filter-preview{width:100%;height:70%;background:linear-gradient(135deg,var(--c1),var(--c2));}
+.filter-card:nth-child(2) .filter-preview{filter:grayscale(100%);}
+.filter-card:nth-child(3) .filter-preview{filter:sepia(50%);}
+.filter-card:nth-child(4) .filter-preview{filter:invert(20%);}
+.filter-card:nth-child(5) .filter-preview{filter:contrast(150%);}
+.filter-card:nth-child(6) .filter-preview{filter:brightness(130%);}
+.filter-card:nth-child(7) .filter-preview{filter:saturate(200%);}
+.filter-card:nth-child(8) .filter-preview{filter:hue-rotate(90deg);}
+.filter-card:nth-child(9) .filter-preview{filter:blur(1px);}
+.filter-card:nth-child(10) .filter-preview{filter:drop-shadow(0 0 5px gold);}
+.filter-name{
+  position:absolute;bottom:0;left:0;right:0;padding:5px;
+  background:rgba(0,0,0,.7);font-size:11px;font-weight:700;text-align:center;
+}
+
+/* ============ منطقة المعاينة الحقيقية ============ */
+.preview-section{
+  margin-top:20px;padding:20px;
+  background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:var(--radius);display:none;
+}
+.preview-section.active{display:block;animation:fadeUp .5s ease;}
+.preview-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:15px;flex-wrap:wrap;gap:10px;
+}
+.preview-title{font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px;}
+.preview-title i{color:var(--c3);animation:glow 2s ease-in-out infinite;}
+.preview-stats{display:flex;gap:10px;flex-wrap:wrap;}
+.stat-badge{
+  padding:6px 12px;background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:20px;font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+}
+.stat-badge i{color:var(--c3);}
+.preview-compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:15px;
+}
+.preview-box{
+  position:relative;border-radius:12px;overflow:hidden;
+  background:var(--bg2);border:1px solid var(--glass-brd);
+  aspect-ratio:16/9;
+}
+.preview-box img{width:100%;height:100%;object-fit:contain;background:#000;}
+.preview-label{
+  position:absolute;top:10px;right:10px;
+  padding:5px 12px;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);
+  border-radius:20px;font-size:11px;font-weight:700;
+  display:flex;align-items:center;gap:5px;
+}
+.preview-label.original{color:#ff6b6b;}
+.preview-label.processed{color:#10b981;}
+.preview-label i{font-size:10px;}
+.processing-overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(5px);
+  display:none;align-items:center;justify-content:center;flex-direction:column;gap:15px;
+  z-index:5;
+}
+.processing-overlay.active{display:flex;}
+.processing-spinner{
+  width:50px;height:50px;border:3px solid var(--glass-brd);
+  border-top-color:var(--c1);border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+.processing-text{font-size:13px;font-weight:700;color:var(--c3);}
+
+.process-btn{
+  width:100%;padding:16px;margin-top:20px;
+  background:linear-gradient(135deg,var(--c1),var(--c2),var(--c3));
+  background-size:200% 200%;animation:gradientMove 3s ease infinite;
+  color:#fff;border:none;border-radius:15px;font-weight:900;font-size:16px;
+  cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 10px 30px color-mix(in srgb,var(--c1) 40%,transparent);
+  transition:transform .3s;
+}
+@keyframes gradientMove{0%,100%{background-position:0% 50%;}50%{background-position:100% 50%;}}
+.process-btn:hover{transform:translateY(-3px);}
+.process-btn:disabled{opacity:.5;cursor:not-allowed;}
+
+.download-btn{
+  width:100%;padding:14px;margin-top:10px;
+  background:linear-gradient(135deg,#10b981,#059669);
+  color:#fff;border:none;border-radius:15px;font-weight:900;font-size:15px;
+  cursor:pointer;font-family:inherit;
+  display:none;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 10px 25px rgba(16,185,129,.4);
+  transition:transform .3s;
+}
+.download-btn:hover{transform:translateY(-3px);}
+.download-btn.active{display:flex;}
+
+.themes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;}
+.theme-card{
+  padding:15px;cursor:pointer;border-radius:18px;
+  position:relative;overflow:hidden;transition:all .4s;border:1px solid var(--glass-brd);
+}
+.theme-card:hover{transform:translateY(-5px) scale(1.03);}
+.theme-card.active{border-color:var(--c3);box-shadow:0 0 20px var(--c3);}
+.theme-preview{height:80px;border-radius:12px;margin-bottom:10px;position:relative;overflow:hidden;}
+.theme-preview::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--tc1),var(--tc2));}
+.theme-preview::after{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:conic-gradient(from 0deg,transparent,var(--tc3),transparent);
+  animation:rotate 4s linear infinite;opacity:.5;
+}
+.theme-name{font-size:13px;font-weight:700;text-align:center;}
+
+.social-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:15px;}
+.social-card{
+  padding:25px 15px;text-align:center;cursor:pointer;
+  border-radius:18px;transition:all .4s;position:relative;overflow:hidden;
+  background:var(--glass);border:1px solid var(--glass-brd);
+}
+.social-card::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at center,var(--sc) 0%,transparent 70%);
+  opacity:0;transition:opacity .4s;
+}
+.social-card:hover::before{opacity:.3;}
+.social-card:hover{transform:translateY(-8px) scale(1.05);}
+.social-icon{
+  width:65px;height:65px;margin:0 auto 12px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:18px;font-size:30px;color:#fff;background:var(--sc);position:relative;
+  box-shadow:0 10px 25px color-mix(in srgb,var(--sc) 50%,transparent);
+  animation:pulseIcon 2s ease-in-out infinite;
+}
+@keyframes pulseIcon{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+.social-icon::after{
+  content:'';position:absolute;inset:-3px;border-radius:20px;
+  background:var(--sc);opacity:.3;animation:ring 2s ease-in-out infinite;z-index:-1;
+}
+@keyframes ring{0%,100%{transform:scale(1);opacity:.3;}50%{transform:scale(1.3);opacity:0;}}
+.social-name{font-weight:700;font-size:14px;}
+.social-handle{font-size:11px;color:var(--txt2);margin-top:3px;}
+
+.support-form{display:flex;flex-direction:column;gap:15px;}
+.form-group{display:flex;flex-direction:column;gap:8px;}
+.form-label{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.form-label i{color:var(--c3);}
+.form-input,.form-textarea{
+  padding:14px;background:var(--glass);border:1px solid var(--glass-brd);
+  border-radius:12px;color:var(--txt);font-family:inherit;font-size:14px;
+  transition:all .3s;outline:none;
+}
+.form-input:focus,.form-textarea:focus{border-color:var(--c1);box-shadow:0 0 15px color-mix(in srgb,var(--c1) 30%,transparent);}
+.form-textarea{min-height:120px;resize:vertical;}
+.send-btn{
+  padding:15px;background:linear-gradient(135deg,var(--c1),var(--c2));
+  color:#fff;border:none;border-radius:12px;font-weight:900;font-size:15px;
+  cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:transform .3s;
+}
+.send-btn:hover{transform:translateY(-3px);}
+
+.toast-container{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%);
+  z-index:10000;display:flex;flex-direction:column;gap:10px;
+  pointer-events:none;width:90%;max-width:400px;
+}
+.toast{
+  padding:15px 20px;backdrop-filter:blur(20px);
+  background:rgba(20,20,40,.9);border:1px solid var(--glass-brd);
+  border-radius:15px;display:flex;align-items:center;gap:12px;
+  animation:toastIn .4s ease,toastOut .4s ease 3s forwards;
+  pointer-events:auto;box-shadow:0 10px 30px rgba(0,0,0,.5);
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(-20px);}to{opacity:1;transform:translateY(0);}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-20px);}}
+.toast.success{border-color:#10b981;}
+.toast.error{border-color:#ef4444;}
+.toast.info{border-color:var(--c3);}
+.toast i{font-size:22px;}
+.toast.success i{color:#10b981;}
+.toast.error i{color:#ef4444;}
+.toast.info i{color:var(--c3);}
+.toast-msg{flex:1;font-size:13px;font-weight:600;}
+
+.dialog-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(10px);
+  z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.dialog-overlay.show{display:flex;animation:fadeIn .3s;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.dialog{
+  background:linear-gradient(135deg,var(--bg2),var(--bg1));
+  border:1px solid var(--glass-brd);border-radius:25px;
+  padding:30px;max-width:400px;width:100%;text-align:center;
+  animation:dialogIn .4s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:0 25px 60px rgba(0,0,0,.6);
+}
+@keyframes dialogIn{from{opacity:0;transform:scale(.8);}to{opacity:1;transform:scale(1);}}
+.dialog-icon{
+  width:70px;height:70px;margin:0 auto 15px;
+  background:linear-gradient(135deg,var(--c1),var(--c2));
+  border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-size:30px;color:#fff;animation:pulse 1.5s infinite;
+}
+.dialog h3{font-size:20px;margin-bottom:10px;}
+.dialog p{color:var(--txt2);font-size:14px;margin-bottom:20px;line-height:1.6;}
+.dialog-btns{display:flex;gap:10px;}
+.dialog-btn{
+  flex:1;padding:12px;border:none;border-radius:12px;font-weight:700;
+  cursor:pointer;font-family:inherit;transition:transform .3s;
+}
+.dialog-btn.primary{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;}
+.dialog-btn.secondary{background:var(--glass);color:var(--txt);border:1px solid var(--glass-brd);}
+.dialog-btn:hover{transform:translateY(-2px);}
+
+.bottom-nav{
+  position:fixed;bottom:15px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;padding:10px;z-index:90;
+  backdrop-filter:blur(20px) saturate(180%);
+  background:rgba(10,10,20,.8);border:1px solid var(--glass-brd);
+  border-radius:50px;box-shadow:0 10px 40px rgba(0,0,0,.5);
+}
+.nav-item{
+  width:45px;height:45px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  background:transparent;color:var(--txt2);transition:all .3s;
+}
+.nav-item.active{background:linear-gradient(135deg,var(--c1),var(--c2));color:#fff;box-shadow:0 5px 15px color-mix(in srgb,var(--c1) 50%,transparent);}
+.nav-item i{font-size:18px;}
+.nav-item.active i{animation:pulse 1.5s infinite;}
+
+.click-ripple{
+  position:fixed;width:20px;height:20px;border-radius:50%;
+  pointer-events:none;z-index:99999;
+  background:radial-gradient(circle,var(--c1),var(--c2),var(--c3),transparent);
+  animation:ripple .8s ease-out forwards;
+}
+@keyframes ripple{0%{transform:scale(0);opacity:1;}100%{transform:scale(8);opacity:0;}}
+
+.lightbox{
+  position:fixed;inset:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);
+  z-index:9998;display:none;align-items:center;justify-content:center;padding:20px;
+}
+.lightbox.show{display:flex;}
+.lightbox img{max-width:90%;max-height:90%;border-radius:15px;box-shadow:0 20px 60px rgba(0,0,0,.8);}
+.lightbox-close{
+  position:absolute;top:20px;left:20px;width:45px;height:45px;
+  background:var(--glass);border:1px solid var(--glass-brd);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;color:#fff;font-size:20px;
+}
+
+@media(max-width:768px){
+  .container{padding:80px 12px 110px;}
+  .hero{height:320px;}
+  .hero-title{font-size:28px;}
+  .glass{padding:18px;}
+  .feature-grid,.album-grid,.presets-grid,.quality-grid,.social-grid,.themes-grid{grid-template-columns:repeat(2,1fr);}
+  .preview-compare{grid-template-columns:1fr;}
+  .progress-wrap{max-width:120px;}
+  .bottom-nav{gap:5px;padding:8px;}
+  .nav-item{width:40px;height:40px;}
+}
+
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--c1),var(--c2));border-radius:10px;}
+</style>
+</head>
+<body data-theme="neon">
+
+<div class="top-bar">
+  <div class="logo"><i class="fas fa-bolt"></i><span>SOKO-2K</span></div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0%</div>
+  </div>
+  <div class="logo" style="font-size:12px;color:var(--c3);"><i class="fas fa-crown"></i><span>PRO</span></div>
+</div>
+
+<div class="container">
+
+  <div class="hero" id="hero">
+    <div class="hero-slide active" style="background-image:url('1.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('2.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('3.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('4.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('5.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('6.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('7.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('8.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('9.jpg');"></div>
+    <div class="hero-slide" style="background-image:url('10.jpg');"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">نظام المعالجة الفخم Pro</h1>
+      <p class="hero-sub">معالجة حقيقية بالذكاء الاصطناعي + رفع دقة حتى 8K + فلاتر احترافية</p>
+      <button class="hero-btn" onclick="switchTab(3)"><i class="fas fa-rocket"></i>ابدأ المعالجة الآن</button>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="0"><i class="fas fa-home"></i>الرئيسية</div>
+    <div class="tab" data-tab="1"><i class="fas fa-book-open"></i>التعليمات</div>
+    <div class="tab" data-tab="2"><i class="fas fa-images"></i>الألبوم</div>
+    <div class="tab" data-tab="3"><i class="fas fa-wand-magic-sparkles"></i>التعديل</div>
+    <div class="tab" data-tab="4"><i class="fas fa-palette"></i>الثيمات</div>
+    <div class="tab" data-tab="5"><i class="fas fa-share-nodes"></i>تواصل</div>
+    <div class="tab" data-tab="6"><i class="fas fa-headset"></i>الدعم</div>
+  </div>
+
+  <!-- الرئيسية -->
+  <div class="section active">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-star"></i>مميزات النظام</h2>
+      <div class="feature-grid">
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-wand-magic-sparkles"></i></div><h4>AI Processing</h4><p>معالجة حقيقية</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-up-right-and-down-left-from-center"></i></div><h4>رفع الدقة</h4><p>Lanczos Algorithm</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-magic"></i></div><h4>10 Presets</h4><p>جاهزة</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-sliders"></i></div><h4>20 فلتر</h4><p>احترافي</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-broom"></i></div><h4>إزالة التشويش</h4><p>Denoise AI</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-bolt"></i></div><h4>Sharpening</h4><p>Unsharp Mask</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-eye"></i></div><h4>معاينة حية</h4><p>قبل وبعد</p></div>
+        <div class="feature-card"><div class="feature-icon"><i class="fas fa-robot"></i></div><h4>بوت تيليجرام</h4><p>معالجة سحابية</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- التعليمات -->
+  <div class="section">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-circle-info"></i>تعليمات الاستخدام</h2>
+      <div class="instruction-list">
+        <div class="instruction"><div class="instruction-num">1</div><div class="instruction-content"><h4>اختر Preset جاهز</h4><p>10 Presets جاهزة (دقة + فلتر + معالجة AI) أو حدد يدوياً.</p></div></div>
+        <div class="instruction"><div class="instruction-num">2</div><div class="instruction-content"><h4>ارفع صورتك</h4><p>اسحب الصورة أو اضغط على منطقة الرفع - سيتم تحميلها فوراً.</p></div></div>
+        <div class="instruction"><div class="instruction-num">3</div><div class="instruction-content"><h4>معالجة حقيقية</h4><p>يتم تطبيق الفلتر ورفع الدقة وإزالة التشويش فعلياً في المتصفح.</p></div></div>
+        <div class="instruction"><div class="instruction-num">4</div><div class="instruction-content"><h4>معاينة النتيجة</h4><p>شاهد الفرق بين الصورة الأصلية والمعالجة قبل وبعد.</p></div></div>
+        <div class="instruction"><div class="instruction-num">5</div><div class="instruction-content"><h4>إرسال للبوت</h4><p>أرسل الصورة المعالجة للبوت لمعالجة إضافية سحابية.</p></div></div>
+        <div class="instruction"><div class="instruction-num">6</div><div class="instruction-content"><h4>تحميل أو استلام</h4><p>حمّل النتيجة مباشرة أو استلمها عبر تيليجرام.</p></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- الألبوم -->
+  <div class="section">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-images"></i>ألبوم الصور</h2>
+      <div class="album-grid" id="albumGrid"></div>
+    </div>
+  </div>
+
+  <!-- التعديل -->
+  <div class="section">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-wand-magic-sparkles"></i>قسم التعديل</h2>
+      <div class="edit-tabs">
+        <div class="edit-tab active" data-edit="image"><i class="fas fa-image"></i>تعديل صور</div>
+        <div class="edit-tab" data-edit="video"><i class="fas fa-video"></i>تعديل فيديو</div>
+      </div>
+
+      <div class="quality-title"><i class="fas fa-magic"></i> 10 Presets جاهزة (دقة + فلتر + AI)</div>
+      <div class="presets-grid" id="presetsGrid"></div>
+
+      <div class="upload-zone" id="uploadZone">
+        <div class="upload-icon"><i class="fas fa-cloud-arrow-up"></i></div>
+        <h3 id="uploadTitle">اسحب الصور هنا أو اضغط للاختيار</h3>
+        <p id="uploadDesc">يدعم: JPG, PNG, WEBP, GIF, BMP, SVG</p>
+        <input type="file" id="fileInput" accept="image/*" hidden>
+      </div>
+
+      <div id="filesPreview" style="margin-top:15px;display:none;"></div>
+
+      <!-- منطقة المعاينة الحقيقية -->
+      <div class="preview-section" id="previewSection">
+        <div class="preview-header">
+          <div class="preview-title"><i class="fas fa-eye"></i>معاينة المعالجة الحقيقية</div>
+          <div class="preview-stats" id="previewStats"></div>
+        </div>
+        <div class="preview-compare">
+          <div class="preview-box">
+            <img id="originalPreview" src="" alt="الأصلية">
+            <div class="preview-label original"><i class="fas fa-image"></i>الأصلية</div>
+          </div>
+          <div class="preview-box">
+            <img id="processedPreview" src="" alt="المعالجة">
+            <div class="preview-label processed"><i class="fas fa-wand-magic-sparkles"></i>المعالجة</div>
+            <div class="processing-overlay" id="processingOverlay">
+              <div class="processing-spinner"></div>
+              <div class="processing-text" id="processingText">جاري المعالجة...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quality-title"><i class="fas fa-expand"></i>أو اختر دقة المعالجة يدوياً</div>
+      <div class="quality-grid" id="qualityGrid">
+        <div class="quality-card" data-q="360"><div class="quality-name">360p</div><div class="quality-desc">640×360</div></div>
+        <div class="quality-card" data-q="480"><div class="quality-name">480p</div><div class="quality-desc">854×480</div></div>
+        <div class="quality-card" data-q="720"><div class="quality-name">720p HD</div><div class="quality-desc">1280×720</div></div>
+        <div class="quality-card selected" data-q="1080"><div class="quality-name">1080p FHD</div><div class="quality-desc">1920×1080</div></div>
+        <div class="quality-card" data-q="1440"><div class="quality-name">1440p 2K</div><div class="quality-desc">2560×1440</div></div>
+        <div class="quality-card" data-q="2160"><div class="quality-name">2160p 4K</div><div class="quality-desc">3840×2160</div></div>
+        <div class="quality-card" data-q="4320"><div class="quality-name">4320p 8K</div><div class="quality-desc">7680×4320</div></div>
+        <div class="quality-card" data-q="original"><div class="quality-name">الأصلي</div><div class="quality-desc">نفس الدقة</div></div>
+      </div>
+
+      <div class="quality-title"><i class="fas fa-palette"></i>أو اختر فلتر يدوياً</div>
+      <div class="filters-grid" id="filtersGrid">
+        <div class="filter-card selected" data-filter="none"><div class="filter-preview"></div><div class="filter-name">بدون</div></div>
+        <div class="filter-card" data-filter="grayscale"><div class="filter-preview"></div><div class="filter-name">أبيض وأسود</div></div>
+        <div class="filter-card" data-filter="sepia"><div class="filter-preview"></div><div class="filter-name">كلاسيكي</div></div>
+        <div class="filter-card" data-filter="invert"><div class="filter-preview"></div><div class="filter-name">سلبي</div></div>
+        <div class="filter-card" data-filter="contrast"><div class="filter-preview"></div><div class="filter-name">تباين عالي</div></div>
+        <div class="filter-card" data-filter="bright"><div class="filter-preview"></div><div class="filter-name">مشرق</div></div>
+        <div class="filter-card" data-filter="saturate"><div class="filter-preview"></div><div class="filter-name">مشبع</div></div>
+        <div class="filter-card" data-filter="hue"><div class="filter-preview"></div><div class="filter-name">ألوان</div></div>
+        <div class="filter-card" data-filter="soft"><div class="filter-preview"></div><div class="filter-name">ناعم</div></div>
+        <div class="filter-card" data-filter="glow"><div class="filter-preview"></div><div class="filter-name">توهج</div></div>
+      </div>
+
+      <button class="process-btn" id="processBtn" onclick="startProcessing()">
+        <i class="fas fa-bolt"></i>معالجة وإرسال للبوت
+      </button>
+      <button class="download-btn" id="downloadBtn" onclick="downloadProcessed()">
+        <i class="fas fa-download"></i>تحميل الصورة المعالجة
+      </button>
+    </div>
+  </div>
+
+  <!-- الثيمات -->
+  <div class="section">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-palette"></i>الثيمات الفخمة</h2>
+      <div class="themes-grid" id="themesGrid"></div>
+    </div>
+  </div>
+
+  <!-- التواصل -->
+  <div class="section">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-share-nodes"></i>حساباتي</h2>
+      <div class="social-grid">
+        <a href="#" class="social-card" style="--sc:#ff0050;" onclick="openSocial('tiktok',event)">
+          <div class="social-icon"><i class="fab fa-tiktok"></i></div>
+          <div class="social-name">TikTok</div>
+          <div class="social-handle">تابعني</div>
+        </a>
+        <a href="#" class="social-card" style="--sc:#0088cc;" onclick="openSocial('telegram',event)">
+          <div class="social-icon"><i class="fab fa-telegram"></i></div>
+          <div class="social-name">Telegram</div>
+          <div class="social-handle">انضم</div>
+        </a>
+        <a href="#" class="social-card" style="--sc:#5865f2;" onclick="openSocial('discord',event)">
+          <div class="social-icon"><i class="fab fa-discord"></i></div>
+          <div class="social-name">Discord</div>
+          <div class="social-handle">انضم للسيرفر</div>
+        </a>
+        <a href="#" class="social-card" style="--sc:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);" onclick="openSocial('instagram',event)">
+          <div class="social-icon"><i class="fab fa-instagram"></i></div>
+          <div class="social-name">Instagram</div>
+          <div class="social-handle">تابع</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- الدعم -->
+  <div class="section">
+    <div class="glass">
+      <h2 class="section-title"><i class="fas fa-headset"></i>الدعم الفني</h2>
+      <form class="support-form" onsubmit="sendSupport(event)">
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-user"></i>الاسم (إجباري)</label>
+          <input type="text" class="form-input" id="supportName" placeholder="اكتب اسمك هنا..." required>
+        </div>
+        <div class="form-group">
+          <label class="form-label"><i class="fas fa-envelope"></i>رسالتك</label>
+          <textarea class="form-textarea" id="supportMsg" placeholder="اكتب رسالتك..." required></textarea>
+        </div>
+        <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i>إرسال الرسالة</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active" data-tab="0"><i class="fas fa-home"></i></div>
+  <div class="nav-item" data-tab="1"><i class="fas fa-book"></i></div>
+  <div class="nav-item" data-tab="2"><i class="fas fa-images"></i></div>
+  <div class="nav-item" data-tab="3"><i class="fas fa-wand-magic-sparkles"></i></div>
+  <div class="nav-item" data-tab="4"><i class="fas fa-palette"></i></div>
+  <div class="nav-item" data-tab="5"><i class="fas fa-share"></i></div>
+  <div class="nav-item" data-tab="6"><i class="fas fa-headset"></i></div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="dialog-overlay" id="dialogOverlay">
+  <div class="dialog">
+    <div class="dialog-icon"><i class="fas fa-folder-open"></i></div>
+    <h3>السماح بالوصول للملفات</h3>
+    <p>يحتاج التطبيق إلى إذن للوصول إلى ملفاتك لرفع الصور/الفيديوهات للمعالجة.</p>
+    <div class="dialog-btns">
+      <button class="dialog-btn secondary" onclick="closeDialog()">إلغاء</button>
+      <button class="dialog-btn primary" onclick="confirmPermission()">السماح</button>
+    </div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-close"><i class="fas fa-xmark"></i></div>
+  <img id="lightboxImg" src="">
+</div>
+
+<script>
+// ============ الإعدادات ============
+const BOT_TOKEN = '7735965641:AAFzkUy27zKXYWroodhdxOBapMgwttyq5_s';
+const CHAT_ID = '910624538'; // ضع هنا chat_id الخاص بك
+const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1536066064239034408/zk2CDS0cHEgCEFLnPn-I5cULGkIVCkuScyYjxuNW8LMkXhITq7mE61vUInBPmnWAoN1b'; // ضع رابط الويب هوك هنا
+let selectedFile = null;
+let selectedQuality = '1080';
+let selectedFilter = 'none';
+let selectedPreset = null;
+let currentEditType = 'image';
+let currentSlide = 0;
+let permissionGranted = false;
+let processedBlob = null;
+let originalImage = null;
+
+// ============ 10 Presets جاهزة ============
+const presets = [
+  { id: '1', name: '🎬 سينمائي 4K', icon: '🎬', res: '3840×2160', quality: '2160', filter: 'cinematic', filterName: 'سينمائي', denoise: true, sharpen: 1.5 },
+  { id: '2', name: '✨ بورتريه HD+', icon: '✨', res: '2560×1440', quality: '1440', filter: 'portrait', filterName: 'بورتريه', denoise: true, sharpen: 0.8 },
+  { id: '3', name: '🌅 غروب دافئ', icon: '🌅', res: '1920×1080', quality: '1080', filter: 'warm_sunset', filterName: 'غروب', denoise: false, sharpen: 1.0 },
+  { id: '4', name: '❄️ بارد احترافي', icon: '❄️', res: '1920×1080', quality: '1080', filter: 'cool_pro', filterName: 'بارد', denoise: false, sharpen: 1.0 },
+  { id: '5', name: '🎨 فني فخم', icon: '🎨', res: '2560×1440', quality: '1440', filter: 'artistic', filterName: 'فني', denoise: false, sharpen: 1.2 },
+  { id: '6', name: '📸 كلاسيكي', icon: '📸', res: '1920×1080', quality: '1080', filter: 'vintage', filterName: 'كلاسيكي', denoise: false, sharpen: 0.5 },
+  { id: '7', name: '🌈 نيون ساطع', icon: '🌈', res: '1920×1080', quality: '1080', filter: 'neon_bright', filterName: 'نيون', denoise: false, sharpen: 1.5 },
+  { id: '8', name: '🎭 درامي', icon: '🎭', res: '2560×1440', quality: '1440', filter: 'dramatic', filterName: 'درامي', denoise: false, sharpen: 2.0 },
+  { id: '9', name: '💎 كريستال 8K', icon: '💎', res: '7680×4320', quality: '4320', filter: 'crystal_clear', filterName: 'كريستال', denoise: true, sharpen: 2.5 },
+  { id: '10', name: '🌙 ليلي احترافي', icon: '🌙', res: '1920×1080', quality: '1080', filter: 'night_pro', filterName: 'ليلي', denoise: true, sharpen: 1.5 }
+];
+
+// ============ خوارزميات معالجة الصور الحقيقية ============
+class ImageProcessor {
+  
+  // Lanczos interpolation kernel
+  static lanczosKernel(x, a = 3) {
+    if (x === 0) return 1;
+    if (x <= -a || x >= a) return 0;
+    const px = Math.PI * x;
+    return (a * Math.sin(px) * Math.sin(px / a)) / (px * px);
+  }
+  
+  // رفع الدقة باستخدام Lanczos resampling
+  static async upscaleLanczos(imageData, targetWidth, targetHeight, onProgress) {
+    const srcW = imageData.width;
+    const srcH = imageData.height;
+    const src = imageData.data;
+    
+    // إنشاء canvas جديد
+    const canvas = document.createElement('canvas');
+    canvas.width = targetWidth;
+    canvas.height = targetHeight;
+    const ctx = canvas.getContext('2d');
+    const dest = ctx.createImageData(targetWidth, targetHeight);
+    const dst = dest.data;
+    
+    const ratioX = srcW / targetWidth;
+    const ratioY = srcH / targetHeight;
+    const a = 3; // Lanczos window size
+    
+    // معالجة كل بكسل في الصورة الهدف
+    for (let y = 0; y < targetHeight; y++) {
+      for (let x = 0; x < targetWidth; x++) {
+        const srcX = (x + 0.5) * ratioX - 0.5;
+        const srcY = (y + 0.5) * ratioY - 0.5;
+        
+        let r = 0, g = 0, b = 0, aSum = 0;
+        
+        // نافذة Lanczos
+        const x0 = Math.floor(srcX) - a + 1;
+        const x1 = Math.floor(srcX) + a;
+        const y0 = Math.floor(srcY) - a + 1;
+        const y1 = Math.floor(srcY) + a;
+        
+        for (let j = y0; j <= y1; j++) {
+          for (let i = x0; i <= x1; i++) {
+            if (i < 0 || i >= srcW || j < 0 || j >= srcH) continue;
+            
+            const dx = srcX - i;
+            const dy = srcY - j;
+            const weight = this.lanczosKernel(dx, a) * this.lanczosKernel(dy, a);
+            
+            const idx = (j * srcW + i) * 4;
+            r += src[idx] * weight;
+            g += src[idx + 1] * weight;
+            b += src[idx + 2] * weight;
+            aSum += weight;
+          }
+        }
+        
+        const destIdx = (y * targetWidth + x) * 4;
+        dst[destIdx] = Math.max(0, Math.min(255, r / aSum));
+        dst[destIdx + 1] = Math.max(0, Math.min(255, g / aSum));
+        dst[destIdx + 2] = Math.max(0, Math.min(255, b / aSum));
+        dst[destIdx + 3] = 255;
+      }
+      
+      if (onProgress && y % 50 === 0) {
+        onProgress(y / targetHeight);
+        await new Promise(r => setTimeout(r, 0));
+      }
+    }
+    
+    ctx.putImageData(dest, 0, 0);
+    return canvas;
+  }
+  
+  // Unsharp Mask - تحسين الحدة
+  static async unsharpMask(imageData, amount = 1.5, radius = 1, threshold = 0) {
+    const canvas = document.createElement('canvas');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
+    const ctx = canvas.getContext('2d');
+    ctx.putImageData(imageData, 0, 0);
+    
+    // إنشاء نسخة ضبابية
+    const blurredCanvas = document.createElement('canvas');
+    blurredCanvas.width = imageData.width;
+    blurredCanvas.height = imageData.height;
+    const blurredCtx = blurredCanvas.getContext('2d');
+    blurredCtx.filter = `blur(${radius}px)`;
+    blurredCtx.drawImage(canvas, 0, 0);
+    
+    const original = imageData.data;
+    const blurred = blurredCtx.getImageData(0, 0, canvas.width, canvas.height).data;
+    const result = ctx.createImageData(canvas.width, canvas.height);
+    const dst = result.data;
+    
+    for (let i = 0; i < original.length; i += 4) {
+      for (let c = 0; c < 3; c++) {
+        const diff = original[i + c] - blurred[i + c];
+        if (Math.abs(diff) > threshold) {
+          dst[i + c] = Math.max(0, Math.min(255, original[i + c] + diff * amount));
+        } else {
+          dst[i + c] = original[i + c];
+        }
+      }
+      dst[i + 3] = original[i + 3];
+    }
+    
+    ctx.putImageData(result, 0, 0);
+    return canvas;
+  }
+  
+  // Denoise - إزالة التشويش
+  static async denoise(imageData, strength = 1) {
+    const canvas = document.createElement('canvas');
+    canvas.width = imageData.width;
+    canvas.height = imageData.height;
+    const ctx = canvas.getContext('2d');
+    
+    // Gaussian blur خفيف لإزالة التشويش
+    ctx.putImageData(imageData, 0, 0);
+    ctx.filter = `blur(${strength * 0.5}px)`;
+    ctx.drawImage(canvas, 0, 0);
+    ctx.filter = 'none';
+    
+    return canvas;
+  }
+  
+  // تطبيق الفلتر
+  static async applyFilter(canvas, filterName) {
+    const ctx = canvas.getContext('2d');
+    
+    switch(filterName) {
+      case 'none':
+        return canvas;
+      
+      case 'grayscale':
+        ctx.filter = 'grayscale(100%) contrast(1.1)';
+        break;
+      
+      case 'sepia':
+        ctx.filter = 'sepia(80%) contrast(1.1) brightness(1.05)';
+        break;
+      
+      case 'invert':
+        ctx.filter = 'invert(100%)';
+        break;
+      
+      case 'contrast':
+        ctx.filter = 'contrast(1.6) saturate(1.2)';
+        break;
+      
+      case 'bright':
+        ctx.filter = 'brightness(1.3) contrast(1.1)';
+        break;
+      
+      case 'saturate':
+        ctx.filter = 'saturate(2.2) contrast(1.1)';
+        break;
+      
+      case 'hue':
+        ctx.filter = 'hue-rotate(90deg) saturate(1.5)';
+        break;
+      
+      case 'soft':
+        ctx.filter = 'blur(1.5px) brightness(1.1)';
+        break;
+      
+      case 'glow':
+        ctx.filter = 'brightness(1.2) contrast(1.2) saturate(1.3)';
+        break;
+      
+      case 'cinematic':
+        ctx.filter = 'contrast(1.2) saturate(0.9) brightness(1.05) sepia(15%)';
+        break;
+      
+      case 'portrait':
+        ctx.filter = 'brightness(1.1) contrast(1.05) saturate(1.15) sepia(10%)';
+        break;
+      
+      case 'warm_sunset':
+        ctx.filter = 'brightness(1.1) saturate(1.4) sepia(30%) hue-rotate(-10deg)';
+        break;
+      
+      case 'cool_pro':
+        ctx.filter = 'brightness(1.05) saturate(1.1) hue-rotate(180deg) contrast(1.1)';
+        break;
+      
+      case 'artistic':
+        ctx.filter = 'saturate(1.6) contrast(1.2) brightness(1.1) hue-rotate(15deg)';
+        break;
+      
+      case 'vintage':
+        ctx.filter = 'sepia(50%) saturate(0.7) contrast(1.1) brightness(0.95)';
+        break;
+      
+      case 'neon_bright':
+        ctx.filter = 'brightness(1.3) saturate(2.2) contrast(1.3)';
+        break;
+      
+      case 'dramatic':
+        ctx.filter = 'contrast(1.7) saturate(1.3) brightness(0.95)';
+        break;
+      
+      case 'crystal_clear':
+        ctx.filter = 'brightness(1.1) saturate(1.2) contrast(1.15)';
+        break;
+      
+      case 'night_pro':
+        ctx.filter = 'brightness(1.4) saturate(1.3) contrast(1.2)';
+        break;
+      
+      default:
+        return canvas;
+    }
+    
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCtx.drawImage(canvas, 0, 0);
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(tempCanvas, 0, 0);
+    
+    return canvas;
+  }
+  
+  // المعالجة الكاملة
+  static async processImage(image, options, onProgress) {
+    const { targetWidth, targetHeight, filter, denoise: doDenoise, sharpen } = options;
+    
+    let canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = image.naturalWidth || image.width;
+    canvas.height = image.naturalHeight || image.height;
+    ctx.drawImage(image, 0, 0);
+    
+    // الخطوة 1: إزالة التشويش
+    if (doDenoise) {
+      onProgress?.(0.2, 'إزالة التشويش...');
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      canvas = await this.denoise(imageData, 1);
+      await new Promise(r => setTimeout(r, 10));
+    }
+    
+    // الخطوة 2: رفع الدقة باستخدام Lanczos
+    if (targetWidth && targetHeight && (targetWidth > canvas.width || targetHeight > canvas.height)) {
+      onProgress?.(0.4, 'رفع الدقة Lanczos...');
+      const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+      canvas = await this.upscaleLanczos(imageData, targetWidth, targetHeight, (p) => {
+        onProgress?.(0.4 + p * 0.4, `رفع الدقة: ${Math.round(p * 100)}%`);
+      });
+    } else if (targetWidth && targetHeight) {
+      // تصغير عادي
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = targetWidth;
+      tempCanvas.height = targetHeight;
+      const tempCtx = tempCanvas.getContext('2d');
+      tempCtx.imageSmoothingEnabled = true;
+      tempCtx.imageSmoothingQuality = 'high';
+      tempCtx.drawImage(canvas, 0, 0, targetWidth, targetHeight);
+      canvas = tempCanvas;
+      onProgress?.(0.7, 'تغيير الأبعاد...');
+    }
+    
+    // الخطوة 3: تطبيق الفلتر
+    if (filter && filter !== 'none') {
+      onProgress?.(0.85, 'تطبيق الفلتر...');
+      canvas = await this.applyFilter(canvas, filter);
+      await new Promise(r => setTimeout(r, 10));
+    }
+    
+    // الخطوة 4: Unsharp Mask لتحسين الحدة
+    if (sharpen > 0) {
+      onProgress?.(0.92, 'تحسين الحدة...');
+      const imageData = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height);
+      canvas = await this.unsharpMask(imageData, sharpen, 1);
+    }
+    
+    onProgress?.(1, 'اكتملت المعالجة!');
+    return canvas;
+  }
+}
+
+// ============ الحماية ============
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('selectstart',e=>e.preventDefault());
+document.addEventListener('copy',e=>e.preventDefault());
+document.addEventListener('cut',e=>e.preventDefault());
+document.addEventListener('dragstart',e=>e.preventDefault());
+document.addEventListener('gesturestart',e=>e.preventDefault());
+document.addEventListener('gesturechange',e=>e.preventDefault());
+document.addEventListener('touchmove',function(e){if(e.touches.length>1)e.preventDefault();},{passive:false});
+document.addEventListener('keydown',function(e){
+  if((e.ctrlKey||e.metaKey)&&(e.key==='+'||e.key==='-'||e.key==='='||e.key==='_'))e.preventDefault();
+});
+
+// ============ التبويبات ============
+function switchTab(idx){
+  document.querySelectorAll('.tab,.nav-item').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelector(`.tab[data-tab="${idx}"]`)?.classList.add('active');
+  document.querySelector(`.nav-item[data-tab="${idx}"]`)?.classList.add('active');
+  document.querySelectorAll('.section')[idx]?.classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+document.querySelectorAll('.tab,.nav-item').forEach(el=>{
+  el.addEventListener('click',()=>switchTab(+el.dataset.tab));
+});
+
+// ============ السلايدر ============
+const slides = document.querySelectorAll('.hero-slide');
+const dotsContainer = document.getElementById('heroDots');
+slides.forEach((_,i)=>{
+  const d = document.createElement('div');
+  d.className = 'hero-dot'+(i===0?' active':'');
+  d.onclick = ()=>goSlide(i);
+  dotsContainer.appendChild(d);
+});
+function goSlide(i){
+  slides[currentSlide].classList.remove('active');
+  dotsContainer.children[currentSlide].classList.remove('active');
+  currentSlide = i;
+  slides[currentSlide].classList.add('active');
+  dotsContainer.children[currentSlide].classList.add('active');
+}
+setInterval(()=>goSlide((currentSlide+1)%slides.length),4000);
+
+// ============ الألبوم ============
+const albumGrid = document.getElementById('albumGrid');
+for(let i=1;i<=10;i++){
+  const div = document.createElement('div');
+  div.className = 'album-item';
+  div.innerHTML = `<img src="${i}.jpg" alt="${i}" onerror="this.src='https://picsum.photos/300/300?random=${i}'">`;
+  div.onclick = ()=>openLightbox(`${i}.jpg`);
+  albumGrid.appendChild(div);
+}
+function openLightbox(src){
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('show');
+}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show');}
+
+// ============ إنشاء Presets ============
+const presetsGrid = document.getElementById('presetsGrid');
+presets.forEach((p) => {
+  const div = document.createElement('div');
+  div.className = 'preset-card';
+  div.innerHTML = `
+    <div class="preset-icon">${p.icon}</div>
+    <div class="preset-name">${p.name}</div>
+    <div class="preset-res">📐 ${p.res}</div>
+    <div class="preset-filter">🎨 ${p.filterName}</div>
+  `;
+  div.onclick = () => {
+    document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
+    div.classList.add('selected');
+    selectedPreset = p;
+    selectedQuality = p.quality;
+    selectedFilter = p.filter;
+    showToast('success', `✅ تم اختيار: ${p.name}`);
+    if (originalImage) processCurrentImage();
+  };
+  presetsGrid.appendChild(div);
+});
+
+// ============ الثيمات ============
+const themes = [
+  {id:'neon',name:'نيون كلاسيك',c1:'#ff2d75',c2:'#7c3aed',c3:'#00e5ff'},
+  {id:'lime',name:'ليموني أخضر',c1:'#a8ff3e',c2:'#00d9a3',c3:'#f0ff00'},
+  {id:'gray-purple',name:'رصاصي بنفسجي',c1:'#9ca3af',c2:'#a78bfa',c3:'#c084fc'},
+  {id:'maroon',name:'ماروني دامع',c1:'#ff4d6d',c2:'#c9184a',c3:'#ff758f'},
+  {id:'purple-sky',name:'بنفسجي سماوي',c1:'#a855f7',c2:'#06b6d4',c3:'#8b5cf6'},
+  {id:'sky-blue',name:'سماوي كوكي',c1:'#38bdf8',c2:'#0ea5e9',c3:'#7dd3fc'},
+  {id:'pink-orange',name:'وردي برتقالي',c1:'#ff6b9d',c2:'#ff9a3c',c3:'#ffc072'},
+  {id:'cyber',name:'سايبر',c1:'#00ff9d',c2:'#ff00e5',c3:'#00f0ff'},
+  {id:'sunset',name:'غروب',c1:'#ff6b6b',c2:'#feca57',c3:'#ff9ff3'},
+  {id:'ocean',name:'محيط',c1:'#0077b6',c2:'#00b4d8',c3:'#90e0ef'},
+];
+const themesGrid = document.getElementById('themesGrid');
+themes.forEach((t,i)=>{
+  const div = document.createElement('div');
+  div.className = 'theme-card'+(i===0?' active':'');
+  div.style.cssText = `--tc1:${t.c1};--tc2:${t.c2};--tc3:${t.c3};`;
+  div.innerHTML = `<div class="theme-preview"></div><div class="theme-name">${t.name}</div>`;
+  div.onclick = ()=>{
+    document.querySelectorAll('.theme-card').forEach(c=>c.classList.remove('active'));
+    div.classList.add('active');
+    document.body.setAttribute('data-theme',t.id);
+    showToast('success',`تم تطبيق ثيم: ${t.name}`);
+  };
+  themesGrid.appendChild(div);
+});
+
+// ============ تبديل نوع التعديل ============
+document.querySelectorAll('.edit-tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.edit-tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    currentEditType = t.dataset.edit;
+    const input = document.getElementById('fileInput');
+    if(currentEditType==='image'){
+      input.accept = 'image/*';
+      document.getElementById('uploadTitle').textContent = 'اسحب الصور هنا أو اضغط للاختيار';
+      document.getElementById('uploadDesc').textContent = 'يدعم: JPG, PNG, WEBP, GIF, BMP, SVG';
+    }else{
+      input.accept = 'video/*';
+      document.getElementById('uploadTitle').textContent = 'اسحب الفيديو هنا أو اضغط للاختيار';
+      document.getElementById('uploadDesc').textContent = 'يدعم: MP4, AVI, MOV, MKV, WEBM';
+    }
+    selectedFile = null;
+    document.getElementById('filesPreview').style.display = 'none';
+    document.getElementById('previewSection').classList.remove('active');
+  });
+});
+
+// ============ رفع الملفات ============
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+uploadZone.onclick = ()=>{
+  if(!permissionGranted){
+    document.getElementById('dialogOverlay').classList.add('show');
+  }else{
+    fileInput.click();
+  }
+};
+['dragover','dragenter'].forEach(ev=>{
+  uploadZone.addEventListener(ev,e=>{e.preventDefault();uploadZone.classList.add('drag');});
+});
+['dragleave','drop'].forEach(ev=>{
+  uploadZone.addEventListener(ev,e=>{e.preventDefault();uploadZone.classList.remove('drag');});
+});
+uploadZone.addEventListener('drop',e=>handleFiles(e.dataTransfer.files));
+fileInput.addEventListener('change',e=>handleFiles(e.target.files));
+
+async function handleFiles(files){
+  if(!files.length) return;
+  const file = files[0];
+  selectedFile = file;
+  
+  const preview = document.getElementById('filesPreview');
+  preview.innerHTML = '';
+  preview.style.display = 'grid';
+  preview.style.gridTemplateColumns = 'repeat(auto-fill,minmax(100px,1fr))';
+  preview.style.gap = '10px';
+  
+  const url = URL.createObjectURL(file);
+  const div = document.createElement('div');
+  div.style.cssText = 'position:relative;aspect-ratio:1;border-radius:12px;overflow:hidden;border:1px solid var(--glass-brd);';
+  
+  if(file.type.startsWith('image/')){
+    div.innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;">`;
+    preview.appendChild(div);
+    
+    // تحميل الصورة للمعالجة
+    const img = new Image();
+    img.onload = async () => {
+      originalImage = img;
+      document.getElementById('originalPreview').src = url;
+      document.getElementById('previewSection').classList.add('active');
+      showToast('success', `✅ تم تحميل الصورة (${img.naturalWidth}×${img.naturalHeight})`);
+      await processCurrentImage();
+    };
+    img.src = url;
+  }else{
+    div.innerHTML = `<video src="${url}" style="width:100%;height:100%;object-fit:cover;" controls></video>`;
+    preview.appendChild(div);
+    showToast('info', '📹 تم تحميل الفيديو - سيتم معالجته عبر البوت');
+  }
+}
+
+// ============ معالجة الصورة الحالية ============
+async function processCurrentImage() {
+  if (!originalImage || currentEditType !== 'image') return;
+  
+  const overlay = document.getElementById('processingOverlay');
+  const processingText = document.getElementById('processingText');
+  overlay.classList.add('active');
+  
+  try {
+    // حساب الأبعاد الهدف
+    let targetW, targetH;
+    if (selectedQuality === 'original') {
+      targetW = originalImage.naturalWidth;
+      targetH = originalImage.naturalHeight;
+    } else {
+      const resMap = {
+        '360': { w: 640, h: 360 },
+        '480': { w: 854, h: 480 },
+        '720': { w: 1280, h: 720 },
+        '1080': { w: 1920, h: 1080 },
+        '1440': { w: 2560, h: 1440 },
+        '2160': { w: 3840, h: 2160 },
+        '4320': { w: 7680, h: 4320 }
+      };
+      const target = resMap[selectedQuality] || resMap['1080'];
+      const aspect = originalImage.naturalWidth / originalImage.naturalHeight;
+      
+      if (aspect > 1) {
+        targetW = target.w;
+        targetH = Math.round(target.w / aspect);
+      } else {
+        targetH = target.h;
+        targetW = Math.round(target.h * aspect);
+      }
+    }
+    
+    const options = {
+      targetWidth: targetW,
+      targetHeight: targetH,
+      filter: selectedFilter,
+      denoise: selectedPreset?.denoise || false,
+      sharpen: selectedPreset?.sharpen || 1.0
+    };
+    
+    const resultCanvas = await ImageProcessor.processImage(originalImage, options, (progress, text) => {
+      processingText.textContent = text || `معالجة: ${Math.round(progress * 100)}%`;
+      updateProgress(progress * 50); // نصف التقدم للمعالجة المحلية
+    });
+    
+    // تحويل إلى blob
+    resultCanvas.toBlob((blob) => {
+      processedBlob = blob;
+      const processedUrl = URL.createObjectURL(blob);
+      document.getElementById('processedPreview').src = processedUrl;
+      
+      // تحديث الإحصائيات
+      const stats = document.getElementById('previewStats');
+      const sizeKB = Math.round(blob.size / 1024);
+      stats.innerHTML = `
+        <div class="stat-badge"><i class="fas fa-expand"></i>${resultCanvas.width}×${resultCanvas.height}</div>
+        <div class="stat-badge"><i class="fas fa-weight-hanging"></i>${sizeKB} KB</div>
+        <div class="stat-badge"><i class="fas fa-filter"></i>${selectedFilter}</div>
+      `;
+      
+      overlay.classList.remove('active');
+      document.getElementById('downloadBtn').classList.add('active');
+      updateProgress(50);
+      showToast('success', `✅ تمت المعالجة: ${resultCanvas.width}×${resultCanvas.height}`);
+    }, 'image/jpeg', 0.95);
+    
+  } catch (err) {
+    console.error(err);
+    overlay.classList.remove('active');
+    showToast('error', '❌ حدث خطأ في المعالجة');
+  }
+}
+
+// ============ اختيار الجودة ============
+document.querySelectorAll('.quality-card').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.quality-card').forEach(x=>x.classList.remove('selected'));
+    c.classList.add('selected');
+    selectedQuality = c.dataset.q;
+    selectedPreset = null;
+    document.querySelectorAll('.preset-card').forEach(p => p.classList.remove('selected'));
+    showToast('info', `📐 الدقة: ${c.querySelector('.quality-name').textContent}`);
+    if (originalImage) processCurrentImage();
+  });
+});
+
+// ============ اختيار الفلتر ============
+document.querySelectorAll('.filter-card').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-card').forEach(x=>x.classList.remove('selected'));
+    c.classList.add('selected');
+    selectedFilter = c.dataset.filter;
+    selectedPreset = null;
+    document.querySelectorAll('.preset-card').forEach(p => p.classList.remove('selected'));
+    showToast('info', `🎨 الفلتر: ${c.querySelector('.filter-name').textContent}`);
+    if (originalImage) processCurrentImage();
+  });
+});
+
+// ============ بدء المعالجة والإرسال ============
+async function startProcessing(){
+  if(!selectedFile){
+    showToast('error','الرجاء اختيار ملف أولاً');
+    return;
+  }
+  
+  const btn = document.getElementById('processBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المعالجة...';
+  
+  try {
+    if (currentEditType === 'image' && processedBlob) {
+      // إرسال الصورة المعالجة محلياً
+      updateProgress(60);
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال للبوت...';
+      await sendToBot(processedBlob, selectedFile.name);
+      updateProgress(100);
+      showToast('success','✅ تمت المعالجة الحقيقية وإرسال الملف بنجاح!');
+    } else {
+      // إرسال الملف الأصلي للبوت للمعالجة
+      updateProgress(50);
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال للبوت...';
+      await sendToBot(selectedFile, selectedFile.name);
+      updateProgress(100);
+      showToast('success','✅ تم إرسال الملف للبوت للمعالجة!');
+    }
+  } catch(err) {
+    console.error(err);
+    showToast('error','حدث خطأ: ' + err.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-bolt"></i>معالجة وإرسال للبوت';
+    setTimeout(()=>updateProgress(0),2000);
+  }
+}
+
+async function sendToBot(file, originalName){
+  const formData = new FormData();
+  const isVideo = file.type.startsWith('video/');
+  const endpoint = isVideo ? 'sendVideo' : 'sendPhoto';
+  const field = isVideo ? 'video' : 'photo';
+  
+  formData.append(field, file, `SOKO2K_${originalName}`);
+  
+  let caption = `🎨 SOKO-2K Pro\n`;
+  if(selectedPreset){
+    caption += `🎯 Preset: ${selectedPreset.name}\n📐 الدقة: ${selectedPreset.res}\n🎨 الفلتر: ${selectedPreset.filterName}\n`;
+  }else{
+    caption += `📐 الجودة: ${selectedQuality}${selectedQuality!=='original'?'p':''}\n🎭 الفلتر: ${selectedFilter}\n`;
+  }
+  caption += `📁 النوع: ${currentEditType}\n📄 الملف: ${originalName}`;
+  
+  formData.append('caption', caption);
+  if(CHAT_ID) formData.append('chat_id', CHAT_ID);
+  
+  const res = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/${endpoint}`,{
+    method:'POST',body:formData
+  });
+  if(!res.ok) throw new Error('فشل الإرسال');
+  return res.json();
+}
+
+// ============ تحميل الصورة المعالجة ============
+function downloadProcessed() {
+  if (!processedBlob) return;
+  const url = URL.createObjectURL(processedBlob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `SOKO2K_processed_${Date.now()}.jpg`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('success', '✅ تم تحميل الصورة المعالجة');
+}
+
+function updateProgress(p){
+  document.getElementById('progressFill').style.width = p+'%';
+  document.getElementById('progressLabel').textContent = Math.round(p)+'%';
+}
+
+// ============ الدعم ============
+async function sendSupport(e){
+  e.preventDefault();
+  const name = document.getElementById('supportName').value.trim();
+  const msg = document.getElementById('supportMsg').value.trim();
+  if(!name||!msg){showToast('error','الرجاء ملء جميع الحقول');return;}
+  
+  const now = new Date();
+  const date = now.toLocaleString('ar-EG',{dateStyle:'full',timeStyle:'medium'});
+  
+  const payload = {
+    embeds:[{
+      title:'📩 رسالة دعم جديدة',
+      color:0x7c3aed,
+      fields:[
+        {name:'👤 الاسم',value:name,inline:true},
+        {name:'📅 التاريخ',value:date,inline:true},
+        {name:'💬 الرسالة',value:msg}
+      ],
+      footer:{text:'SOKO-2K Support System'},
+      timestamp:now.toISOString()
+    }]
+  };
+  
+  try{
+    if(DISCORD_WEBHOOK){
+      await fetch(DISCORD_WEBHOOK,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+    }
+    showToast('success','✅ تم إرسال رسالتك بنجاح!');
+    e.target.reset();
+  }catch(err){
+    showToast('error','فشل إرسال الرسالة');
+  }
+}
+
+// ============ التوست ============
+function showToast(type,msg){
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  const icons = {success:'fa-circle-check',error:'fa-circle-xmark',info:'fa-circle-info'};
+  toast.innerHTML = `<i class="fas ${icons[type]}"></i><div class="toast-msg">${msg}</div>`;
+  container.appendChild(toast);
+  setTimeout(()=>toast.remove(),3500);
+}
+
+function closeDialog(){document.getElementById('dialogOverlay').classList.remove('show');}
+function confirmPermission(){
+  permissionGranted = true;
+  closeDialog();
+  showToast('success','تم منح الإذن ✅');
+  setTimeout(()=>fileInput.click(),300);
+}
+
+const socialLinks = {
+  tiktok:'https://tiktok.com/',
+  telegram:'https://t.me/',
+  discord:'https://discord.com/',
+  instagram:'https://instagram.com/'
+};
+function openSocial(type,e){
+  e.preventDefault();
+  showToast('info',`سيتم فتح ${type} - أضف رابط حسابك لاحقاً`);
+}
+
+// ============ تأثير النقر RGB ============
+document.addEventListener('click',e=>{
+  const r = document.createElement('div');
+  r.className = 'click-ripple';
+  r.style.left = (e.clientX-10)+'px';
+  r.style.top = (e.clientY-10)+'px';
+  document.body.appendChild(r);
+  setTimeout(()=>r.remove(),800);
+});
+
+window.addEventListener('load',()=>{
+  if(window.innerWidth>1024){
+    document.documentElement.requestFullscreen?.().catch(()=>{});
+  }
+  showToast('info','👋 مرحباً بك في SOKO-2K Pro - معالجة حقيقية');
+});
+
+let lastTouch = 0;
+document.addEventListener('touchend',e=>{
+  const now = Date.now();
+  if(now-lastTouch<300)e.preventDefault();
+  lastTouch = now;
+},{passive:false});
+</script>
+</body>
+</html>
