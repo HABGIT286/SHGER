@@ -1,0 +1,144 @@
+name: Islamic Exam - Start Website
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: islamic-exam-server
+  cancel-in-progress: false
+
+jobs:
+  run-website:
+    name: Start Python Website
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+
+    env:
+      PORT: 8080
+      ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+
+    steps:
+      - name: Download project
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install requirements
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Check required secrets
+        run: |
+          if [ -z "$ADMIN_PASSWORD" ]; then
+            echo "ERROR: ADMIN_PASSWORD secret is missing."
+            exit 1
+          fi
+          if [ -z "$TELEGRAM_BOT_TOKEN" ]; then
+            echo "WARNING: TELEGRAM_BOT_TOKEN is not configured."
+          fi
+          if [ -z "$TELEGRAM_CHAT_ID" ]; then
+            echo "WARNING: TELEGRAM_CHAT_ID is not configured."
+          fi
+
+      - name: Start Python server
+        run: |
+          mkdir -p runtime
+          nohup python -u server.py > runtime/server.log 2>&1 &
+          echo $! > runtime/server.pid
+
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8080/health; then
+              echo "Python server is running."
+              break
+            fi
+            sleep 2
+          done
+
+          if ! curl -fsS http://127.0.0.1:8080/health; then
+            echo "ERROR: Python server failed to start."
+            cat runtime/server.log
+            exit 1
+          fi
+
+      - name: Install Cloudflare Tunnel
+        run: |
+          curl -L \
+            https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64 \
+            -o cloudflared
+          chmod +x cloudflared
+          sudo mv cloudflared /usr/local/bin/cloudflared
+          cloudflared --version
+
+      - name: Open public website
+        run: |
+          mkdir -p runtime
+
+          nohup cloudflared tunnel \
+            --url http://127.0.0.1:8080 \
+            --no-autoupdate \
+            > runtime/tunnel.log 2>&1 &
+
+          echo $! > runtime/tunnel.pid
+
+          echo "Waiting for public website URL..."
+
+          for i in $(seq 1 60); do
+            URL=$(grep -Eo 'https://[a-zA-Z0-9-]+\.trycloudflare\.com' runtime/tunnel.log | head -n 1 || true)
+
+            if [ -n "$URL" ]; then
+              echo ""
+              echo "=========================================="
+              echo "YOUR ISLAMIC EXAM WEBSITE:"
+              echo "$URL"
+              echo "=========================================="
+              break
+            fi
+
+            sleep 2
+          done
+
+          if [ -z "$URL" ]; then
+            echo "ERROR: Could not get Cloudflare public URL."
+            cat runtime/tunnel.log
+            exit 1
+          fi
+
+          echo "Website is now accessible while this Action is running."
+          echo "Keep this workflow run active."
+
+      - name: Keep website running
+        run: |
+          echo "Website is running. Do not cancel this workflow."
+          while true; do
+            if ! kill -0 "$(cat runtime/server.pid)" 2>/dev/null; then
+              echo "ERROR: Python server stopped."
+              cat runtime/server.log
+              exit 1
+            fi
+
+            if ! kill -0 "$(cat runtime/tunnel.pid)" 2>/dev/null; then
+              echo "ERROR: Cloudflare tunnel stopped."
+              cat runtime/tunnel.log
+              exit 1
+            fi
+
+            sleep 30
+          done
+
+      - name: Show server logs if failed
+        if: failure()
+        run: |
+          echo "===== PYTHON SERVER LOG ====="
+          cat runtime/server.log || true
+          echo "===== CLOUDFLARE TUNNEL LOG ====="
+          cat runtime/tunnel.log || true
