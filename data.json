@@ -1,0 +1,58 @@
+{
+  "system": {
+    "name": "Islamic Exam",
+    "school": "مدرسة الاميرات للبنات",
+    "grade": "الثاني متوسط",
+    "subject": "التربية الإسلامية",
+    "exam_date": "2026-11-06",
+    "duration_minutes": 60,
+    "max_students": 23,
+    "accepting_students": true,
+    "exam_started": false,
+    "created_at": null,
+    "updated_at": null
+  },
+  "questions": [
+    {
+      "id": 1,
+      "text": "وَيْلٌ لِلْمُطَفِّفِينَ",
+      "instruction": "استخرجي المد وبيني نوعه والسبب؟"
+    },
+    {
+      "id": 2,
+      "text": "الَّذِينَ إِذَا اكْتَالُوا عَلَى النَّاسِ يَسْتَوْفُونَ",
+      "instruction": "استخرجي المد وبيني نوعه والسبب؟"
+    },
+    {
+      "id": 3,
+      "text": "وَإِذَا كَالُوهُمْ أَوْ وَزَنُوهُمْ يُخْسِرُونَ",
+      "instruction": "استخرجي المد وبيني نوعه والسبب؟"
+    },
+    {
+      "id": 4,
+      "text": "أَلَا يَظُنُّ أُولَٰئِكَ أَنَّهُمْ مَبْعُوثُونَ",
+      "instruction": "استخرجي المد وبيني نوعه والسبب؟"
+    },
+    {
+      "id": 5,
+      "text": "لِيَوْمٍ عَظِيمٍ",
+      "instruction": "استخرجي المد وبيني نوعه والسبب؟"
+    }
+  ],
+  "students": [],
+  "answers": [],
+  "blocked_codes": [],
+  "sessions": [],
+  "notifications": [],
+  "settings": {
+    "theme": "dark-gold",
+    "language": "ar",
+    "telegram_enabled": true,
+    "discord_enabled": false
+  },
+  "statistics": {
+    "total_students": 0,
+    "started_students": 0,
+    "finished_students": 0
+  }
+}
