@@ -3,742 +3,1124 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#090b10">
-<meta name="description" content="منصة اختبارات التربية الإسلامية - متوسطة الاميرات للبنات">
-<title>اختبارات التربية الإسلامية</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#090a10">
+<meta name="description" content="منصة اختبارات التربية الإسلامية - ثانوية الأميرات للبنات">
+<title>Islamic Exam | ثانوية الأميرات</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
-
 :root{
- --bg:#090b10;
- --surface:rgba(255,255,255,.055);
- --surface2:rgba(255,255,255,.085);
- --border:rgba(255,255,255,.12);
- --text:#f5f2e9;
- --muted:#9b9ba7;
- --gold:#d8b56a;
- --gold2:#f2d99b;
- --green:#46d69a;
- --red:#ff6576;
- --shadow:0 25px 80px rgba(0,0,0,.38);
+ --bg:#090a10;
+ --bg2:#11131d;
+ --panel:rgba(255,255,255,.055);
+ --panel2:rgba(255,255,255,.085);
+ --border:rgba(255,255,255,.11);
+ --text:#f7f4ec;
+ --muted:#9294a5;
+ --gold:#d9b66e;
+ --gold2:#f5dfa9;
+ --green:#4ce0a2;
+ --red:#ff6579;
+ --blue:#7d9bff;
+ --purple:#a98aff;
+ --shadow:0 24px 75px rgba(0,0,0,.38);
 }
-
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
 body{
- margin:0;
- min-height:100vh;
- background:
- radial-gradient(ellipse at 15% 10%,rgba(151,113,48,.15),transparent 35%),
- radial-gradient(ellipse at 90% 80%,rgba(73,79,150,.13),transparent 40%),
- var(--bg);
- color:var(--text);
- font-family:'Cairo',sans-serif;
- overflow-x:hidden;
- user-select:none;
+ margin:0;min-height:100vh;background:
+ radial-gradient(ellipse at 10% 0%,rgba(193,151,70,.15),transparent 32%),
+ radial-gradient(ellipse at 100% 90%,rgba(93,79,190,.14),transparent 35%),
+ linear-gradient(145deg,#08090e,#10121b 55%,#090a10);
+ color:var(--text);font-family:Cairo,sans-serif;overflow-x:hidden;
 }
-input,textarea{user-select:text}
-button{font-family:inherit}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
 button:disabled{opacity:.45;cursor:not-allowed}
-.ambient{
- position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1;
-}
-.orb{
- position:absolute;width:250px;height:250px;border-radius:50%;
- filter:blur(80px);opacity:.12;
- animation:float 12s ease-in-out infinite alternate;
-}
-.orb.one{background:#d8a64e;top:-100px;right:-80px}
-.orb.two{background:#5a64c9;bottom:-100px;left:-80px;animation-delay:-5s}
+input,textarea{user-select:text}
+.hidden{display:none!important}
+.ambient{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden}
+.orb{position:absolute;width:280px;height:280px;border-radius:50%;filter:blur(90px);opacity:.14;animation:float 14s ease-in-out infinite alternate}
+.orb.a{background:#d8ae5b;top:-130px;right:-100px}
+.orb.b{background:#6d68d8;bottom:-140px;left:-100px;animation-delay:-6s}
+.orb.c{background:#36a995;top:50%;left:45%;width:180px;height:180px;opacity:.06}
 @keyframes float{to{transform:translate(45px,55px) scale(1.2)}}
-
-header{
- width:min(100% - 32px,850px);
- margin:24px auto 18px;
- display:flex;align-items:center;justify-content:space-between;
- gap:12px;
+@keyframes shine{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(76,224,162,0)}}
+@keyframes appear{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.glass{
+ background:linear-gradient(145deg,rgba(255,255,255,.085),rgba(255,255,255,.025));
+ border:1px solid var(--border);border-radius:24px;
+ box-shadow:var(--shadow);backdrop-filter:blur(24px);
+ -webkit-backdrop-filter:blur(24px);
+}
+.topbar{
+ width:min(1200px,calc(100% - 28px));margin:18px auto;
+ display:flex;align-items:center;justify-content:space-between;gap:12px;
 }
 .brand{display:flex;align-items:center;gap:12px}
-.logo{
- width:48px;height:48px;border-radius:16px;
- display:grid;place-items:center;
- color:#17130a;font-size:21px;font-weight:900;
- background:linear-gradient(145deg,#f4dda2,#b98b3d);
- box-shadow:0 8px 28px rgba(216,181,106,.2);
+.brand-logo{
+ width:48px;height:48px;border-radius:17px;display:grid;place-items:center;
+ color:#1b160b;background:linear-gradient(145deg,#fff0bd,#c09243);
+ box-shadow:0 8px 30px rgba(217,182,110,.25),inset 0 1px 2px #fff;
 }
-.brand h1{font-size:16px;margin:0;font-weight:900}
-.brand p{font-size:10px;color:var(--muted);margin:2px 0 0;letter-spacing:1px}
+.brand-logo i{width:25px;height:25px}
+.brand h1{font-size:15px;margin:0;font-weight:900}
+.brand p{font-size:9px;color:var(--gold);letter-spacing:1.6px;margin:2px 0 0}
+.top-actions{display:flex;align-items:center;gap:8px}
 .status{
- display:flex;align-items:center;gap:7px;
- border:1px solid var(--border);background:var(--surface);
- padding:8px 12px;border-radius:30px;font-size:11px;color:var(--muted);
+ display:flex;align-items:center;gap:8px;padding:9px 13px;
+ border:1px solid var(--border);border-radius:30px;
+ background:var(--panel);font-size:10px;color:var(--muted)
 }
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
-main{width:min(100% - 28px,650px);margin:0 auto 50px}
-.card{
- background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.025));
- border:1px solid var(--border);
- border-radius:25px;
- box-shadow:var(--shadow);
- backdrop-filter:blur(22px);
- -webkit-backdrop-filter:blur(22px);
-}
-.hero{padding:25px 22px;text-align:center;margin-bottom:15px}
-.eyebrow{font-size:10px;letter-spacing:2px;color:var(--gold);font-weight:800}
-.hero h2{font-size:25px;margin:8px 0 3px;font-weight:900}
-.hero p{font-size:12px;color:var(--muted);margin:0}
-.info-grid{
- display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:20px
-}
-.info{
- padding:12px 5px;border-radius:15px;
- background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.055)
-}
-.info small{display:block;color:var(--muted);font-size:10px}
-.info strong{display:block;font-size:12px;margin-top:4px}
-.panel{padding:23px;margin-bottom:15px}
-.panel-title{font-size:16px;font-weight:900;margin:0 0 5px}
-.panel-sub{font-size:11px;color:var(--muted);margin:0 0 20px}
-.field{margin:15px 0}
-.field label{display:block;font-size:11px;color:#c9c4b7;margin-bottom:8px}
-.field input,.field textarea{
- width:100%;border:1px solid var(--border);outline:none;
- border-radius:14px;background:rgba(0,0,0,.24);
- color:var(--text);padding:15px 14px;font:inherit;font-size:13px;
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+.icon-btn{
+ width:42px;height:42px;border:1px solid var(--border);border-radius:14px;
+ background:var(--panel);color:var(--gold2);display:grid;place-items:center;
  transition:.25s;
 }
-.field input:focus,.field textarea:focus{
- border-color:rgba(216,181,106,.7);
- box-shadow:0 0 0 3px rgba(216,181,106,.08)
+.icon-btn:hover{transform:translateY(-3px);border-color:var(--gold);background:rgba(217,182,110,.12)}
+.icon-btn i{width:19px;height:19px}
+.container{width:min(1200px,calc(100% - 28px));margin:0 auto 50px}
+.hero{padding:26px;text-align:center;margin-bottom:17px;position:relative;overflow:hidden}
+.hero:before{
+ content:"";position:absolute;inset:-1px;pointer-events:none;opacity:.4;
+ background:linear-gradient(110deg,transparent 25%,rgba(255,255,255,.07) 48%,transparent 70%);
+ transform:translateX(-100%);animation:heroShine 8s infinite;
 }
-.field input::placeholder{color:#777783}
-.primary{
- width:100%;border:0;border-radius:15px;padding:15px;
- color:#19140a;font-size:13px;font-weight:900;
- background:linear-gradient(120deg,#f0d99e,#bd9146);
- cursor:pointer;transition:.2s;
- box-shadow:0 9px 25px rgba(189,145,70,.15);
+@keyframes heroShine{50%,100%{transform:translateX(100%)}}
+.eyebrow{font-size:10px;letter-spacing:3px;color:var(--gold);font-weight:900}
+.hero h2{font-size:clamp(22px,5vw,32px);font-weight:900;margin:8px 0}
+.hero>p{font-size:12px;color:var(--muted);margin:0}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.info{
+ padding:13px 7px;border-radius:17px;background:rgba(0,0,0,.19);
+ border:1px solid rgba(255,255,255,.06)
 }
-.primary:active{transform:scale(.985)}
-.secondary{
- width:100%;border:1px solid var(--border);border-radius:14px;
- padding:12px;background:var(--surface);color:var(--text);
- cursor:pointer;font-size:12px;margin-top:10px
+.info small{display:block;color:var(--muted);font-size:10px}
+.info strong{display:block;font-size:12px;margin-top:5px}
+.panel{padding:23px;margin-bottom:16px;animation:appear .35s ease}
+.panel-title{font-size:17px;font-weight:900;margin:0 0 5px}
+.panel-sub{font-size:11px;color:var(--muted);margin:0 0 20px;line-height:1.9}
+.field{margin:14px 0}
+.field label{display:block;font-size:11px;color:#d1c9b7;margin-bottom:8px}
+.field input,.field textarea,.field select{
+ width:100%;border:1px solid var(--border);outline:none;
+ border-radius:14px;background:rgba(0,0,0,.28);
+ color:var(--text);padding:13px 14px;font-size:13px;
+ transition:.25s;min-width:0
 }
-.note{
- padding:12px;border-radius:13px;
- background:rgba(216,181,106,.07);
- border:1px solid rgba(216,181,106,.16);
- color:#d9c99e;font-size:11px;line-height:1.9;margin-top:14px
+.field select option{background:#171923;color:white}
+.field textarea{min-height:100px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{
+ border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,182,110,.09)
 }
-.error{
- display:none;padding:12px;border-radius:13px;
- background:rgba(255,101,118,.09);border:1px solid rgba(255,101,118,.25);
- color:#ff9ca8;font-size:11px;margin:12px 0;line-height:1.8
+.field input::placeholder,.field textarea::placeholder{color:#77798a}
+.btn{
+ border:0;border-radius:14px;padding:13px 17px;font-size:12px;
+ font-weight:900;display:inline-flex;align-items:center;justify-content:center;
+ gap:9px;transition:.23s
 }
-.success{
- display:none;padding:12px;border-radius:13px;
- background:rgba(70,214,154,.08);border:1px solid rgba(70,214,154,.2);
- color:#8ce9c0;font-size:11px;margin:12px 0;line-height:1.8
+.btn i{width:17px;height:17px}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.btn:active{transform:scale(.98)}
+.gold{color:#19140a;background:linear-gradient(120deg,#f5dfa9,#c09243);box-shadow:0 8px 25px rgba(192,146,67,.16)}
+.dark{color:var(--text);background:var(--panel);border:1px solid var(--border)}
+.danger{color:#ff9eaa;background:rgba(255,101,121,.10);border:1px solid rgba(255,101,121,.25)}
+.green{color:#8ff0c3;background:rgba(76,224,162,.10);border:1px solid rgba(76,224,162,.22)}
+.purple{color:#c9b8ff;background:rgba(169,138,255,.11);border:1px solid rgba(169,138,255,.23)}
+.full{width:100%}
+.error,.success,.notice{
+ padding:12px 14px;border-radius:13px;font-size:11px;line-height:1.9;margin:12px 0;
 }
-.hidden{display:none!important}
-.student-head{
- display:flex;align-items:center;justify-content:space-between;gap:10px;
- padding:15px;border-radius:17px;background:rgba(0,0,0,.2);
- border:1px solid var(--border);margin-bottom:15px
+.error{display:none;background:rgba(255,101,121,.09);border:1px solid rgba(255,101,121,.24);color:#ffabb5}
+.success{display:none;background:rgba(76,224,162,.08);border:1px solid rgba(76,224,162,.2);color:#91eac2}
+.notice{background:rgba(217,182,110,.07);border:1px solid rgba(217,182,110,.17);color:#e5d3a9}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.stat{
+ padding:17px;border-radius:19px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
+ border:1px solid var(--border);min-width:0;transition:.25s
 }
-.student-name{font-weight:900;font-size:13px}
-.student-code{font-size:10px;color:var(--gold);margin-top:3px}
-.timer{
- direction:ltr;font-weight:900;font-size:18px;color:var(--gold2);
- font-variant-numeric:tabular-nums
+.stat:hover{transform:translateY(-4px);border-color:rgba(217,182,110,.4)}
+.stat-top{display:flex;justify-content:space-between;align-items:center}
+.stat-icon{
+ width:39px;height:39px;border-radius:13px;display:grid;place-items:center;
+ color:var(--gold2);background:rgba(217,182,110,.12);border:1px solid rgba(217,182,110,.15)
 }
-.timer-label{font-size:9px;color:var(--muted);text-align:center}
-.progress-row{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin:15px 2px 8px}
-.progress{
- height:6px;background:rgba(255,255,255,.09);border-radius:20px;overflow:hidden
+.stat-icon i{width:19px;height:19px}
+.stat strong{display:block;font-size:25px;margin-top:13px;font-weight:900}
+.stat small{font-size:10px;color:var(--muted)}
+.tabs{display:flex;gap:8px;overflow:auto;padding:3px 2px 12px;margin-bottom:12px}
+.tab{
+ white-space:nowrap;border:1px solid var(--border);border-radius:13px;
+ padding:10px 14px;background:var(--panel);color:var(--muted);
+ font-size:11px;font-weight:800
 }
-.progress span{
- display:block;height:100%;width:0%;
- background:linear-gradient(90deg,#b98b3d,#f4dda2);
- border-radius:20px;transition:width .4s
+.tab.active{color:#17120a;background:linear-gradient(120deg,#f5dfa9,#c09243);border-color:transparent}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.toolbar h3{font-size:14px;margin:0;font-weight:900}
+.search{flex:1;min-width:150px;max-width:300px}
+.search input{width:100%;padding:11px 13px;border-radius:12px;background:rgba(0,0,0,.25);border:1px solid var(--border);color:white;outline:none}
+.student-card,.item-card{
+ border:1px solid var(--border);border-radius:18px;padding:15px;
+ background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.02));
+ margin-bottom:10px;transition:.25s;min-width:0
 }
+.student-card:hover,.item-card:hover{border-color:rgba(217,182,110,.4);transform:translateY(-2px)}
+.student-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.avatar{
+ width:43px;height:43px;flex:0 0 43px;border-radius:15px;
+ display:grid;place-items:center;background:linear-gradient(145deg,#f5dfa9,#a77a35);
+ color:#17120a;font-weight:900
+}
+.student-main{display:flex;align-items:center;gap:11px;min-width:0}
+.student-main strong{display:block;font-size:12px;overflow-wrap:anywhere}
+.student-main small{display:block;color:var(--muted);font-size:9px;margin-top:3px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:30px;font-size:9px;font-weight:900}
+.pill.ok{color:#8df0c2;background:rgba(76,224,162,.1)}
+.pill.bad{color:#ff9ca9;background:rgba(255,101,121,.1)}
+.pill.wait{color:#f0d59b;background:rgba(217,182,110,.1)}
+.student-meta{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:13px}
+.meta{padding:9px;border-radius:11px;background:rgba(0,0,0,.17)}
+.meta small{display:block;color:var(--muted);font-size:9px}
+.meta b{display:block;font-size:10px;margin-top:4px;overflow-wrap:anywhere}
+.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.actions .btn{padding:9px 11px;font-size:10px}
+.actions .btn i{width:14px;height:14px}
+.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}
+.empty i{display:block;width:35px;height:35px;margin:0 auto 12px;color:var(--gold)}
 .question-box{
- padding:22px 17px;border-radius:19px;
- background:linear-gradient(145deg,rgba(216,181,106,.09),rgba(255,255,255,.025));
- border:1px solid rgba(216,181,106,.18);margin:18px 0
+ border:1px solid rgba(217,182,110,.2);border-radius:20px;padding:21px;
+ background:linear-gradient(145deg,rgba(217,182,110,.1),rgba(255,255,255,.025));margin:17px 0
 }
-.question-label{font-size:10px;color:var(--gold);font-weight:800;margin-bottom:13px}
-.verse{
- font-family:'Cairo',serif;font-size:23px;line-height:2.1;
- text-align:center;color:#f6e8c5;font-weight:700
-}
-.prompt{
- text-align:center;font-size:14px;font-weight:800;margin-top:18px;line-height:2
-}
-.answer-area{
- width:100%;min-height:135px;resize:vertical;
- border:1px solid var(--border);outline:none;border-radius:16px;
- padding:15px;background:rgba(0,0,0,.25);color:var(--text);
- font:inherit;font-size:13px;line-height:2
-}
-.answer-area:focus{border-color:rgba(216,181,106,.7)}
-.answer-area::placeholder{color:#777783}
-.question-foot{
- display:flex;justify-content:space-between;gap:10px;
- color:var(--muted);font-size:10px;margin:12px 2px 17px
-}
-.complete{text-align:center;padding:30px 15px}
-.complete-icon{
- width:75px;height:75px;margin:0 auto 17px;border-radius:50%;
- display:grid;place-items:center;font-size:30px;color:#16120a;
- background:linear-gradient(145deg,#f4dda2,#b98b3d);
- box-shadow:0 0 40px rgba(216,181,106,.2)
-}
-.complete h2{font-size:22px;margin:0 0 8px}
-.complete p{color:var(--muted);font-size:12px;line-height:2}
-footer{text-align:center;color:#747480;font-size:10px;padding:12px 0 30px}
+.verse{font-size:22px;line-height:2.1;text-align:center;color:#f6e8c5;font-weight:800}
+.prompt{text-align:center;font-size:13px;font-weight:800;line-height:2;margin-top:14px}
+.answer{width:100%;min-height:130px;border:1px solid var(--border);border-radius:15px;padding:14px;background:rgba(0,0,0,.25);color:white;outline:none;font:inherit;font-size:13px}
+.progress{height:6px;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden;margin:10px 0 17px}
+.progress span{display:block;height:100%;background:linear-gradient(90deg,#b98b3d,#f4dda2);transition:.4s}
+.exam-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px;border:1px solid var(--border);background:rgba(0,0,0,.2);border-radius:16px}
+.timer{direction:ltr;font-size:19px;color:var(--gold2);font-weight:900;font-variant-numeric:tabular-nums}
+.clock-label{font-size:9px;color:var(--muted);text-align:center}
+.detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.detail-box{padding:12px;border-radius:13px;background:rgba(0,0,0,.2);border:1px solid var(--border);min-width:0}
+.detail-box small{display:block;color:var(--muted);font-size:9px}
+.detail-box b{display:block;font-size:11px;margin-top:5px;overflow-wrap:anywhere}
+.answer-record{padding:14px;border:1px solid var(--border);border-radius:15px;margin:10px 0;background:rgba(0,0,0,.15)}
+.answer-record h4{font-size:12px;margin:0 0 8px;color:var(--gold2)}
+.answer-record p{font-size:11px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere;margin:7px 0}
+.answer-record small{color:var(--muted);font-size:9px}
 .toast{
  position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);
- opacity:0;pointer-events:none;z-index:20;
- padding:12px 18px;border-radius:14px;
- background:#25251f;border:1px solid rgba(216,181,106,.3);
- color:#f4e4bd;font-size:11px;box-shadow:var(--shadow);
- transition:.3s;max-width:90%;text-align:center
+ opacity:0;pointer-events:none;z-index:99;padding:13px 18px;border-radius:14px;
+ background:#22232c;border:1px solid rgba(217,182,110,.3);
+ color:#f5e6c4;font-size:11px;box-shadow:var(--shadow);transition:.3s;
+ width:max-content;max-width:90%;text-align:center
 }
 .toast.show{opacity:1;transform:translate(-50%,0)}
-.loading{
- display:inline-block;width:15px;height:15px;
- border:2px solid rgba(0,0,0,.2);border-top-color:#17130a;
- border-radius:50%;animation:spin .7s linear infinite;
- vertical-align:middle;margin-left:8px
+.modal{
+ position:fixed;inset:0;z-index:50;background:rgba(0,0,0,.72);
+ backdrop-filter:blur(9px);display:flex;align-items:center;justify-content:center;
+ padding:16px;overflow:auto
 }
-@keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:420px){
- .hero h2{font-size:21px}
- .panel{padding:18px}
- .verse{font-size:20px}
- .info strong{font-size:11px}
+.modal-content{width:min(650px,100%);max-height:90vh;overflow:auto;padding:22px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:15px}
+.modal-head h3{font-size:15px;margin:0}
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(0,0,0,.2);border-top-color:#17130a;border-radius:50%;animation:spin .7s linear infinite}
+footer{text-align:center;color:#77798a;font-size:9px;padding:15px 0 30px}
+@media(max-width:700px){
+ .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .grid{grid-template-columns:1fr}
+ .hero{padding:21px 14px}
+ .panel{padding:17px}
+ .topbar{margin:12px auto}
+}
+@media(max-width:380px){
+ .status{padding:8px;font-size:9px}
+ .brand h1{font-size:12px}
+ .brand-logo{width:41px;height:41px}
+ .stats{gap:8px}
+ .stat{padding:12px}
+ .stat strong{font-size:21px}
 }
 </style>
 </head>
 
 <body>
 <div class="ambient">
- <div class="orb one"></div>
- <div class="orb two"></div>
+ <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
 </div>
 
-<header>
+<header class="topbar">
  <div class="brand">
-  <div class="logo">ح</div>
+  <div class="brand-logo"><i data-lucide="graduation-cap"></i></div>
   <div>
    <h1>اختبارات التربية الإسلامية</h1>
-   <p>AL-AMIRAT SCHOOL</p>
+   <p>AL-AMIRAT • EXAMINATION SYSTEM</p>
   </div>
  </div>
- <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">جاري الاتصال</span></div>
+ <div class="top-actions">
+  <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">جاري الاتصال</span></div>
+  <button class="icon-btn" title="دخول الأستاذة" onclick="showTeacherLogin()"><i data-lucide="shield-check"></i></button>
+ </div>
 </header>
 
-<main>
- <section class="card hero">
-  <div class="eyebrow">ISLAMIC EXAMINATION</div>
+<main class="container">
+ <section class="glass hero">
+  <div class="eyebrow">PREMIUM EXAMINATION PLATFORM</div>
   <h2 id="examTitle">اختبارات التربية الإسلامية</h2>
-  <p id="AL-AMIRAT SCHOOLName">متوسطة الاميرات للبنات</p>
+  <p id="schoolName">ثانوية الأميرات للبنات</p>
   <div class="info-grid">
-   <div class="info"><small>الصف</small><strong id="className">الثاني متوسط</strong></div>
+   <div class="info"><small>الصف الدراسي</small><strong id="className">الثاني متوسط</strong></div>
    <div class="info"><small>المادة</small><strong id="subjectName">التربية الإسلامية</strong></div>
-   <div class="info"><small>المدة</small><strong id="duration">60 دقيقة</strong></div>
+   <div class="info"><small>مدة الاختبار</small><strong id="duration">60 دقيقة</strong></div>
   </div>
  </section>
 
- <section class="card panel" id="loginPanel">
-  <h3 class="panel-title">تسجيل دخول الطالبة</h3>
-  <p class="panel-sub">أدخلي اسمك الثلاثي لبدء الاختبار.</p>
-
+ <!-- Student login -->
+ <section class="glass panel" id="loginPanel">
+  <h3 class="panel-title">بوابة دخول الطالبة</h3>
+  <p class="panel-sub">أدخلي اسمك الثلاثي كما هو مسجل لدى الأستاذة لبدء الاختبار.</p>
   <div class="field">
-   <label for="fullName">الاسم الثلاثي الكامل</label>
-   <input id="fullName" type="text" autocomplete="name" maxlength="120"
-    placeholder="مثال: زهراء أحمد علي">
+   <label>الاسم الثلاثي الكامل</label>
+   <input id="fullName" maxlength="120" autocomplete="name" placeholder="مثال: زهراء أحمد علي">
   </div>
-
   <div class="error" id="loginError"></div>
-  <button class="primary" id="loginButton" onclick="loginStudent()">دخول وبدء الاختبار</button>
-  <div class="note">
-   • اكتبي اسمك الثلاثي بصورة صحيحة.<br>
-   • لا تغلقي الصفحة أثناء الاختبار.<br>
-   • بعد اعتماد الإجابة لا يمكن تعديلها أو إرسال إجابة ثانية.
-  </div>
+  <button class="btn gold full" id="loginButton" onclick="loginStudent()"><i data-lucide="log-in"></i> دخول وبدء الاختبار</button>
+  <div class="notice">تأكدي من كتابة اسمك الثلاثي بصورة صحيحة. بعد اعتماد الإجابة لا يمكن تعديلها أو إرسال إجابة ثانية.</div>
  </section>
 
- <section class="card panel hidden" id="examPanel">
-  <div class="student-head">
+ <!-- Student exam -->
+ <section class="glass panel hidden" id="examPanel">
+  <div class="exam-head">
    <div>
-    <div class="student-name" id="studentName">الطالبة</div>
-    <div class="student-code" id="studentCode">ST-000000</div>
+    <div id="studentName" style="font-size:13px;font-weight:900">الطالبة</div>
+    <div id="studentCode" style="font-size:10px;color:var(--gold);margin-top:4px">ST-000000</div>
    </div>
    <div>
     <div class="timer" id="timer">60:00</div>
-    <div class="timer-label">الوقت المتبقي</div>
+    <div class="clock-label">الوقت المتبقي</div>
    </div>
   </div>
-
-  <div class="progress-row">
-   <span id="progressText">السؤال 1</span>
-   <span id="progressCount">0 / 5</span>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:17px">
+   <span id="progressText">السؤال 1</span><span id="progressCount">0 / 5</span>
   </div>
-  <div class="progress"><span id="progressBar"></span></div>
-
+  <div class="progress"><span id="progressBar" style="width:0%"></span></div>
   <div id="questionArea">
    <div class="question-box">
-    <div class="question-label">السؤال الحالي</div>
+    <div style="font-size:10px;color:var(--gold);font-weight:900;margin-bottom:12px">السؤال الحالي</div>
     <div class="verse" id="verseText"></div>
     <div class="prompt" id="questionPrompt"></div>
    </div>
-
    <div class="field">
-    <label for="answerText">اكتبي إجابتك هنا</label>
-    <textarea class="answer-area" id="answerText"
-     placeholder="اكتبي نوع المد والسبب..." maxlength="3000"></textarea>
+    <label>اكتبي إجابتك</label>
+    <textarea class="answer" id="answerText" maxlength="3000" placeholder="اكتبي الإجابة هنا..."></textarea>
    </div>
-
-   <div class="question-foot">
-    <span>الإجابة تُحفظ بعد الاعتماد</span>
-    <span id="questionClock">وقت السؤال: 00:00</span>
+   <div style="display:flex;justify-content:space-between;color:var(--muted);font-size:10px;margin:10px 2px">
+    <span>تُحفظ الإجابة في قاعدة البيانات</span><span id="questionClock">وقت السؤال: 00:00</span>
    </div>
-
    <div class="error" id="answerError"></div>
-   <button class="primary" id="submitButton" onclick="submitAnswer()">اعتماد الإجابة والانتقال</button>
+   <button class="btn gold full" id="submitButton" onclick="submitAnswer()"><i data-lucide="check-circle"></i> اعتماد الإجابة والانتقال</button>
   </div>
-
-  <div id="completeArea" class="complete hidden">
-   <div class="complete-icon">✓</div>
+  <div id="completeArea" class="hidden" style="text-align:center;padding:28px 10px">
+   <div class="stat-icon" style="margin:auto;width:65px;height:65px;border-radius:50%;color:#17120a;background:linear-gradient(145deg,#f5dfa9,#c09243)"><i data-lucide="check-check"></i></div>
    <h2>اكتمل الاختبار</h2>
-   <p>تم تسجيل إجاباتك وإنهاء المحاولة. يمكنك إغلاق الصفحة الآن.</p>
-   <div class="success" id="finishMessage" style="display:block"></div>
+   <p style="color:var(--muted);font-size:12px;line-height:2" id="finishMessage">تم حفظ إجاباتك.</p>
   </div>
  </section>
 
- <section class="card panel hidden" id="closedPanel">
-  <div class="complete">
-   <div class="complete-icon" style="background:linear-gradient(145deg,#ff9ba5,#b83f50)">!</div>
-   <h2>الاختبار مغلق حالياً</h2>
-   <p id="closedMessage">لا يمكن استقبال محاولات جديدة في الوقت الحالي. يرجى مراجعة الأستاذة.</p>
-  </div>
+ <section class="glass panel hidden" id="closedPanel">
+  <div class="empty"><i data-lucide="lock-keyhole"></i><h3>الاختبار مغلق حالياً</h3><p id="closedMessage">يرجى مراجعة الأستاذة.</p></div>
+ </section>
+ <section class="glass panel hidden" id="expiredPanel">
+  <div class="empty"><i data-lucide="timer-off"></i><h3>انتهى وقت الاختبار</h3><p>انتهت مدة المحاولة.</p></div>
  </section>
 
- <section class="card panel hidden" id="expiredPanel">
-  <div class="complete">
-   <div class="complete-icon">⌛</div>
-   <h2>انتهى الوقت</h2>
-   <p>انتهى الوقت المحدد للاختبار وتم إغلاق المحاولة.</p>
+ <!-- Teacher login -->
+ <section class="glass panel hidden" id="teacherLoginPanel">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+   <div class="stat-icon"><i data-lucide="shield-check"></i></div>
+   <div><h3 class="panel-title">دخول الأستاذة</h3><p class="panel-sub" style="margin:0">Teacher secure access</p></div>
+  </div>
+  <div class="field">
+   <label>رمز / كلمة مرور الأستاذة</label>
+   <input id="teacherPassword" type="password" autocomplete="current-password" placeholder="أدخلي كلمة المرور">
+  </div>
+  <div class="error" id="teacherError"></div>
+  <button class="btn gold full" id="teacherLoginButton" onclick="teacherLogin()"><i data-lucide="unlock"></i> فتح لوحة التحكم</button>
+  <button class="btn dark full" style="margin-top:9px" onclick="hideTeacherLogin()">العودة إلى صفحة الطالبات</button>
+ </section>
+
+ <!-- Teacher dashboard -->
+ <section class="hidden" id="teacherPanel">
+  <div class="glass panel">
+   <div class="toolbar">
+    <div>
+     <div class="eyebrow">TEACHER COMMAND CENTER</div>
+     <h2 style="font-size:21px;margin:5px 0">لوحة إدارة الاختبار</h2>
+     <div style="font-size:10px;color:var(--muted)">إدارة ومتابعة بيانات الامتحان</div>
+    </div>
+    <button class="btn danger" onclick="teacherLogout()"><i data-lucide="log-out"></i> خروج</button>
+   </div>
+   <div class="stats">
+    <div class="stat"><div class="stat-top"><small>الطالبات</small><span class="stat-icon"><i data-lucide="users"></i></span></div><strong id="statStudents">0</strong><small>إجمالي المسجلات</small></div>
+    <div class="stat"><div class="stat-top"><small>الجلسات النشطة</small><span class="stat-icon"><i data-lucide="activity"></i></span></div><strong id="statActive">0</strong><small>محاولات نشطة</small></div>
+    <div class="stat"><div class="stat-top"><small>الإجابات</small><span class="stat-icon"><i data-lucide="file-check"></i></span></div><strong id="statAnswers">0</strong><small>إجابات محفوظة</small></div>
+    <div class="stat"><div class="stat-top"><small>الأسئلة</small><span class="stat-icon"><i data-lucide="book-open"></i></span></div><strong id="statQuestions">0</strong><small>الأسئلة المسجلة</small></div>
+   </div>
+   <div class="tabs">
+    <button class="tab active" data-tab="students" onclick="switchTab('students',this)">الطالبات</button>
+    <button class="tab" data-tab="answers" onclick="switchTab('answers',this)">الإجابات</button>
+    <button class="tab" data-tab="questions" onclick="switchTab('questions',this)">الأسئلة</button>
+    <button class="tab" data-tab="control" onclick="switchTab('control',this)">التحكم</button>
+    <button class="tab" data-tab="reports" onclick="switchTab('reports',this)">التقارير</button>
+   </div>
+   <div id="teacherErrorBox" class="error"></div>
+   <div id="teacherSuccessBox" class="success"></div>
+   <div id="tab-students">
+    <div class="toolbar">
+     <h3>سجل الطالبات</h3>
+     <div class="search"><input id="studentSearch" placeholder="بحث باسم الطالبة أو الرمز..." oninput="renderStudents()"></div>
+     <button class="btn dark" onclick="loadDashboard()"><i data-lucide="refresh-cw"></i> تحديث</button>
+    </div>
+    <div id="studentsList"></div>
+   </div>
+   <div id="tab-answers" class="hidden">
+    <div class="toolbar"><h3>سجل الإجابات</h3><div class="search"><input id="answerSearch" placeholder="بحث باسم الطالبة..." oninput="renderAnswers()"></div></div>
+    <div id="answersList"></div>
+   </div>
+   <div id="tab-questions" class="hidden">
+    <div class="toolbar"><h3>إدارة الأسئلة</h3><button class="btn gold" onclick="openQuestionModal()"><i data-lucide="plus"></i> إضافة سؤال</button></div>
+    <div id="questionsList"></div>
+   </div>
+   <div id="tab-control" class="hidden">
+    <h3 class="panel-title">إعدادات الامتحان والتحكم</h3>
+    <p class="panel-sub">التغييرات تحفظ مباشرة في قاعدة البيانات.</p>
+    <div class="grid">
+     <div class="field"><label>عنوان الاختبار</label><input id="settingTitle"></div>
+     <div class="field"><label>اسم المدرسة</label><input id="settingSchool"></div>
+     <div class="field"><label>الصف</label><input id="settingClass"></div>
+     <div class="field"><label>المادة</label><input id="settingSubject"></div>
+     <div class="field"><label>تاريخ الاختبار</label><input id="settingDate" type="date"></div>
+     <div class="field"><label>مدة الاختبار بالدقائق</label><input id="settingDuration" type="number" min="1" max="600"></div>
+     <div class="field"><label>العدد الأقصى للطالبات</label><input id="settingMax" type="number" min="1" max="500"></div>
+    </div>
+    <button class="btn gold full" onclick="saveSettings()"><i data-lucide="save"></i> حفظ الإعدادات</button>
+    <div class="divider" style="height:1px;background:var(--border);margin:23px 0"></div>
+    <h3 class="panel-title">بوابة دخول الطالبات</h3>
+    <p class="panel-sub">يمكنك إيقاف استقبال محاولات جديدة أو فتحه.</p>
+    <div class="field"><label>رسالة الإغلاق</label><textarea id="accessMessage" placeholder="مثال: الاختبار مغلق مؤقتاً"></textarea></div>
+    <div class="grid">
+     <button class="btn green full" onclick="setAccess(true)"><i data-lucide="door-open"></i> فتح دخول الطالبات</button>
+     <button class="btn danger full" onclick="setAccess(false)"><i data-lucide="lock"></i> إيقاف دخول الطالبات</button>
+    </div>
+    <div class="notice">إيقاف دخول الطالبات يمنع تسجيل محاولات جديدة. الجلسات النشطة لا تُلغى تلقائياً بمجرد إغلاق البوابة.</div>
+   </div>
+   <div id="tab-reports" class="hidden">
+    <div class="toolbar"><h3>تقارير الاختبارات</h3><button class="btn gold" onclick="loadReports()"><i data-lucide="download"></i> تحميل التقارير</button></div>
+    <div id="reportsList"></div>
+   </div>
   </div>
  </section>
 </main>
 
-<footer>متوسطة الاميرات للبنات · منصة الاختبارات الإلكترونية</footer>
+<footer>ثانوية الأميرات للبنات · منصة الاختبارات الإلكترونية</footer>
 <div class="toast" id="toast"></div>
+
+<!-- Student details modal -->
+<div class="modal hidden" id="detailsModal" onclick="if(event.target===this)closeModal('detailsModal')">
+ <div class="glass modal-content">
+  <div class="modal-head"><h3 id="detailsTitle">تفاصيل الطالبة</h3><button class="icon-btn" onclick="closeModal('detailsModal')"><i data-lucide="x"></i></button></div>
+  <div id="detailsContent"></div>
+ </div>
+</div>
+
+<!-- Question modal -->
+<div class="modal hidden" id="questionModal" onclick="if(event.target===this)closeModal('questionModal')">
+ <div class="glass modal-content">
+  <div class="modal-head"><h3 id="questionModalTitle">إضافة سؤال</h3><button class="icon-btn" onclick="closeModal('questionModal')"><i data-lucide="x"></i></button></div>
+  <input id="questionId" type="hidden">
+  <div class="field"><label>نص الآية</label><textarea id="questionVerse" placeholder="أدخلي نص الآية..."></textarea></div>
+  <div class="field"><label>المطلوب من الطالبة</label><textarea id="questionPrompt" placeholder="أدخلي نص السؤال..."></textarea></div>
+  <div class="field"><label>ترتيب السؤال</label><input id="questionPosition" type="number" min="1"></div>
+  <div class="error" id="questionError"></div>
+  <button class="btn gold full" id="questionSaveButton" onclick="saveQuestion()"><i data-lucide="save"></i> حفظ السؤال</button>
+ </div>
+</div>
 
 <script>
 "use strict";
 
-/* إعداد الاتصال */
-const API_URL = "https://raejlwiwxihswiqomwcr.supabase.co/functions/v1/exam-api";
-const SUPABASE_PUBLIC_KEY = "sb_publishable_9JyqEf9ATnqFStDxrhQwww_JdEmETCc";
+/* ===================== Supabase configuration ===================== */
+const API_URL="https://raejlwiwxihswiqomwcr.supabase.co/functions/v1/exam-api";
+const SUPABASE_PUBLIC_KEY="sb_publishable_9JyqEf9ATnqFStDxrhQwww_JdEmETCc";
 
-const STORAGE = {
- token: "shger_student_session",
- student: "shger_student_profile",
- deadline: "shger_exam_deadline"
+const STORAGE={
+ studentToken:"shger_student_session",
+ studentProfile:"shger_student_profile",
+ studentDeadline:"shger_exam_deadline",
+ teacherToken:"shger_teacher_token",
+ fingerprint:"shger_device_fingerprint"
 };
 
-let currentQuestion = null;
-let examDeadline = null;
-let timerInterval = null;
-let questionClockInterval = null;
-let pollingInterval = null;
-let requestBusy = false;
-let questionOpenedAt = null;
-let completedCount = 0;
-let totalQuestions = 5;
-let finished = false;
+const $=id=>document.getElementById(id);
+let dashboardData={students:[],sessions:[],answers:[],questions:[],settings:{},access:{}};
+let currentQuestion=null;
+let examDeadline=null;
+let timerInterval=null;
+let questionClockInterval=null;
+let pollingInterval=null;
+let adminPolling=null;
+let requestBusy=false;
+let questionOpenedAt=null;
+let completedCount=0;
+let totalQuestions=5;
+let finished=false;
+let currentTab="students";
 
-const $ = id => document.getElementById(id);
-
-function showToast(message) {
- const toast = $("toast");
- toast.textContent = message;
- toast.classList.add("show");
- setTimeout(() => toast.classList.remove("show"), 2800);
+function iconRefresh(){
+ if(window.lucide) lucide.createIcons();
 }
-
-function showError(id, message) {
- const el = $(id);
- el.textContent = message;
- el.style.display = "block";
+function toast(message){
+ const el=$("toast");el.textContent=message;el.classList.add("show");
+ setTimeout(()=>el.classList.remove("show"),3000);
 }
-
-function hideError(id) {
- $(id).style.display = "none";
+function errorBox(id,message){
+ const el=$(id);if(!el)return;
+ el.textContent=message;el.style.display="block";
 }
-
-function setButtonLoading(buttonId, loading, text) {
- const button = $(buttonId);
- button.disabled = loading;
- button.innerHTML = loading ? '<span class="loading"></span>يرجى الانتظار...' : text;
+function hideBox(id){const el=$(id);if(el)el.style.display="none"}
+function successBox(message){
+ const el=$("teacherSuccessBox");el.textContent=message;el.style.display="block";
+ setTimeout(()=>el.style.display="none",3500);
 }
-
-async function api(action, payload = {}) {
- const response = await fetch(API_URL, {
-  method: "POST",
-  headers: {
-   "Content-Type": "application/json",
-   "apikey": SUPABASE_PUBLIC_KEY,
-   "Authorization": "Bearer " + SUPABASE_PUBLIC_KEY
+function esc(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ }[c]));
+}
+function dateText(value){
+ if(!value)return "—";
+ const d=new Date(value);
+ if(Number.isNaN(d.getTime()))return String(value);
+ return d.toLocaleString("ar-IQ",{dateStyle:"medium",timeStyle:"short"});
+}
+function durationText(seconds){
+ const n=Math.max(0,Number(seconds)||0);
+ const h=Math.floor(n/3600),m=Math.floor(n%3600/60),s=Math.floor(n%60);
+ return h?`${h} ساعة ${m} دقيقة ${s} ثانية`:`${m} دقيقة ${s} ثانية`;
+}
+function setConnection(online,label){
+ $("statusDot").style.background=online?"#4ce0a2":"#ff6579";
+ $("statusDot").style.boxShadow=online?"0 0 12px #4ce0a2":"0 0 12px #ff6579";
+ $("statusText").textContent=label;
+}
+function loadingButton(id,on,label){
+ const b=$(id);if(!b)return;
+ b.disabled=on;
+ if(on)b.innerHTML='<span class="spinner"></span> يرجى الانتظار...';
+ else if(label)b.innerHTML=label;
+}
+async function api(action,payload={}){
+ const response=await fetch(API_URL,{
+  method:"POST",
+  mode:"cors",
+  headers:{
+   "Content-Type":"application/json",
+   "apikey":SUPABASE_PUBLIC_KEY,
+   "Authorization":"Bearer "+SUPABASE_PUBLIC_KEY
   },
-  body: JSON.stringify({ action, ...payload })
+  body:JSON.stringify({action,...payload})
  });
-
  let data;
- try {
-  data = await response.json();
- } catch {
-  throw new Error("استجابة الخادم غير مفهومة");
- }
-
- if (!response.ok || data.success === false) {
-  throw new Error(data.error || "تعذر تنفيذ الطلب");
+ try{data=await response.json()}
+ catch{throw new Error("استجابة الخادم ليست JSON. تحقق من Edge Function")}
+ if(!response.ok||data.success===false){
+  throw new Error(data.error||`فشل الطلب (${response.status})`);
  }
  return data;
 }
 
-function setConnection(online, text) {
- $("statusDot").style.background = online ? "#46d69a" : "#ff6576";
- $("statusDot").style.boxShadow = online
-  ? "0 0 10px #46d69a" : "0 0 10px #ff6576";
- $("statusText").textContent = text;
-}
-
-async function loadPublicStatus() {
- try {
-  const data = await api("public_status");
-  const exam = data.exam;
-
-  $("examTitle").textContent = exam.title || "اختبارات التربية الإسلامية";
-  $("AL-AMIRAT SCHOOLName").textContent = exam.AL-AMIRAT SCHOOL || "متوسطة الاميرات للبنات";
-  $("className").textContent = exam.class_name || "الثاني متوسط";
-  $("subjectName").textContent = exam.subject || "التربية الإسلامية";
-  $("duration").textContent = (exam.duration_minutes || 60) + " دقيقة";
-  totalQuestions = Number(exam.question_count || 5);
-
-  setConnection(true, "متصل");
-  if (!exam.student_access_enabled) {
+/* ===================== Public exam state ===================== */
+async function loadPublicStatus(){
+ try{
+  const data=await api("public_status");
+  const exam=data.exam||{};
+  $("examTitle").textContent=exam.title||"اختبارات التربية الإسلامية";
+  $("schoolName").textContent=exam.school||"ثانوية الأميرات للبنات";
+  $("className").textContent=exam.class_name||"الثاني متوسط";
+  $("subjectName").textContent=exam.subject||"التربية الإسلامية";
+  $("duration").textContent=(exam.duration_minutes||60)+" دقيقة";
+  totalQuestions=Number(exam.question_count||5);
+  setConnection(true,"متصل");
+  if(!exam.student_access_enabled){
    $("loginPanel").classList.add("hidden");
    $("closedPanel").classList.remove("hidden");
-   $("closedMessage").textContent = exam.message || "الاختبار مغلق حالياً.";
+   $("closedMessage").textContent=exam.message||"الاختبار مغلق حالياً.";
+  }else{
+   $("closedPanel").classList.add("hidden");
+   if(!studentToken()&&!teacherToken())$("loginPanel").classList.remove("hidden");
   }
   return exam;
- } catch (error) {
-  setConnection(false, "غير متصل");
-  showToast("تعذر الاتصال بالخادم: " + error.message);
+ }catch(e){
+  setConnection(false,"غير متصل");
+  toast("تعذر الاتصال: "+e.message);
   return null;
  }
 }
 
-function getFingerprint() {
- const key = "shger_device_fingerprint";
- let value = localStorage.getItem(key);
- if (!value) {
-  value = (crypto.randomUUID ? crypto.randomUUID() :
-   Date.now().toString(36) + Math.random().toString(36).slice(2)) +
-   "-" + Math.random().toString(36).slice(2);
-  localStorage.setItem(key, value);
+/* ===================== Student login and exam ===================== */
+function getFingerprint(){
+ let value=localStorage.getItem(STORAGE.fingerprint);
+ if(!value){
+  value=(crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2));
+  localStorage.setItem(STORAGE.fingerprint,value);
  }
  return value;
 }
+function studentToken(){return localStorage.getItem(STORAGE.studentToken)}
+function teacherToken(){return localStorage.getItem(STORAGE.teacherToken)}
 
-async function loginStudent() {
- hideError("loginError");
- const fullName = $("fullName").value.trim().replace(/\s+/g, " ");
- const words = fullName.split(" ").filter(Boolean);
-
- if (words.length < 3) {
-  showError("loginError", "يرجى كتابة الاسم الثلاثي، وليس الاسم الثنائي.");
+async function loginStudent(){
+ hideBox("loginError");
+ const name=$("fullName").value.trim().replace(/\s+/g," ");
+ if(name.split(" ").filter(Boolean).length<3){
+  errorBox("loginError","يرجى كتابة الاسم الثلاثي الكامل.");
   return;
  }
-
- if (requestBusy) return;
- requestBusy = true;
- setButtonLoading("loginButton", true);
-
- try {
-  const status = await loadPublicStatus();
-  if (!status || !status.student_access_enabled) {
-   throw new Error(status?.message || "الاختبار مغلق حالياً");
-  }
-
-  const data = await api("student_login", {
-   full_name: fullName,
-   device_fingerprint: getFingerprint(),
-   device_label: navigator.userAgent.slice(0, 100)
+ if(requestBusy)return;
+ requestBusy=true;loadingButton("loginButton",true);
+ try{
+  const status=await loadPublicStatus();
+  if(!status||!status.student_access_enabled)throw new Error(status?.message||"الاختبار مغلق حالياً");
+  const data=await api("student_login",{
+   full_name:name,
+   device_fingerprint:getFingerprint(),
+   device_label:(navigator.userAgent||"Browser").slice(0,100)
   });
-
-  if (!data.session_token || !data.student) {
-   throw new Error("لم تصل بيانات الجلسة من الخادم");
-  }
-
-  localStorage.setItem(STORAGE.token, data.session_token);
-  localStorage.setItem(STORAGE.student, JSON.stringify(data.student));
-  localStorage.setItem(STORAGE.deadline, data.deadline_at);
-
-  examDeadline = new Date(data.deadline_at);
-  $("studentName").textContent = data.student.full_name;
-  $("studentCode").textContent = data.student.student_code;
-
-  $("loginPanel").classList.add("hidden");
-  $("closedPanel").classList.add("hidden");
-  $("examPanel").classList.remove("hidden");
-
-  startTimer();
-  startPolling();
-  handleQuestionResponse(data.question);
-  showToast("تم تسجيل الدخول بنجاح");
- } catch (error) {
-  showError("loginError", error.message);
- } finally {
-  requestBusy = false;
-  setButtonLoading("loginButton", false, "دخول وبدء الاختبار");
+  if(!data.session_token||!data.student)throw new Error("لم تصل بيانات جلسة الطالبة من الخادم");
+  localStorage.setItem(STORAGE.studentToken,data.session_token);
+  localStorage.setItem(STORAGE.studentProfile,JSON.stringify(data.student));
+  localStorage.setItem(STORAGE.studentDeadline,data.deadline_at||"");
+  showStudentExam(data.student,data.deadline_at,data.question);
+  toast("تم تسجيل الدخول بنجاح");
+ }catch(e){errorBox("loginError",e.message)}
+ finally{
+  requestBusy=false;
+  loadingButton("loginButton",false,'<i data-lucide="log-in"></i> دخول وبدء الاختبار');
+  iconRefresh();
  }
 }
-
-function studentToken() {
- return localStorage.getItem(STORAGE.token);
+function showStudentExam(student,deadline,question){
+ $("loginPanel").classList.add("hidden");
+ $("closedPanel").classList.add("hidden");
+ $("teacherLoginPanel").classList.add("hidden");
+ $("teacherPanel").classList.add("hidden");
+ $("examPanel").classList.remove("hidden");
+ $("studentName").textContent=student.full_name||"الطالبة";
+ $("studentCode").textContent=student.student_code||"";
+ examDeadline=new Date(deadline||localStorage.getItem(STORAGE.studentDeadline));
+ finished=false;
+ startTimer();startPolling();handleQuestionResponse(question);
 }
-
-function handleQuestionResponse(result) {
- if (!result) return;
-
- if (result.completed) {
-  finishUI("تم إنهاء جميع الأسئلة بنجاح.");
+function handleQuestionResponse(result){
+ if(!result)return;
+ if(result.completed){finishUI("تم إنهاء جميع الأسئلة بنجاح.");return}
+ if(!result.question)return;
+ const q=result.question;
+ if(currentQuestion&&currentQuestion.id===q.id){
   return;
  }
-
- if (!result.question) return;
-
- const q = result.question;
- currentQuestion = q;
- questionOpenedAt = q.opened_at || new Date().toISOString();
-
- $("verseText").textContent = q.verse_text || "";
- $("questionPrompt").textContent = q.question_prompt || "";
- $("answerText").value = "";
- $("answerText").disabled = false;
- $("submitButton").disabled = false;
-
- const position = Number(q.position || (completedCount + 1));
- const total = Number(q.total_questions || totalQuestions);
-
- $("progressText").textContent = "السؤال " + position;
- $("progressCount").textContent = completedCount + " / " + total;
- $("progressBar").style.width = Math.min(100, completedCount / Math.max(total, 1) * 100) + "%";
-
+ currentQuestion=q;
+ questionOpenedAt=q.opened_at||new Date().toISOString();
+ $("verseText").textContent=q.verse_text||"";
+ $("questionPrompt").textContent=q.question_prompt||"";
+ $("answerText").value="";
+ $("answerText").disabled=false;
+ $("submitButton").disabled=false;
+ const position=Number(q.position||completedCount+1);
+ totalQuestions=Number(q.total_questions||totalQuestions);
+ $("progressText").textContent="السؤال "+position;
+ $("progressCount").textContent=completedCount+" / "+totalQuestions;
+ $("progressBar").style.width=Math.min(100,completedCount/Math.max(totalQuestions,1)*100)+"%";
  startQuestionClock();
 }
-
-function startQuestionClock() {
- if (questionClockInterval) clearInterval(questionClockInterval);
-
- const opened = new Date(questionOpenedAt).getTime();
-
- function update() {
-  const seconds = Math.max(0, Math.floor((Date.now() - opened) / 1000));
-  const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-  const s = String(seconds % 60).padStart(2, "0");
-  $("questionClock").textContent = "وقت السؤال: " + m + ":" + s;
+function startQuestionClock(){
+ if(questionClockInterval)clearInterval(questionClockInterval);
+ const opened=new Date(questionOpenedAt).getTime();
+ function update(){
+  const sec=Math.max(0,Math.floor((Date.now()-opened)/1000));
+  $("questionClock").textContent="وقت السؤال: "+String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0");
  }
-
- update();
- questionClockInterval = setInterval(update, 1000);
+ update();questionClockInterval=setInterval(update,1000);
 }
-
-async function submitAnswer() {
- hideError("answerError");
-
- if (!currentQuestion) {
-  showError("answerError", "لا يوجد سؤال نشط حالياً.");
-  return;
- }
-
- const answer = $("answerText").value.trim();
- if (!answer) {
-  showError("answerError", "اكتبي إجابتك قبل الانتقال إلى السؤال التالي.");
-  return;
- }
-
- if (requestBusy) return;
- requestBusy = true;
- setButtonLoading("submitButton", true);
-
- try {
-  const data = await api("submit_answer", {
-   session_token: studentToken(),
-   question_id: currentQuestion.id,
-   visit_id: currentQuestion.visit_id,
-   answer_text: answer
+async function submitAnswer(){
+ hideBox("answerError");
+ if(!currentQuestion){errorBox("answerError","لا يوجد سؤال نشط.");return}
+ const answer=$("answerText").value.trim();
+ if(!answer){errorBox("answerError","اكتبي الإجابة قبل الاعتماد.");return}
+ if(requestBusy)return;
+ requestBusy=true;loadingButton("submitButton",true);
+ try{
+  const data=await api("submit_answer",{
+   session_token:studentToken(),
+   question_id:currentQuestion.id,
+   visit_id:currentQuestion.visit_id,
+   answer_text:answer
   });
-
   completedCount++;
-  $("answerText").disabled = true;
-  $("submitButton").disabled = true;
-
-  if (questionClockInterval) clearInterval(questionClockInterval);
-
-  showToast("تم اعتماد الإجابة وحفظها");
-
-  $("progressBar").style.width =
-   Math.min(100, completedCount / Math.max(totalQuestions, 1) * 100) + "%";
-
+  $("answerText").disabled=true;
+  $("submitButton").disabled=true;
+  if(questionClockInterval)clearInterval(questionClockInterval);
+  toast("تم حفظ الإجابة في قاعدة البيانات");
+  $("progressBar").style.width=Math.min(100,completedCount/Math.max(totalQuestions,1)*100)+"%";
+  currentQuestion=null;
   handleQuestionResponse(data.question);
- } catch (error) {
-  if (/انتهى الوقت|منتهية|ملغاة/.test(error.message)) {
-   finishUI("انتهى الوقت أو أُغلقت المحاولة.");
-  } else {
-   showError("answerError", error.message);
-  }
- } finally {
-  requestBusy = false;
-  if (!finished) setButtonLoading("submitButton", false, "اعتماد الإجابة والانتقال");
- }
-}
-
-function startTimer() {
- if (timerInterval) clearInterval(timerInterval);
-
- function update() {
-  if (!examDeadline) return;
-  const remaining = Math.max(0, Math.floor((examDeadline.getTime() - Date.now()) / 1000));
-
-  const hours = Math.floor(remaining / 3600);
-  const minutes = Math.floor((remaining % 3600) / 60);
-  const seconds = remaining % 60;
-
-  $("timer").textContent = hours > 0
-   ? String(hours).padStart(2, "0") + ":" +
-     String(minutes).padStart(2, "0") + ":" +
-     String(seconds).padStart(2, "0")
-   : String(minutes).padStart(2, "0") + ":" +
-     String(seconds).padStart(2, "0");
-
-  if (remaining <= 0) {
-   finishUI("انتهى الوقت المحدد للاختبار.");
+ }catch(e){
+  if(/انتهى الوقت|منتهية|ملغاة|غير صالحة/.test(e.message))finishUI(e.message);
+  else errorBox("answerError",e.message);
+ }finally{
+  requestBusy=false;
+  if(!finished){
+   loadingButton("submitButton",false,'<i data-lucide="check-circle"></i> اعتماد الإجابة والانتقال');
+   iconRefresh();
   }
  }
-
- update();
- timerInterval = setInterval(update, 1000);
 }
-
-function finishUI(message) {
- if (finished) return;
- finished = true;
-
- if (timerInterval) clearInterval(timerInterval);
- if (pollingInterval) clearInterval(pollingInterval);
- if (questionClockInterval) clearInterval(questionClockInterval);
-
+function startTimer(){
+ if(timerInterval)clearInterval(timerInterval);
+ function update(){
+  if(!examDeadline||Number.isNaN(examDeadline.getTime()))return;
+  const sec=Math.max(0,Math.floor((examDeadline.getTime()-Date.now())/1000));
+  const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;
+  $("timer").textContent=h?`${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`:`${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+  if(sec<=0)finishUI("انتهى الوقت المحدد للاختبار.");
+ }
+ update();timerInterval=setInterval(update,1000);
+}
+function finishUI(message){
+ if(finished)return;
+ finished=true;
+ clearInterval(timerInterval);clearInterval(pollingInterval);clearInterval(questionClockInterval);
  $("questionArea").classList.add("hidden");
  $("completeArea").classList.remove("hidden");
- $("finishMessage").textContent = message;
- $("progressBar").style.width = "100%";
- $("progressText").textContent = "انتهى الاختبار";
-
- localStorage.removeItem(STORAGE.token);
- localStorage.removeItem(STORAGE.student);
- localStorage.removeItem(STORAGE.deadline);
+ $("finishMessage").textContent=message;
+ $("progressBar").style.width="100%";
+ $("progressText").textContent="انتهى الاختبار";
+ localStorage.removeItem(STORAGE.studentToken);
+ localStorage.removeItem(STORAGE.studentProfile);
+ localStorage.removeItem(STORAGE.studentDeadline);
 }
-
-function startPolling() {
- if (pollingInterval) clearInterval(pollingInterval);
-
- pollingInterval = setInterval(async () => {
-  if (finished || requestBusy) return;
-
-  try {
-   const status = await api("student_current", {
-    session_token: studentToken()
-   });
-
-   setConnection(true, "متصل");
-
-   if (status.question?.completed) {
-    finishUI("تم إنهاء جميع الأسئلة بنجاح.");
-   }
-  } catch (error) {
-   if (/انتهى الوقت|منتهية|ملغاة|غير صالحة/.test(error.message)) {
-    finishUI(error.message);
-   } else {
-    setConnection(false, "إعادة الاتصال");
-   }
+function startPolling(){
+ clearInterval(pollingInterval);
+ pollingInterval=setInterval(async()=>{
+  if(finished||requestBusy||!studentToken())return;
+  try{
+   const status=await api("student_current",{session_token:studentToken()});
+   setConnection(true,"متصل");
+   if(status.question?.completed)finishUI("تم إنهاء جميع الأسئلة.");
+   else if(status.question?.question)handleQuestionResponse(status.question);
+  }catch(e){
+   if(/انتهى الوقت|منتهية|ملغاة|غير صالحة/.test(e.message))finishUI(e.message);
+   else setConnection(false,"إعادة الاتصال");
   }
- }, 12000);
+ },12000);
 }
-
-async function resumeSession() {
- const token = studentToken();
- if (!token) return;
-
- try {
-  const savedStudent = JSON.parse(localStorage.getItem(STORAGE.student) || "{}");
-  const status = await api("student_current", { session_token: token });
-
-  $("studentName").textContent = savedStudent.full_name || "الطالبة";
-  $("studentCode").textContent = savedStudent.student_code || "";
-
-  $("loginPanel").classList.add("hidden");
-  $("examPanel").classList.remove("hidden");
-
-  examDeadline = new Date(
-   status.deadline_at || localStorage.getItem(STORAGE.deadline)
-  );
-
-  startTimer();
-  startPolling();
-
-  handleQuestionResponse(status.question);
-  setConnection(true, "تم استرجاع الجلسة");
- } catch (error) {
-  localStorage.removeItem(STORAGE.token);
-  localStorage.removeItem(STORAGE.student);
-  localStorage.removeItem(STORAGE.deadline);
-
-  if (/انتهى الوقت|منتهية|ملغاة/.test(error.message)) {
+async function resumeStudentSession(){
+ const token=studentToken();if(!token)return false;
+ try{
+  const saved=JSON.parse(localStorage.getItem(STORAGE.studentProfile)||"{}");
+  const status=await api("student_current",{session_token:token});
+  if(status.question?.completed){showStudentExam(saved,status.deadline_at,status.question);return true}
+  showStudentExam(saved,status.deadline_at,status.question);
+  setConnection(true,"استرجاع الجلسة");
+  return true;
+ }catch(e){
+  localStorage.removeItem(STORAGE.studentToken);
+  localStorage.removeItem(STORAGE.studentProfile);
+  localStorage.removeItem(STORAGE.studentDeadline);
+  if(/انتهى الوقت|منتهية|ملغاة/.test(e.message)){
    $("loginPanel").classList.add("hidden");
    $("expiredPanel").classList.remove("hidden");
-  } else {
-   showToast("تعذر استرجاع الجلسة: " + error.message);
   }
+  return false;
  }
 }
 
-window.addEventListener("online", () => setConnection(true, "متصل"));
-window.addEventListener("offline", () => setConnection(false, "غير متصل"));
+/* ===================== Teacher login ===================== */
+function showTeacherLogin(){
+ if(teacherToken()){showTeacherDashboard();return}
+ $("loginPanel").classList.add("hidden");
+ $("closedPanel").classList.add("hidden");
+ $("teacherLoginPanel").classList.remove("hidden");
+ $("teacherPassword").focus();
+}
+function hideTeacherLogin(){
+ $("teacherLoginPanel").classList.add("hidden");
+ if(!studentToken())$("loginPanel").classList.remove("hidden");
+}
+async function teacherLogin(){
+ hideBox("teacherError");
+ const password=$("teacherPassword").value;
+ if(!password){errorBox("teacherError","أدخلي كلمة مرور الأستاذة.");return}
+ loadingButton("teacherLoginButton",true);
+ try{
+  const data=await api("teacher_login",{password});
+  if(!data.token)throw new Error("لم يصل رمز دخول الأستاذة");
+  localStorage.setItem(STORAGE.teacherToken,data.token);
+  $("teacherPassword").value="";
+  await showTeacherDashboard();
+  toast("تم فتح لوحة الأستاذة");
+ }catch(e){errorBox("teacherError",e.message)}
+ finally{
+  loadingButton("teacherLoginButton",false,'<i data-lucide="unlock"></i> فتح لوحة التحكم');
+  iconRefresh();
+ }
+}
+function teacherLogout(){
+ localStorage.removeItem(STORAGE.teacherToken);
+ clearInterval(adminPolling);
+ $("teacherPanel").classList.add("hidden");
+ $("teacherLoginPanel").classList.add("hidden");
+ if(!studentToken())$("loginPanel").classList.remove("hidden");
+ toast("تم تسجيل الخروج");
+}
+async function showTeacherDashboard(){
+ $("loginPanel").classList.add("hidden");
+ $("closedPanel").classList.add("hidden");
+ $("teacherLoginPanel").classList.add("hidden");
+ $("examPanel").classList.add("hidden");
+ $("teacherPanel").classList.remove("hidden");
+ await loadDashboard();
+ clearInterval(adminPolling);
+ adminPolling=setInterval(()=>loadDashboard(true),15000);
+}
 
-document.addEventListener("visibilitychange", () => {
- if (!document.hidden && studentToken() && !finished) {
-  api("student_current", { session_token: studentToken() })
-   .then(data => {
-    if (data.question?.completed) finishUI("تم إنهاء الاختبار.");
-   })
-   .catch(() => {});
+/* ===================== Teacher dashboard ===================== */
+async function loadDashboard(silent=false){
+ if(!teacherToken())return;
+ if(!silent)hideBox("teacherErrorBox");
+ try{
+  const data=await api("admin_dashboard",{admin_token:teacherToken()});
+  dashboardData={
+   students:data.students||[],
+   sessions:data.sessions||[],
+   answers:data.answers||[],
+   questions:data.questions||[],
+   settings:data.settings||{},
+   access:data.access||{}
+  };
+  renderDashboard();
+  setConnection(true,"متصل • تحديث مباشر");
+ }catch(e){
+  setConnection(false,"تعذر التحديث");
+  if(!silent)errorBox("teacherErrorBox",e.message);
+  if(/انتهت جلسة الأستاذة|غير صالح/.test(e.message))teacherLogout();
+ }
+}
+function renderDashboard(){
+ const d=dashboardData;
+ $("statStudents").textContent=d.students.length;
+ $("statActive").textContent=d.sessions.filter(x=>x.status==="active").length;
+ $("statAnswers").textContent=d.answers.length;
+ $("statQuestions").textContent=d.questions.length;
+ $("settingTitle").value=d.settings.exam_title||"";
+ $("settingSchool").value=d.settings.school_name||"";
+ $("settingClass").value=d.settings.class_name||"";
+ $("settingSubject").value=d.settings.subject_name||"";
+ $("settingDate").value=d.settings.exam_date?String(d.settings.exam_date).slice(0,10):"";
+ $("settingDuration").value=d.settings.duration_minutes??60;
+ $("settingMax").value=d.settings.max_students??23;
+ $("accessMessage").value=d.settings.maintenance_message||d.access.control?.lock_message||"";
+ renderStudents();renderAnswers();renderQuestions();
+ iconRefresh();
+}
+function switchTab(name,button){
+ currentTab=name;
+ document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+ if(button)button.classList.add("active");
+ ["students","answers","questions","control","reports"].forEach(x=>$("tab-"+x).classList.toggle("hidden",x!==name));
+ if(name==="reports")loadReports();
+}
+function findSession(studentId){
+ return dashboardData.sessions.find(x=>x.student_id===studentId&&x.status==="active")
+ ||dashboardData.sessions.find(x=>x.student_id===studentId);
+}
+function renderStudents(){
+ const query=($("studentSearch")?.value||"").trim().toLowerCase();
+ const students=dashboardData.students.filter(s=>
+  (s.full_name||"").toLowerCase().includes(query)||
+  (s.student_code||"").toLowerCase().includes(query)
+ );
+ if(!students.length){$("studentsList").innerHTML='<div class="empty"><i data-lucide="users"></i>لا توجد طالبات مطابقة.</div>';iconRefresh();return}
+ $("studentsList").innerHTML=students.map(s=>{
+  const session=findSession(s.id);
+  const answers=dashboardData.answers.filter(a=>a.student_id===s.id);
+  const blocked=s.student_status==="blocked";
+  const state=session?.status==="active"?"نشطة":session?.status==="submitted"?"مكتمل":session?.status==="expired"?"انتهى الوقت":blocked?"محظورة":"لم تبدأ";
+  const cls=blocked||session?.status==="revoked"?"bad":session?.status==="active"?"ok":session?.status==="submitted"?"ok":"wait";
+  return `<article class="student-card">
+   <div class="student-row">
+    <div class="student-main"><div class="avatar">${esc((s.full_name||"ط").trim().charAt(0))}</div><div><strong>${esc(s.full_name)}</strong><small>${esc(s.student_code||"بدون رمز")}</small></div></div>
+    <span class="pill ${cls}">${esc(state)}</span>
+   </div>
+   <div class="student-meta">
+    <div class="meta"><small>تاريخ التسجيل</small><b>${esc(dateText(s.joined_at))}</b></div>
+    <div class="meta"><small>عدد الإجابات</small><b>${answers.length}</b></div>
+    <div class="meta"><small>آخر ظهور</small><b>${esc(dateText(s.last_seen_at))}</b></div>
+    <div class="meta"><small>حالة الجلسة</small><b>${esc(session?.status||"لا توجد جلسة")}</b></div>
+   </div>
+   <div class="actions">
+    <button class="btn dark" onclick="studentDetails('${esc(s.id)}')"><i data-lucide="scan-eye"></i> التفاصيل</button>
+    ${blocked
+     ?`<button class="btn green" onclick="studentAction('admin_unblock_student','${esc(s.id)}')"><i data-lucide="lock-open"></i> فك الحظر</button>`
+     :`<button class="btn danger" onclick="studentAction('admin_block_student','${esc(s.id)}')"><i data-lucide="ban"></i> حظر</button>`}
+    <button class="btn purple" onclick="resetStudent('${esc(s.id)}')"><i data-lucide="refresh-ccw"></i> إعادة الاختبار</button>
+   </div>
+  </article>`;
+ }).join("");
+ iconRefresh();
+}
+function renderAnswers(){
+ const query=($("answerSearch")?.value||"").trim().toLowerCase();
+ const answers=dashboardData.answers.filter(a=>{
+  const student=dashboardData.students.find(s=>s.id===a.student_id);
+  return !query||(student?.full_name||"").toLowerCase().includes(query);
+ });
+ if(!answers.length){$("answersList").innerHTML='<div class="empty"><i data-lucide="file-search"></i>لا توجد إجابات.</div>';iconRefresh();return}
+ $("answersList").innerHTML=answers.map(a=>{
+  const student=dashboardData.students.find(s=>s.id===a.student_id);
+  const q=a.exam_questions||{};
+  return `<div class="answer-record">
+   <h4>${esc(student?.full_name||"طالبة غير معروفة")} • السؤال ${esc(q.position||"")}</h4>
+   <p><b>الآية:</b> ${esc(q.verse_text||"")}</p>
+   <p><b>المطلوب:</b> ${esc(q.question_prompt||"")}</p>
+   <p><b>الإجابة:</b> ${esc(a.answer_text||"")}</p>
+   <small>وقت الإرسال: ${esc(dateText(a.answered_at))} • مدة الإجابة: ${esc(durationText(a.duration_seconds))}</small>
+  </div>`;
+ }).join("");
+ iconRefresh();
+}
+function renderQuestions(){
+ const list=dashboardData.questions;
+ if(!list.length){$("questionsList").innerHTML='<div class="empty"><i data-lucide="book-open"></i>لا توجد أسئلة.</div>';iconRefresh();return}
+ $("questionsList").innerHTML=list.map(q=>`
+  <div class="item-card">
+   <div class="student-row"><strong style="font-size:12px;color:var(--gold2)">السؤال ${esc(q.position)}</strong><span class="pill ${q.is_active?"ok":"bad"}">${q.is_active?"فعال":"غير فعال"}</span></div>
+   <p style="font-size:14px;line-height:2;text-align:center">${esc(q.verse_text)}</p>
+   <p style="font-size:11px;color:var(--muted);text-align:center">${esc(q.question_prompt)}</p>
+   <div class="actions">
+    <button class="btn dark" onclick="editQuestion('${esc(q.id)}')"><i data-lucide="pencil"></i> تعديل</button>
+    <button class="btn danger" onclick="deleteQuestion('${esc(q.id)}')"><i data-lucide="trash-2"></i> حذف</button>
+   </div>
+  </div>`).join("");
+ iconRefresh();
+}
+
+/* ===================== Student details / management ===================== */
+async function studentDetails(id){
+ $("detailsTitle").textContent="تفاصيل الطالبة";
+ $("detailsContent").innerHTML='<div class="empty"><span class="spinner"></span><p>جاري تحميل التفاصيل...</p></div>';
+ $("detailsModal").classList.remove("hidden");
+ try{
+  const data=await api("admin_student_details",{admin_token:teacherToken(),student_id:id});
+  const s=data.student||{};
+  const answers=data.answers||[];
+  const sessions=data.sessions||[];
+  const reports=data.reports||[];
+  $("detailsTitle").textContent=s.full_name||"تفاصيل الطالبة";
+  $("detailsContent").innerHTML=`
+   <div class="detail-grid">
+    <div class="detail-box"><small>الاسم الكامل</small><b>${esc(s.full_name)}</b></div>
+    <div class="detail-box"><small>رمز الطالبة</small><b>${esc(s.student_code)}</b></div>
+    <div class="detail-box"><small>حالة الحساب</small><b>${esc(s.student_status)}</b></div>
+    <div class="detail-box"><small>تاريخ التسجيل</small><b>${esc(dateText(s.joined_at))}</b></div>
+    <div class="detail-box"><small>آخر ظهور</small><b>${esc(dateText(s.last_seen_at))}</b></div>
+    <div class="detail-box"><small>عدد الإجابات</small><b>${answers.length}</b></div>
+   </div>
+   <h3 style="font-size:13px;margin-top:22px">الجلسات ومحاولات الاختبار</h3>
+   ${sessions.length?sessions.map(x=>`<div class="answer-record"><b>${esc(x.status)}</b><p>البدء: ${esc(dateText(x.started_at))}</p><p>الموعد النهائي: ${esc(dateText(x.deadline_at))}</p><p>التسليم: ${esc(dateText(x.submitted_at))}</p></div>`).join(""):'<div class="empty">لا توجد جلسات.</div>'}
+   <h3 style="font-size:13px;margin-top:22px">إجابات الطالبة</h3>
+   ${answers.length?answers.map(a=>`<div class="answer-record"><h4>${esc(a.exam_questions?.question_prompt||"السؤال")}</h4><p>${esc(a.answer_text)}</p><small>وقت الإجابة: ${esc(dateText(a.answered_at))} • المدة: ${esc(durationText(a.duration_seconds))}</small></div>`).join(""):'<div class="empty">لا توجد إجابات.</div>'}
+   <h3 style="font-size:13px;margin-top:22px">التقارير</h3>
+   ${reports.length?reports.map(r=>`<div class="answer-record"><b>${esc(r.file_name||"تقرير")}</b><p>${esc(r.report_text||"")}</p><small>${esc(dateText(r.generated_at))}</small></div>`).join(""):'<div class="empty">لا توجد تقارير محفوظة.</div>'}
+   <div class="notice">بصمة الجهاز غير معروضة هنا لأن دالة الخادم الحالية لا ترسل سجلات exam_student_devices إلى الواجهة.</div>`;
+ }catch(e){$("detailsContent").innerHTML=`<div class="error" style="display:block">${esc(e.message)}</div>`}
+}
+function closeModal(id){$(id).classList.add("hidden")}
+async function studentAction(action,id){
+ const reason=action==="admin_block_student"?"حظر من لوحة الأستاذة":"";
+ if(!confirm(action==="admin_block_student"?"هل تريدين حظر هذه الطالبة؟":"هل تريدين فك حظر هذه الطالبة؟"))return;
+ try{
+  await api(action,{admin_token:teacherToken(),student_id:id,reason});
+  toast("تم تنفيذ العملية بنجاح");
+  await loadDashboard();
+ }catch(e){errorBox("teacherErrorBox",e.message)}
+}
+async function resetStudent(id){
+ if(!confirm("سيتم إلغاء الجلسة النشطة والسماح بمحاولة جديدة. السجلات السابقة ستبقى محفوظة. متابعة؟"))return;
+ try{
+  const result=await api("admin_reset_student",{admin_token:teacherToken(),student_id:id});
+  toast(result.note||"تمت إعادة الاختبار");
+  await loadDashboard();
+ }catch(e){errorBox("teacherErrorBox",e.message)}
+}
+
+/* ===================== Settings and access ===================== */
+async function saveSettings(){
+ const duration=Number($("settingDuration").value);
+ const max=Number($("settingMax").value);
+ if(!Number.isInteger(duration)||duration<1||duration>600){toast("مدة الاختبار يجب أن تكون بين 1 و600 دقيقة");return}
+ if(!Number.isInteger(max)||max<1){toast("العدد الأقصى غير صحيح");return}
+ try{
+  await api("admin_update_settings",{
+   admin_token:teacherToken(),
+   exam_title:$("settingTitle").value.trim(),
+   school_name:$("settingSchool").value.trim(),
+   class_name:$("settingClass").value.trim(),
+   subject_name:$("settingSubject").value.trim(),
+   exam_date:$("settingDate").value||null,
+   duration_minutes:duration,
+   max_students:max
+  });
+  successBox("تم حفظ إعدادات الاختبار.");
+  await loadDashboard();
+  await loadPublicStatus();
+ }catch(e){errorBox("teacherErrorBox",e.message)}
+}
+async function setAccess(enabled){
+ const message=$("accessMessage").value.trim();
+ try{
+  await api("admin_set_access",{
+   admin_token:teacherToken(),
+   student_access_enabled:enabled,
+   exam_locked:!enabled,
+   message
+  });
+  successBox(enabled?"تم فتح دخول الطالبات.":"تم إيقاف دخول الطالبات.");
+  await loadDashboard();
+  await loadPublicStatus();
+ }catch(e){errorBox("teacherErrorBox",e.message)}
+}
+
+/* ===================== Question management ===================== */
+function openQuestionModal(){
+ $("questionModalTitle").textContent="إضافة سؤال";
+ $("questionId").value="";
+ $("questionVerse").value="";
+ $("questionPrompt").value="";
+ $("questionPosition").value=dashboardData.questions.length+1;
+ hideBox("questionError");
+ $("questionModal").classList.remove("hidden");
+}
+function editQuestion(id){
+ const q=dashboardData.questions.find(x=>x.id===id);if(!q)return;
+ $("questionModalTitle").textContent="تعديل السؤال";
+ $("questionId").value=q.id;
+ $("questionVerse").value=q.verse_text||"";
+ $("questionPrompt").value=q.question_prompt||"";
+ $("questionPosition").value=q.position||1;
+ hideBox("questionError");
+ $("questionModal").classList.remove("hidden");
+}
+async function saveQuestion(){
+ hideBox("questionError");
+ const id=$("questionId").value;
+ const verse=$("questionVerse").value.trim();
+ const prompt=$("questionPrompt").value.trim();
+ const position=Number($("questionPosition").value);
+ if(!verse||!prompt){errorBox("questionError","أكملي نص الآية والمطلوب.");return}
+ if(!Number.isInteger(position)||position<1){errorBox("questionError","ترتيب السؤال غير صحيح.");return}
+ loadingButton("questionSaveButton",true);
+ try{
+  if(id){
+   await api("admin_update_question",{admin_token:teacherToken(),question_id:id,verse_text:verse,question_prompt:prompt,position});
+  }else{
+   await api("admin_add_question",{admin_token:teacherToken(),verse_text:verse,question_prompt:prompt,position,is_active:true});
+  }
+  closeModal("questionModal");
+  toast("تم حفظ السؤال");
+  await loadDashboard();
+ }catch(e){errorBox("questionError",e.message)}
+ finally{
+  loadingButton("questionSaveButton",false,'<i data-lucide="save"></i> حفظ السؤال');
+  iconRefresh();
+ }
+}
+async function deleteQuestion(id){
+ if(!confirm("هل تريدين حذف هذا السؤال؟ إذا سبق فتحه لطالبة سيرفض الخادم حذفه."))return;
+ try{
+  await api("admin_delete_question",{admin_token:teacherToken(),question_id:id});
+  toast("تم حذف السؤال");
+  await loadDashboard();
+ }catch(e){errorBox("teacherErrorBox",e.message)}
+}
+
+/* ===================== Reports ===================== */
+async function loadReports(){
+ $("reportsList").innerHTML='<div class="empty"><span class="spinner"></span><p>جاري تحميل التقارير...</p></div>';
+ try{
+  const data=await api("admin_export_reports",{admin_token:teacherToken()});
+  const reports=data.reports||[];
+  if(!reports.length){$("reportsList").innerHTML='<div class="empty">لا توجد تقارير حتى الآن.</div>';return}
+  $("reportsList").innerHTML=reports.map(r=>`
+   <div class="item-card">
+    <strong style="font-size:12px">${esc(r.file_name||"تقرير اختبار")}</strong>
+    <p style="font-size:10px;color:var(--muted)">${esc(dateText(r.generated_at))}</p>
+    <div class="actions">
+     <button class="btn dark" onclick="downloadReport('${esc(r.id)}')"><i data-lucide="download"></i> تنزيل التقرير</button>
+     <button class="btn green" onclick="retryTelegram('${esc(r.id)}')"><i data-lucide="send"></i> إعادة إرسال Telegram</button>
+    </div>
+    <textarea id="report-${esc(r.id)}" class="hidden">${esc(r.report_text||"")}</textarea>
+   </div>`).join("");
+  iconRefresh();
+ }catch(e){$("reportsList").innerHTML=`<div class="error" style="display:block">${esc(e.message)}</div>`}
+}
+function downloadReport(id){
+ const text=$("report-"+id)?.value||"";
+ const blob=new Blob(["\ufeff"+text],{type:"text/plain;charset=utf-8"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");a.href=url;a.download="exam-report-"+id+".txt";a.click();
+ URL.revokeObjectURL(url);
+}
+async function retryTelegram(id){
+ try{
+  await api("admin_retry_telegram",{admin_token:teacherToken(),report_id:id});
+  toast("تم إرسال التقرير إلى Telegram");
+ }catch(e){errorBox("teacherErrorBox",e.message)}
+}
+
+/* ===================== Live updates and startup ===================== */
+window.addEventListener("online",()=>setConnection(true,"متصل"));
+window.addEventListener("offline",()=>setConnection(false,"غير متصل"));
+
+document.addEventListener("visibilitychange",()=>{
+ if(!document.hidden){
+  if(teacherToken())loadDashboard(true);
+  else if(studentToken()&&!finished){
+   api("student_current",{session_token:studentToken()})
+    .then(data=>{
+     if(data.question?.completed)finishUI("تم إنهاء الاختبار.");
+     else if(data.question?.question)handleQuestionResponse(data.question);
+    }).catch(()=>{});
+  }
  }
 });
 
-(async function init() {
+(async function init(){
+ iconRefresh();
  await loadPublicStatus();
- await resumeSession();
+ if(teacherToken()){
+  await showTeacherDashboard();
+ }else if(studentToken()){
+  await resumeStudentSession();
+ }
 })();
 </script>
 </body>
-</html>-
+</html>
