@@ -4,34 +4,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101014">
-<title>اختبارات التربية الإسلامية</title>
+<meta name="theme-color" content="#0b0c10">
+<meta name="description" content="منصة اختبارات التربية الإسلامية - مدرسة الحسينية للبنات">
+<title>اختبارات التربية الإسلامية | مدرسة الحسينية</title>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap');
 
-:root {
- --bg:#0b0c10;
+:root{
+ --bg:#090a0e;
  --gold:#d9b66f;
  --gold2:#f4dfaa;
- --panel:rgba(255,255,255,.055);
- --line:rgba(217,182,111,.25);
- --muted:#a9a39a;
+ --gold3:#8d682f;
+ --muted:#aaa39a;
  --green:#64d99a;
  --red:#ed7777;
+ --blue:#8db9ef;
+ --line:rgba(217,182,111,.25);
+ --glass:rgba(255,255,255,.055);
 }
 
-* {
+*{
  box-sizing:border-box;
  -webkit-tap-highlight-color:transparent;
  user-select:none;
 }
 
-input,textarea {
+input,textarea{
  user-select:text;
 }
 
-body {
+body{
  margin:0;
  min-height:100vh;
  color:#f7f0e4;
@@ -39,44 +42,51 @@ body {
  background:
  radial-gradient(ellipse at 10% 0%,#49331c 0,transparent 35%),
  radial-gradient(ellipse at 95% 90%,#17283b 0,transparent 38%),
- #0b0c10;
+ radial-gradient(ellipse at 50% 50%,#17131b 0,transparent 65%),
+ var(--bg);
 }
 
-body:before {
+body:before{
  content:"";
  position:fixed;
  inset:0;
  pointer-events:none;
- opacity:.12;
- background-image:
- linear-gradient(45deg,transparent 48%,#d9b66f 49%,transparent 50%);
- background-size:40px 40px;
+ opacity:.10;
+ background-image:linear-gradient(45deg,transparent 48%,#d9b66f 49%,transparent 50%);
+ background-size:42px 42px;
+ z-index:-1;
 }
 
-button,input,textarea {
+button,input,textarea{
  font-family:inherit;
 }
 
-button {
+button{
  cursor:pointer;
  transition:.25s;
 }
 
-button:active {
+button:active{
  transform:scale(.97);
 }
 
-.hidden {
+button:disabled{
+ opacity:.5;
+ cursor:not-allowed;
+ transform:none;
+}
+
+.hidden{
  display:none!important;
 }
 
-.app {
- width:min(1100px,calc(100% - 26px));
- margin:25px auto;
+.app{
+ width:min(1150px,calc(100% - 26px));
+ margin:25px auto 50px;
  position:relative;
 }
 
-.header {
+.header{
  display:flex;
  justify-content:space-between;
  align-items:center;
@@ -84,65 +94,56 @@ button:active {
  margin-bottom:20px;
 }
 
-.brand {
+.brand{
  display:flex;
  align-items:center;
  gap:13px;
 }
 
-.logo {
- width:50px;
- height:50px;
+.logo{
+ width:52px;
+ height:52px;
  border:1px solid var(--gold);
  border-radius:17px;
  display:grid;
  place-items:center;
  color:var(--gold);
- font-size:27px;
- box-shadow:0 0 25px #d9b66f22;
+ font-size:28px;
+ box-shadow:0 0 25px #d9b66f22,inset 0 0 15px #d9b66f11;
+ background:linear-gradient(145deg,#ffffff12,#ffffff02);
 }
 
-.brand h1 {
+.brand h1{
  margin:0;
  font-size:clamp(17px,4vw,27px);
  color:var(--gold2);
 }
 
-.brand p {
+.brand p{
  margin:0;
  color:var(--muted);
  font-size:11px;
 }
 
-.card {
- background:linear-gradient(
- 145deg,
- rgba(255,255,255,.09),
- rgba(255,255,255,.025)
- );
+.card{
+ background:linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
  border:1px solid var(--line);
  border-radius:23px;
  padding:clamp(17px,4vw,29px);
  backdrop-filter:blur(20px);
  box-shadow:0 25px 70px #0008,inset 0 1px #ffffff12;
- animation:appear .5s ease;
+ animation:appear .45s ease;
 }
 
-@keyframes appear {
- from {opacity:0;transform:translateY(15px)}
- to {opacity:1;transform:translateY(0)}
+@keyframes appear{
+ from{opacity:0;transform:translateY(13px)}
+ to{opacity:1;transform:translateY(0)}
 }
 
-.gold {
- color:var(--gold2);
-}
+.gold{color:var(--gold2)}
+.muted{color:var(--muted);font-size:12px}
 
-.muted {
- color:var(--muted);
- font-size:12px;
-}
-
-.badge {
+.badge{
  display:inline-flex;
  align-items:center;
  border:1px solid var(--line);
@@ -153,23 +154,23 @@ button:active {
  background:#ffffff07;
 }
 
-.hero {
+.hero{
  text-align:center;
  padding:15px 5px 22px;
 }
 
-.hero h2 {
+.hero h2{
  color:var(--gold2);
  font-size:clamp(24px,5vw,35px);
  margin:10px 0;
 }
 
-.hero .school {
+.hero .school{
  color:var(--gold);
  font-size:14px;
 }
 
-.meta {
+.meta{
  display:flex;
  justify-content:center;
  flex-wrap:wrap;
@@ -177,14 +178,14 @@ button:active {
  margin-top:17px;
 }
 
-label {
+label{
  display:block;
  font-size:13px;
  color:#e9d6ac;
  margin:15px 0 7px;
 }
 
-input,textarea {
+input,textarea{
  width:100%;
  padding:14px;
  color:white;
@@ -196,19 +197,19 @@ input,textarea {
  transition:.2s;
 }
 
-input:focus,textarea:focus {
+input:focus,textarea:focus{
  border-color:var(--gold);
  box-shadow:0 0 0 3px #d9b66f1b;
 }
 
-textarea {
- min-height:130px;
+textarea{
+ min-height:145px;
  resize:vertical;
  line-height:2;
 }
 
-.btn {
- padding:13px 20px;
+.btn{
+ padding:12px 18px;
  border-radius:13px;
  border:1px solid var(--line);
  background:#ffffff09;
@@ -217,36 +218,52 @@ textarea {
  font-weight:700;
 }
 
-.btn-gold {
+.btn:hover{
+ border-color:var(--gold);
+ background:#d9b66f12;
+}
+
+.btn-gold{
  background:linear-gradient(120deg,#9c7133,#edcd84);
  color:#21190d;
  border:0;
  box-shadow:0 8px 25px #d9b66f28;
 }
 
-.btn-red {
+.btn-red{
  color:#ffaaa4;
  border-color:#e16e6866;
 }
 
-.btn-green {
+.btn-green{
  color:#8ee8b4;
  border-color:#64d99a66;
 }
 
-.full {
+.btn-blue{
+ color:#a8ceff;
+ border-color:#8db9ef66;
+}
+
+.full{
  width:100%;
  margin-top:18px;
 }
 
-.error {
+.error{
  min-height:22px;
  color:#ff9992;
  font-size:12px;
  margin-top:9px;
+ line-height:1.8;
 }
 
-.notice {
+.success-text{
+ color:var(--green);
+ font-size:12px;
+}
+
+.notice{
  padding:14px;
  border:1px solid var(--line);
  border-radius:13px;
@@ -256,7 +273,7 @@ textarea {
  line-height:2;
 }
 
-.stats {
+.stats{
  display:flex;
  justify-content:space-between;
  align-items:center;
@@ -265,14 +282,24 @@ textarea {
  margin-bottom:18px;
 }
 
-.timer {
+.timer{
  color:var(--gold2);
- font-size:25px;
+ font-size:27px;
  font-weight:800;
  font-variant-numeric:tabular-nums;
+ letter-spacing:1px;
 }
 
-.progress {
+.timer.warning{
+ color:var(--red);
+ animation:pulse 1s infinite;
+}
+
+@keyframes pulse{
+ 50%{opacity:.55}
+}
+
+.progress{
  height:7px;
  background:#ffffff12;
  border-radius:20px;
@@ -280,20 +307,20 @@ textarea {
  margin:15px 0 22px;
 }
 
-.progress-bar {
+.progress-bar{
  height:100%;
  width:0;
  background:linear-gradient(90deg,#a77b3b,#ffe6a4);
  transition:.4s;
 }
 
-.question-title {
+.question-title{
  font-size:17px;
  font-weight:800;
  margin:15px 0;
 }
 
-.ayah {
+.ayah{
  font-family:'Amiri',serif;
  font-size:clamp(26px,5vw,40px);
  line-height:2;
@@ -306,103 +333,152 @@ textarea {
  text-shadow:0 0 22px #d9b66f25;
 }
 
-.flex {
+.flex{
  display:flex;
  align-items:center;
  gap:10px;
  flex-wrap:wrap;
 }
 
-.space {
+.space{
  justify-content:space-between;
 }
 
-.metric-grid {
+.metric-grid{
  display:grid;
  grid-template-columns:repeat(4,1fr);
  gap:12px;
  margin:20px 0;
 }
 
-.metric {
+.metric{
  border:1px solid var(--line);
  border-radius:16px;
  background:#ffffff07;
  padding:15px;
 }
 
-.metric strong {
+.metric strong{
  display:block;
  font-size:25px;
  color:var(--gold2);
 }
 
-.metric span {
+.metric span{
  font-size:11px;
  color:var(--muted);
 }
 
-.table-box {
+.table-box{
  overflow:auto;
  border:1px solid var(--line);
  border-radius:15px;
  margin-top:15px;
 }
 
-table {
+table{
  width:100%;
- min-width:750px;
+ min-width:800px;
  border-collapse:collapse;
  font-size:12px;
 }
 
-th,td {
+th,td{
  padding:13px;
  text-align:right;
  border-bottom:1px solid #ffffff10;
 }
 
-th {
+th{
  color:var(--gold2);
  background:#d9b66f10;
 }
 
-td {
+td{
  color:#eee5d6;
 }
 
-.details {
+.details{
  margin-top:15px;
  display:grid;
  grid-template-columns:1fr 1fr;
  gap:12px;
 }
 
-.detail {
+.detail{
  padding:16px;
  border:1px solid var(--line);
  background:#ffffff07;
  border-radius:15px;
+ min-width:0;
 }
 
-.detail pre {
+.detail pre{
  white-space:pre-wrap;
  overflow-wrap:anywhere;
- font-family:Cairo,sans-serif;
+ font-family:'Cairo',sans-serif;
  font-size:12px;
  line-height:2;
  color:#e9dfcd;
 }
 
-@media(max-width:700px) {
- .metric-grid {grid-template-columns:repeat(2,1fr)}
- .details {grid-template-columns:1fr}
- .header {align-items:flex-start}
+.status{
+ display:inline-flex;
+ align-items:center;
+ gap:6px;
+ font-size:11px;
+ border-radius:20px;
+ padding:5px 9px;
+ border:1px solid var(--line);
+}
+
+.status:before{
+ content:"";
+ width:7px;
+ height:7px;
+ border-radius:50%;
+ background:currentColor;
+}
+
+.status-green{color:var(--green)}
+.status-red{color:var(--red)}
+.status-gold{color:var(--gold2)}
+
+.section-title{
+ color:var(--gold2);
+ font-size:17px;
+ margin:0;
+}
+
+.small-btn{
+ padding:8px 12px;
+ font-size:11px;
+}
+
+.footer{
+ text-align:center;
+ margin-top:22px;
+ color:#898176;
+ font-size:10px;
+}
+
+@media(max-width:700px){
+ .metric-grid{grid-template-columns:repeat(2,1fr)}
+ .details{grid-template-columns:1fr}
+ .header{align-items:flex-start}
+ .header>.badge{font-size:9px}
+ .app{margin-top:15px}
+}
+
+@media(max-width:380px){
+ .metric{padding:11px}
+ .metric strong{font-size:21px}
+ .btn{padding:10px 12px}
 }
 </style>
 </head>
 
-<body oncontextmenu="return false">
+<body>
 
 <div class="app">
 
@@ -411,22 +487,20 @@ td {
   <div class="logo">۞</div>
   <div>
    <h1>اختبارات التربية الإسلامية</h1>
-   <p>منصة الاختبارات الإلكترونية</p>
+   <p>ISLAMIC EXAMINATION SYSTEM</p>
   </div>
  </div>
  <span class="badge">SECOND INTERMEDIATE</span>
 </header>
 
-<!-- LOGIN -->
+<!-- LOGIN PAGE -->
 
 <section id="loginPage" class="card">
 
  <div class="hero">
   <div class="school">مدرسة الحسينية للبنات</div>
   <h2>الاختبار اليومي</h2>
-  <div class="muted">
-   التربية الإسلامية · الصف الثاني المتوسط
-  </div>
+  <div class="muted">التربية الإسلامية · الصف الثاني المتوسط</div>
 
   <div class="meta">
    <span class="badge">2026/11/06</span>
@@ -440,10 +514,11 @@ td {
   أدخلي رمز الدخول المخصص لكِ للمتابعة.
  </div>
 
- <label>رمز الدخول</label>
- <input id="entryCode" type="password"
- placeholder="أدخلي رمز الدخول"
- autocomplete="off">
+ <label for="entryCode">رمز الدخول</label>
+ <input id="entryCode"
+        type="password"
+        placeholder="أدخلي رمز الدخول"
+        autocomplete="off">
 
  <button id="loginBtn" class="btn btn-gold full">
   تسجيل الدخول ←
@@ -453,8 +528,7 @@ td {
 
 </section>
 
-
-<!-- STUDENT NAME -->
+<!-- STUDENT REGISTRATION -->
 
 <section id="namePage" class="card hidden">
 
@@ -464,15 +538,15 @@ td {
   <p class="muted">يرجى كتابة الاسم الثلاثي بشكل صحيح</p>
  </div>
 
- <label>الاسم الثلاثي</label>
-
- <input id="studentName"
- placeholder="الاسم الأول - اسم الأب - اسم الجد"
- autocomplete="off">
-
- <div class="muted">
-  يجب إدخال ثلاثة أسماء على الأقل.
+ <div class="notice">
+  اكتبي اسمك الثلاثي كما هو في سجل المدرسة.
+  لا يمكن استخدام الاسم نفسه لأكثر من طالبة.
  </div>
+
+ <label for="studentName">الاسم الثلاثي</label>
+ <input id="studentName"
+        placeholder="الاسم الأول - اسم الأب - اسم الجد"
+        autocomplete="off">
 
  <button id="startBtn" class="btn btn-gold full">
   بدء الاختبار
@@ -482,8 +556,7 @@ td {
 
 </section>
 
-
-<!-- EXAM -->
+<!-- EXAM PAGE -->
 
 <section id="examPage" class="card hidden">
 
@@ -517,11 +590,11 @@ td {
 
  <div id="ayah" class="ayah"></div>
 
- <label>الإجابة</label>
+ <label for="answer">الإجابة</label>
 
  <textarea id="answer"
- placeholder="اكتبي إجابتك هنا..."
- spellcheck="false"></textarea>
+           placeholder="اكتبي إجابتك هنا..."
+           spellcheck="false"></textarea>
 
  <div id="answerError" class="error"></div>
 
@@ -529,10 +602,13 @@ td {
   حفظ الإجابة والانتقال ←
  </button>
 
+ <div class="muted" style="text-align:center;margin-top:12px">
+  احرصي على حفظ الإجابة قبل الانتقال إلى السؤال التالي.
+ </div>
+
 </section>
 
-
-<!-- FINISHED -->
+<!-- FINISHED PAGE -->
 
 <section id="finishedPage" class="card hidden">
 
@@ -541,14 +617,13 @@ td {
   <h2>تم استلام الاختبار</h2>
   <p class="muted">
    شكراً لإكمال الاختبار.
-   تم تسجيل إجاباتك وإرسال التقرير.
+   تم تسجيل إجاباتك على الخادم.
   </p>
  </div>
 
  <div class="notice" id="finishedInfo"></div>
 
 </section>
-
 
 <!-- ADMIN DASHBOARD -->
 
@@ -638,12 +713,11 @@ td {
   </div>
 
   <div class="muted" id="emptyStudents"
-   style="padding:20px;text-align:center">
+       style="padding:20px;text-align:center">
    لا توجد تسجيلات حتى الآن.
   </div>
 
  </div>
-
 
  <div class="card" style="margin-top:16px">
 
@@ -663,76 +737,145 @@ td {
 
 </section>
 
+<div class="footer">
+ ISLAMIC EXAMINATION SYSTEM · SCHOOL OF AL-HUSSAINIYA
 </div>
 
+</div>
 
 <script>
-/* ===================================
-   CONFIGURATION
-=================================== */
+"use strict";
+
+/* =====================================================
+   1. CONFIGURATION
+===================================================== */
 
 const API = "";
 
 const QUESTIONS = [
  "﴿ وَيْلٌ لِلْمُطَفِّفِينَ ۝ ﴾",
-
  "﴿ الَّذِينَ إِذَا اكْتَالُوا عَلَى النَّاسِ يَسْتَوْفُونَ ۝ ﴾",
-
  "﴿ وَإِذَا كَالُوهُمْ أَوْ وَزَنُوهُمْ يُخْسِرُونَ ۝ ﴾",
-
  "﴿ أَلَا يَظُنُّ أُولَٰئِكَ أَنَّهُمْ مَبْعُوثُونَ ۝ ﴾",
-
  "﴿ لِيَوْمٍ عَظِيمٍ ۝ ﴾"
 ];
+
+const MAX_QUESTIONS = QUESTIONS.length;
 
 let SESSION = "";
 let ROLE = "";
 let STUDENT = null;
+
 let QUESTION = 0;
-let QUESTION_STARTED = 0;
 let TIMER = null;
 let ADMIN_REFRESH = null;
+
+let IS_SUBMITTING = false;
+let CURRENT_DEADLINE = null;
+let LAST_SELECTED_STUDENT = null;
 
 const $ = id => document.getElementById(id);
 
 
-/* ===================================
-   API CONNECTION
-=================================== */
+/* =====================================================
+   2. DEVICE FINGERPRINT
+===================================================== */
+
+function getFingerprint(){
+
+ let value = localStorage.getItem("exam_fingerprint");
+
+ if(!value){
+
+  value = "EX-" + (
+   window.crypto && crypto.randomUUID
+    ? crypto.randomUUID()
+    : Date.now().toString(36) +
+      Math.random().toString(36).slice(2)
+  );
+
+  localStorage.setItem("exam_fingerprint",value);
+
+ }
+
+ return value;
+
+}
+
+
+/* =====================================================
+   3. API CONNECTION
+===================================================== */
 
 async function api(path,method="GET",data=null){
 
  const headers = {
-  "Content-Type":"application/json"
+  "Accept":"application/json"
  };
 
- if(SESSION){
-  headers.Authorization = "Bearer " + SESSION;
+ if(data !== null){
+  headers["Content-Type"]="application/json";
  }
 
- const response = await fetch(API+path,{
-  method,
-  headers,
-  body:data ? JSON.stringify(data) : undefined
- });
+ if(SESSION){
+  headers.Authorization="Bearer "+SESSION;
+ }
+
+ let response;
+
+ try{
+
+  response = await fetch(API+path,{
+   method,
+   headers,
+   body:data !== null ? JSON.stringify(data) : undefined,
+   cache:"no-store"
+  });
+
+ }catch(error){
+
+  throw new Error(
+   "تعذر الوصول إلى الخادم. تأكدي من استمرار تشغيل الموقع. "+error.message
+  );
+
+ }
+
+ const raw = await response.text();
 
  let result={};
 
  try{
-  result=await response.json();
- }catch(e){}
+  result=raw ? JSON.parse(raw) : {};
+ }catch(error){
+  result={};
+ }
 
  if(!response.ok){
-  throw new Error(result.error || "حدث خطأ في الاتصال بالخادم");
+
+  const message =
+   result.error ||
+   result.message ||
+   raw.replace(/<[^>]*>/g," ").trim().slice(0,250) ||
+   "استجابة غير معروفة من الخادم";
+
+  throw new Error(
+   "HTTP "+response.status+": "+message
+  );
+
+ }
+
+ if(raw && typeof result !== "object"){
+  throw new Error("استجابة الخادم غير صحيحة.");
  }
 
  return result;
+
 }
 
 
-/* ===================================
-   PAGE CONTROL
-=================================== */
+/* =====================================================
+   4. PAGE CONTROL
+===================================================== */
 
 function showPage(id){
 
@@ -748,12 +891,14 @@ function showPage(id){
   $(page).classList.toggle("hidden",page!==id);
  });
 
+ window.scrollTo({top:0,behavior:"smooth"});
+
 }
 
 
-/* ===================================
-   LOGIN
-=================================== */
+/* =====================================================
+   5. LOGIN
+===================================================== */
 
 $("loginBtn").onclick=async()=>{
 
@@ -773,8 +918,15 @@ $("loginBtn").onclick=async()=>{
   const result=await api(
    "/api/login",
    "POST",
-   {code}
+   {
+    code,
+    fingerprint:getFingerprint()
+   }
   );
+
+  if(!result.token || !result.role){
+   throw new Error("الخادم لم يرجع بيانات جلسة الدخول.");
+  }
 
   SESSION=result.token;
   ROLE=result.role;
@@ -782,6 +934,7 @@ $("loginBtn").onclick=async()=>{
   if(ROLE==="admin"){
 
    localStorage.setItem("teacher_session",SESSION);
+   localStorage.removeItem("student_session");
 
    showPage("adminPage");
 
@@ -789,19 +942,20 @@ $("loginBtn").onclick=async()=>{
 
    startAdminRefresh();
 
-  }else{
+  }else if(ROLE==="student"){
 
    localStorage.setItem("student_session",SESSION);
+   localStorage.removeItem("teacher_session");
 
    if(result.existing){
-
     await restoreStudent();
-
    }else{
-
     showPage("namePage");
-
    }
+
+  }else{
+
+   throw new Error("نوع الحساب غير معروف.");
 
   }
 
@@ -818,9 +972,9 @@ $("loginBtn").onclick=async()=>{
 };
 
 
-/* ===================================
-   STUDENT REGISTRATION
-=================================== */
+/* =====================================================
+   6. STUDENT REGISTRATION
+===================================================== */
 
 $("startBtn").onclick=async()=>{
 
@@ -828,13 +982,18 @@ $("startBtn").onclick=async()=>{
 
  $("nameError").textContent="";
 
- if(name.split(/\s+/).length<3){
+ if(name.split(/\s+/).filter(Boolean).length<3){
 
   $("nameError").textContent=
    "يرجى كتابة الاسم الثلاثي كاملاً.";
 
   return;
 
+ }
+
+ if(!SESSION){
+  $("nameError").textContent="جلسة الدخول غير موجودة. أعيدي تسجيل الدخول.";
+  return;
  }
 
  $("startBtn").disabled=true;
@@ -844,12 +1003,13 @@ $("startBtn").onclick=async()=>{
   const result=await api(
    "/api/student/register",
    "POST",
-   {name}
+   {
+    name,
+    fingerprint:getFingerprint()
+   }
   );
 
-  STUDENT=result;
-
-  QUESTION=result.current_question || 0;
+  STUDENT=result.student || result;
 
   await restoreStudent();
 
@@ -866,9 +1026,9 @@ $("startBtn").onclick=async()=>{
 };
 
 
-/* ===================================
-   RESTORE STUDENT
-=================================== */
+/* =====================================================
+   7. RESTORE STUDENT
+===================================================== */
 
 async function restoreStudent(){
 
@@ -878,7 +1038,11 @@ async function restoreStudent(){
 
   STUDENT=result;
 
-  if(result.status==="submitted"){
+  QUESTION=Number(result.current_question || 0);
+
+  CURRENT_DEADLINE=result.deadline || null;
+
+  if(result.status==="submitted" || result.submitted){
 
    $("finishedInfo").textContent=
     "تم تسليم الاختبار مسبقاً.";
@@ -889,20 +1053,34 @@ async function restoreStudent(){
 
   }
 
-  QUESTION=result.current_question || 0;
-
-  $("studentDisplay").textContent=result.name;
+  $("studentDisplay").textContent=result.name || "الطالبة";
 
   $("fingerprintDisplay").textContent=
-   "بصمة الطالبة: "+result.fingerprint;
+   "بصمة الطالبة: "+(result.fingerprint || getFingerprint());
+
+  if(QUESTION>=MAX_QUESTIONS){
+
+   await finishExam();
+
+   return;
+
+  }
 
   showPage("examPage");
 
   renderQuestion();
 
-  startTimer(result.deadline);
+  if(CURRENT_DEADLINE){
+   startTimer(CURRENT_DEADLINE);
+  }else{
+   $("timer").textContent="60:00";
+  }
 
  }catch(error){
+
+  SESSION="";
+
+  localStorage.removeItem("student_session");
 
   showPage("loginPage");
 
@@ -913,37 +1091,41 @@ async function restoreStudent(){
 }
 
 
-/* ===================================
-   QUESTIONS
-=================================== */
+/* =====================================================
+   8. RENDER QUESTION
+===================================================== */
 
 function renderQuestion(){
+
+ if(QUESTION<0 || QUESTION>=MAX_QUESTIONS){
+  return;
+ }
 
  $("ayah").textContent=QUESTIONS[QUESTION];
 
  $("questionNumber").textContent=
-  `السؤال ${QUESTION+1} من 5`;
+  `السؤال ${QUESTION+1} من ${MAX_QUESTIONS}`;
 
  $("progressBar").style.width=
-  `${QUESTION/5*100}%`;
+  `${(QUESTION/MAX_QUESTIONS)*100}%`;
 
  $("answer").value="";
 
  $("answerError").textContent="";
 
+ $("questionStatus").textContent="جاهز للإجابة";
+
  $("nextBtn").textContent=
-  QUESTION===4
+  QUESTION===MAX_QUESTIONS-1
    ? "تسليم الاختبار النهائي ✓"
    : "حفظ الإجابة والانتقال ←";
-
- QUESTION_STARTED=Date.now();
 
 }
 
 
-/* ===================================
-   TIMER
-=================================== */
+/* =====================================================
+   9. EXAM TIMER
+===================================================== */
 
 function startTimer(deadline){
 
@@ -951,9 +1133,11 @@ function startTimer(deadline){
 
  function update(){
 
+  const end=new Date(deadline).getTime();
+
   const remaining=Math.max(
    0,
-   Math.ceil((new Date(deadline).getTime()-Date.now())/1000)
+   Math.ceil((end-Date.now())/1000)
   );
 
   const minutes=Math.floor(remaining/60);
@@ -963,6 +1147,11 @@ function startTimer(deadline){
   $("timer").textContent=
    String(minutes).padStart(2,"0")+":"+
    String(seconds).padStart(2,"0");
+
+  $("timer").classList.toggle(
+   "warning",
+   remaining<=300
+  );
 
   if(remaining<=0){
 
@@ -976,18 +1165,22 @@ function startTimer(deadline){
 
  update();
 
- TIMER=setInterval(update,500);
+ TIMER=setInterval(update,1000);
 
 }
 
 
-/* ===================================
-   SAVE ANSWER
-=================================== */
+/* =====================================================
+   10. SAVE ANSWER
+===================================================== */
 
 async function submitCurrentAnswer(auto=false){
 
+ if(IS_SUBMITTING)return;
+
  const answer=$("answer").value.trim();
+
+ $("answerError").textContent="";
 
  if(!answer && !auto){
 
@@ -998,7 +1191,20 @@ async function submitCurrentAnswer(auto=false){
 
  }
 
+ if(!SESSION){
+
+  $("answerError").textContent=
+   "جلسة الدخول غير موجودة.";
+
+  return;
+
+ }
+
+ IS_SUBMITTING=true;
+
  $("nextBtn").disabled=true;
+
+ $("questionStatus").textContent="جارٍ حفظ الإجابة...";
 
  try{
 
@@ -1012,20 +1218,9 @@ async function submitCurrentAnswer(auto=false){
    }
   );
 
-  if(QUESTION===4 || auto){
+  if(QUESTION===MAX_QUESTIONS-1 || auto){
 
-   const result=await api(
-    "/api/student/finish",
-    "POST",
-    {}
-   );
-
-   clearInterval(TIMER);
-
-   $("finishedInfo").textContent=
-    `الطالبة: ${STUDENT.name} | البصمة: ${STUDENT.fingerprint}`;
-
-   showPage("finishedPage");
+   await finishExam();
 
   }else{
 
@@ -1039,9 +1234,46 @@ async function submitCurrentAnswer(auto=false){
 
   $("answerError").textContent=error.message;
 
+  $("questionStatus").textContent="تعذر حفظ الإجابة";
+
  }finally{
 
+  IS_SUBMITTING=false;
+
   $("nextBtn").disabled=false;
+
+ }
+
+}
+
+
+/* =====================================================
+   11. FINISH EXAM
+===================================================== */
+
+async function finishExam(){
+
+ try{
+
+  const result=await api(
+   "/api/student/finish",
+   "POST",
+   {}
+  );
+
+  clearInterval(TIMER);
+
+  $("progressBar").style.width="100%";
+
+  $("finishedInfo").textContent=
+   `الطالبة: ${STUDENT?.name || "—"} | البصمة: ${STUDENT?.fingerprint || getFingerprint()}`;
+
+  showPage("finishedPage");
+
+ }catch(error){
+
+  $("answerError").textContent=
+   "تم حفظ الإجابة، لكن تعذر تأكيد التسليم: "+error.message;
 
  }
 
@@ -1050,9 +1282,9 @@ async function submitCurrentAnswer(auto=false){
 $("nextBtn").onclick=()=>submitCurrentAnswer(false);
 
 
-/* ===================================
-   ADMIN DASHBOARD
-=================================== */
+/* =====================================================
+   12. ADMIN DASHBOARD
+===================================================== */
 
 async function loadDashboard(){
 
@@ -1104,7 +1336,7 @@ async function loadDashboard(){
 
     const td=document.createElement("td");
 
-    td.textContent=value;
+    td.textContent=value ?? "—";
 
     tr.appendChild(td);
 
@@ -1114,9 +1346,9 @@ async function loadDashboard(){
 
    const view=document.createElement("button");
 
-   view.className="btn";
+   view.className="btn small-btn";
 
-   view.textContent="عرض";
+   view.textContent="عرض التفاصيل";
 
    view.onclick=()=>loadStudentDetails(student.id);
 
@@ -1124,9 +1356,11 @@ async function loadDashboard(){
 
    const ban=document.createElement("button");
 
-   ban.className="btn "+(student.banned?"btn-green":"btn-red");
+   ban.className=
+    "btn small-btn "+(student.banned?"btn-green":"btn-red");
 
-   ban.textContent=student.banned?"رفع الحظر":"حظر";
+   ban.textContent=
+    student.banned?"رفع الحظر":"حظر";
 
    ban.style.marginRight="5px";
 
@@ -1142,18 +1376,22 @@ async function loadDashboard(){
 
  }catch(error){
 
-  console.error(error);
+  console.error("Dashboard error:",error);
+
+  $("siteStatus").textContent="تعذر تحديث البيانات";
 
  }
 
 }
 
 
-/* ===================================
-   STUDENT DETAILS
-=================================== */
+/* =====================================================
+   13. STUDENT DETAILS
+===================================================== */
 
 async function loadStudentDetails(id){
+
+ LAST_SELECTED_STUDENT=id;
 
  try{
 
@@ -1173,11 +1411,14 @@ async function loadStudentDetails(id){
 
   pre.textContent=
    `الاسم: ${data.student.name}
+رمز الدخول: ${data.student.code || "—"}
 البصمة: ${data.student.fingerprint}
 وقت الدخول: ${data.student.opened_at}
 بداية الاختبار: ${data.student.started_at || "لم تبدأ"}
+وقت التسليم: ${data.student.submitted_at || "لم تسلم"}
 الحالة: ${data.student.status_label}
-المدة: ${data.student.elapsed_label}`;
+المدة: ${data.student.elapsed_label}
+عدد مرات إعادة الاختبار: ${data.student.reset_count}`;
 
   info.appendChild(pre);
 
@@ -1193,15 +1434,29 @@ async function loadStudentDetails(id){
 
   container.appendChild(info);
 
+  if(!data.answers.length){
+
+   const empty=document.createElement("div");
+
+   empty.className="notice";
+
+   empty.style.marginTop="12px";
+
+   empty.textContent="لا توجد إجابات محفوظة لهذه الطالبة.";
+
+   container.appendChild(empty);
+
+  }
+
   data.answers.forEach(answer=>{
 
    const box=document.createElement("div");
 
    box.className="detail";
 
-   const pre=document.createElement("pre");
+   const answerPre=document.createElement("pre");
 
-   pre.textContent=
+   answerPre.textContent=
     `السؤال ${answer.question_no}
 
 ${answer.question_text}
@@ -1209,10 +1464,13 @@ ${answer.question_text}
 الإجابة:
 ${answer.answer}
 
+وقت الإجابة:
+${answer.answered_at || "—"}
+
 الوقت المستغرق:
 ${answer.duration_seconds} ثانية`;
 
-   box.appendChild(pre);
+   box.appendChild(answerPre);
 
    container.appendChild(box);
 
@@ -1227,9 +1485,9 @@ ${answer.duration_seconds} ثانية`;
 }
 
 
-/* ===================================
-   BAN STUDENT
-=================================== */
+/* =====================================================
+   14. BAN STUDENT
+===================================================== */
 
 async function banStudent(id,banned){
 
@@ -1245,6 +1503,8 @@ async function banStudent(id,banned){
 
   await loadDashboard();
 
+  await loadStudentDetails(id);
+
  }catch(error){
 
   alert(error.message);
@@ -1254,9 +1514,9 @@ async function banStudent(id,banned){
 }
 
 
-/* ===================================
-   RESET STUDENT EXAM
-=================================== */
+/* =====================================================
+   15. RESET STUDENT EXAM
+===================================================== */
 
 async function resetStudent(id){
 
@@ -1274,6 +1534,8 @@ async function resetStudent(id){
 
   await loadStudentDetails(id);
 
+  alert("تمت إعادة الاختبار بنجاح. على الطالبة تحديث الصفحة.");
+
  }catch(error){
 
   alert(error.message);
@@ -1283,9 +1545,9 @@ async function resetStudent(id){
 }
 
 
-/* ===================================
-   ENABLE / DISABLE EXAM
-=================================== */
+/* =====================================================
+   16. ENABLE EXAM
+===================================================== */
 
 $("enableBtn").onclick=async()=>{
 
@@ -1310,6 +1572,10 @@ $("enableBtn").onclick=async()=>{
 };
 
 
+/* =====================================================
+   17. DISABLE EXAM
+===================================================== */
+
 $("disableBtn").onclick=async()=>{
 
  if(!confirm("إيقاف الاختبار ومنع تسجيل الدخول الجديد؟"))return;
@@ -1333,9 +1599,9 @@ $("disableBtn").onclick=async()=>{
 };
 
 
-/* ===================================
-   EXPORT TXT
-=================================== */
+/* =====================================================
+   18. EXPORT REPORTS
+===================================================== */
 
 $("exportBtn").onclick=async()=>{
 
@@ -1344,13 +1610,27 @@ $("exportBtn").onclick=async()=>{
   const response=await fetch(
    "/api/admin/export",
    {
+    method:"GET",
     headers:{
      Authorization:"Bearer "+SESSION
-    }
+    },
+    cache:"no-store"
    }
   );
 
-  if(!response.ok)throw Error("تعذر تصدير التقارير");
+  if(!response.ok){
+
+   const raw=await response.text();
+
+   let message="تعذر تصدير التقارير";
+
+   try{
+    message=JSON.parse(raw).error || message;
+   }catch(error){}
+
+   throw new Error(message);
+
+  }
 
   const blob=await response.blob();
 
@@ -1362,9 +1642,15 @@ $("exportBtn").onclick=async()=>{
 
   a.download="Islamic_Exam_Reports.txt";
 
+  document.body.appendChild(a);
+
   a.click();
 
-  URL.revokeObjectURL(url);
+  a.remove();
+
+  setTimeout(()=>{
+   URL.revokeObjectURL(url);
+  },1500);
 
  }catch(error){
 
@@ -1375,27 +1661,32 @@ $("exportBtn").onclick=async()=>{
 };
 
 
-/* ===================================
-   ADMIN REFRESH
-=================================== */
+/* =====================================================
+   19. ADMIN AUTO REFRESH
+===================================================== */
 
 function startAdminRefresh(){
 
  clearInterval(ADMIN_REFRESH);
 
- ADMIN_REFRESH=setInterval(
-  loadDashboard,
-  8000
- );
+ ADMIN_REFRESH=setInterval(async()=>{
+
+  await loadDashboard();
+
+  if(LAST_SELECTED_STUDENT){
+   // Keep the selected student details available.
+  }
+
+ },8000);
 
 }
 
 $("refreshBtn").onclick=loadDashboard;
 
 
-/* ===================================
-   LOGOUT
-=================================== */
+/* =====================================================
+   20. ADMIN LOGOUT
+===================================================== */
 
 $("logoutBtn").onclick=()=>{
 
@@ -1405,16 +1696,20 @@ $("logoutBtn").onclick=()=>{
 
  SESSION="";
 
+ ROLE="";
+
  localStorage.removeItem("teacher_session");
 
  showPage("loginPage");
 
+ $("entryCode").value="";
+
 };
 
 
-/* ===================================
-   SESSION RESTORE
-=================================== */
+/* =====================================================
+   21. RESTORE SAVED SESSION
+===================================================== */
 
 window.addEventListener("load",async()=>{
 
@@ -1428,13 +1723,25 @@ window.addEventListener("load",async()=>{
 
   ROLE="admin";
 
-  showPage("adminPage");
+  try{
 
-  await loadDashboard();
+   await api("/api/admin/overview");
 
-  startAdminRefresh();
+   showPage("adminPage");
 
-  return;
+   await loadDashboard();
+
+   startAdminRefresh();
+
+   return;
+
+  }catch(error){
+
+   localStorage.removeItem("teacher_session");
+
+   SESSION="";
+
+  }
 
  }
 
@@ -1451,14 +1758,32 @@ window.addEventListener("load",async()=>{
 });
 
 
-/* ===================================
-   LIMITED COPY PROTECTION
-=================================== */
+/* =====================================================
+   22. KEYBOARD PROTECTION
+===================================================== */
 
 document.addEventListener("keydown",event=>{
 
- if((event.ctrlKey||event.metaKey)&&
- ["c","x","a","u","s","p"].includes(event.key.toLowerCase())){
+ if(
+  (event.ctrlKey || event.metaKey) &&
+  ["c","x","a","u","s","p"].includes(event.key.toLowerCase())
+ ){
+
+  const target=event.target;
+
+  if(
+   target &&
+   (
+    target.tagName==="INPUT" ||
+    target.tagName==="TEXTAREA"
+   )
+  ){
+
+   if(["c","x","a"].includes(event.key.toLowerCase())){
+    return;
+   }
+
+  }
 
   event.preventDefault();
 
