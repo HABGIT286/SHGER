@@ -295,7 +295,7 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 <button class="btn gold full" id="loginButton" onclick="loginStudent()">
 <i data-lucide="fingerprint"></i> تحقق آمن وبدء الاختبار
 </button>
-<div class="notice">عند تفعيل Passkey سيُطلب تحقق من نظام الجهاز. لا يستطيع الموقع معرفة الإصبع المستخدم.</div>
+<div class="notice">Passkey غير مفعّل حالياً. تسجيل الدخول الحالي يعتمد على الاسم ومعرّف متصفح عشوائي، وليس على بصمة الإصبع.</div>
 </section>
 
 <section class="glass panel hidden" id="closedPanel">
@@ -501,14 +501,14 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 </div>
 
 <div id="tab-security" class="hidden">
-<h3 class="panel-title">نظام Passkey</h3>
-<p class="panel-sub">التحقق الحقيقي يحتاج إلى تحقق خادمي من توقيع WebAuthn وحفظ المفاتيح العامة.</p>
-<div class="notice">لا يستطيع الموقع قراءة بصمة الإصبع أو تحديد أي إصبع استُخدم. وقد تستخدم منظومة Android بصمة أو رمز PIN حسب إعدادات الجهاز.</div>
+<h3 class="panel-title">سجل الأمان والتحقق من الأجهزة</h3>
+<p class="panel-sub">تُسجّل محاولات الدخول والأجهزة والجلسات والتغييرات الأمنية.</p>
+<div class="notice">Passkey الحقيقي غير مفعّل في هذه النسخة بعد. الوضع الصارم الحالي يتحقق من وجود معرّف متصفح فقط، ولا يُعدّ بصمة حيوية أو تحقق WebAuthn.</div>
 <div class="item-card">
 <b>الوضع الصارم العام</b>
 <div class="actions">
-<button class="btn green" onclick="setGlobalStrict(true)">تفعيل الوضع الصارم</button>
-<button class="btn danger" onclick="setGlobalStrict(false)">إيقاف الوضع الصارم</button>
+<button class="btn green" onclick="setGlobalStrict(true)">تفعيل التحقق الصارم من الجهاز</button>
+<button class="btn danger" onclick="setGlobalStrict(false)">إيقاف التحقق الصارم</button>
 </div>
 </div>
 <div class="field">
@@ -766,6 +766,7 @@ async function loadPublicStatus(){
 try{
 const data=await api("public_status");
 const exam=data.exam||{};
+if(typeof pasteBlocked!=="undefined")pasteBlocked=!!exam.paste_block_enabled;
 
 $("examTitle").textContent=exam.title||"اختبارات التربية الإسلامية";
 $("schoolName").textContent=exam.school||"متوسطة الأميرات";
@@ -1014,6 +1015,7 @@ if(finished||requestBusy||!studentToken())return;
 
 try{
 const data=await api("student_current",{session_token:studentToken()});
+pasteBlocked=!!data.paste_block_enabled;
 setConnection(true,"متصل");
 
 if(data.question?.completed){
@@ -1037,6 +1039,7 @@ if(!studentToken())return false;
 try{
 const student=JSON.parse(localStorage.getItem(STORAGE.studentProfile)||"{}");
 const data=await api("student_current",{session_token:studentToken()});
+pasteBlocked=!!data.paste_block_enabled;
 showStudentExam(student,data.deadline_at,data.question);
 return true;
 }catch(error){
@@ -1602,10 +1605,10 @@ await api("admin_set_security_settings",{
 admin_token:teacherToken(),
 enabled
 });
-success(enabled?"تم تفعيل الوضع الصارم":"تم إيقاف الوضع الصارم");
+success(enabled?"تم تفعيل التحقق الصارم من معرّف الجهاز":"تم إيقاف التحقق الصارم");
 await loadDashboard();
 }catch(error){
-showError("teacherErrorBox","عملية Passkey تحتاج إلى إضافة دعمها في Edge Function: "+error.message);
+showError("teacherErrorBox","تعذر تحديث إعدادات الأمان: "+error.message);
 }
 }
 
@@ -1622,7 +1625,7 @@ enabled
 success("تم تحديث إعداد أمان الطالبة");
 await loadDashboard();
 }catch(error){
-showError("teacherErrorBox","عملية الوضع الصارم الفردي غير متاحة في الخادم بعد: "+error.message);
+showError("teacherErrorBox","تعذر تحديث إعداد الطالبة الأمني: "+error.message);
 }
 }
 
@@ -1855,7 +1858,7 @@ async function saveNote(){const title=$("noteTitle").value.trim(),content=$("not
 async function editNote(id){try{const d=await api("admin_notes",{admin_token:teacherToken()});const n=(d.notes||[]).find(x=>x.id===id);if(!n)return;$("noteId").value=n.id;$("noteTitle").value=n.title||"";$("noteContent").value=n.content||"";$("noteContent").focus()}catch(e){toast(e.message)}}
 async function deleteNote(id){if(!confirm("حذف هذه الملاحظة؟"))return;try{await api("admin_delete_note",{admin_token:teacherToken(),note_id:id});await loadNotes();toast("تم حذف الملاحظة")}catch(e){toast(e.message)}}
 async function loadActivity(){try{const d=await api("admin_activity",{admin_token:teacherToken()});const rows=d.events||[];$("activityList").innerHTML=rows.map(x=>`<article class="event-card"><div class="student-row"><b>${escapeHTML(x.event_type||'حدث')}</b><small>${escapeHTML(x.user_type||'')}</small></div><p>الاسم: ${escapeHTML(x.user_name||'—')} • الرمز: ${escapeHTML(x.user_code||'—')}<br>${escapeHTML(JSON.stringify(x.event_details||{}))}</p><small>${escapeHTML(dateText(x.created_at))}</small></article>`).join("")||'<div class="empty">لا توجد أحداث</div>'}catch(e){$("activityList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
-async function loadMessages(){try{const d=await api("admin_messages",{admin_token:teacherToken()});const rows=d.messages||[];$("messageBadge").innerHTML=rows.filter(x=>!x.is_read).length?`<span class="unread-count">${rows.filter(x=>!x.is_read).length}</span>`:"";$("messagesList").innerHTML=rows.map(m=>`<article class="event-card"><b>${escapeHTML(m.user_name||'طالبة')} • ${escapeHTML(m.user_code||'—')}</b><p>${escapeHTML(m.content)}</p><small>${escapeHTML(dateText(m.created_at))}</small><div class="actions"><button class="btn purple" onclick="openReply('${m.id}')">رد</button><button class="btn danger" onclick="deleteMessage('${m.id}')">حذف</button><button class="btn dark" onclick="blockMessaging('${m.student_id}',true)">حظر المراسلة</button><button class="btn green" onclick="blockMessaging('${m.student_id}',false)">فك الحظر</button></div></article>`).join("")||'<div class="empty">لا توجد رسائل</div>'}catch(e){$("messagesList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+async function loadMessages(){try{const d=await api("admin_messages",{admin_token:teacherToken()});const rows=d.messages||[];$("messageBadge").innerHTML=rows.filter(x=>!x.is_read).length?`<span class="unread-count">${rows.filter(x=>!x.is_read).length}</span>`:"";$("messagesList").innerHTML=rows.map(m=>`<article class="event-card"><b>${escapeHTML(m.user_name||'طالبة')} • ${escapeHTML(m.user_code||'—')}</b><p>${escapeHTML(m.content)}</p><small>${escapeHTML(dateText(m.created_at))}</small>${(m.replies||[]).map(r=>`<div class="record"><b>رد الأستاذة</b><p>${escapeHTML(r.content||'')}</p><small>${escapeHTML(dateText(r.created_at))}</small></div>`).join("")}<div class="actions"><button class="btn purple" onclick="openReply('${m.id}')">رد</button><button class="btn danger" onclick="deleteMessage('${m.id}')">حذف</button><button class="btn dark" onclick="blockMessaging('${m.student_id}',true)">حظر المراسلة</button><button class="btn green" onclick="blockMessaging('${m.student_id}',false)">فك الحظر</button></div></article>`).join("")||'<div class="empty">لا توجد رسائل</div>'}catch(e){$("messagesList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
 function openReply(id){$("replyParentId").value=id;$("replyContent").value="";$("replyModal").classList.remove("hidden")}
 async function sendTeacherReply(){const parent_id=$("replyParentId").value,content=$("replyContent").value.trim();if(!content)return toast("اكتبي الرد");try{await api("admin_reply_message",{admin_token:teacherToken(),parent_id,content});closeModal("replyModal");await loadMessages();toast("تم إرسال الرد")}catch(e){toast(e.message)}}
 async function deleteMessage(id){if(!confirm("حذف الرسالة؟"))return;try{await api("admin_delete_message",{admin_token:teacherToken(),message_id:id});loadMessages()}catch(e){toast(e.message)}}
@@ -1866,6 +1869,7 @@ async function refreshExtended(){await Promise.allSettled([loadVisitors(),loadNo
 
 /* visitor registration uses an anonymous, random browser identifier only */
 async function registerVisitor(){try{await api("visitor_track",{...deviceInfo(),page:location.pathname})}catch(_){}}
+async function visitorHeartbeat(){try{await api("visitor_heartbeat",{...deviceInfo(),page:location.pathname})}catch(_){}}
 /* Track tab return as a page visibility event; this is not screenshot detection. */
 document.addEventListener("visibilitychange",()=>{if(!document.hidden){api("record_activity",{session_token:studentToken(),event_type:"page_return",details:{visibility:"visible"}}).catch(()=>{})}});
 /* Anti-paste tracking for answer input. If the server says blocked, prevent insertion. */
@@ -1884,6 +1888,7 @@ loadDashboard(true);
 }else if(studentToken()&&!finished){
 api("student_current",{session_token:studentToken()})
 .then(data=>{
+pasteBlocked=!!data.paste_block_enabled;
 if(data.question?.completed){
 finishUI("تم إنهاء الاختبار");
 }else if(data.question?.question){
@@ -1904,6 +1909,7 @@ document.body.classList.add("day");
 
 icons();
 await registerVisitor();
+setInterval(visitorHeartbeat,60000);
 
 await loadPublicStatus();
 
