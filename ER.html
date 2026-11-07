@@ -24,7 +24,7 @@
 --shadow:0 20px 60px #0006;
 --radius:22px;
 }
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none} input,textarea,select,[contenteditable="true"]{ -webkit-user-select:text; user-select:text }
 body{
 margin:0;min-height:100vh;color:var(--text);
 font-family:Cairo,sans-serif;
@@ -226,6 +226,15 @@ justify-content:center;padding:14px;
 .modal-head h3{font-size:13px;margin:0}
 .spinner{display:inline-block;width:15px;height:15px;border:2px solid #0003;border-top-color:#17130a;border-radius:50%;animation:spin .7s linear infinite}
 footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
+
+.badge-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-inline-start:5px;box-shadow:0 0 10px currentColor;animation:pulse 1.8s infinite}
+.badge-dot.red{background:#ff6687;color:#ff6687}.badge-dot.gold{background:#e7c477;color:#e7c477}.badge-dot.cyan{background:#69d9ef;color:#69d9ef}
+.event-card{padding:13px;border:1px solid var(--border);border-radius:15px;background:linear-gradient(145deg,var(--surface2),var(--surface));margin:9px 0}
+.event-card.warning{border-color:#ffad5a88;background:#ffad5a12}.event-card.critical{border-color:#ff668788;background:#ff668712}
+.event-card small{color:var(--muted);font-size:9px}.event-card p{font-size:10px;line-height:2;white-space:pre-wrap;overflow-wrap:anywhere}
+.unread-count{display:inline-grid;place-items:center;min-width:17px;height:17px;padding:0 5px;border-radius:20px;background:#ff6687;color:white;font-size:9px}
+.inline-actions{display:flex;gap:7px;flex-wrap:wrap}.inline-actions>*{flex:1}
+
 @media(max-width:760px){
 .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
 .panel{padding:15px}
@@ -272,6 +281,8 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 <div class="info"><small>مدة الاختبار</small><strong id="duration">ساعة واحدة</strong></div>
 </div>
 </section>
+
+<section class="glass panel hidden" id="publicNoticePanel"><div class="student-row"><b><i data-lucide="megaphone"></i> إعلان الأستاذة</b><small id="publicNoticeDate"></small></div><p id="publicNoticeText" style="font-size:11px;line-height:2;white-space:pre-wrap"></p></section>
 
 <section class="glass panel" id="loginPanel">
 <h3 class="panel-title">بوابة دخول الطالبة</h3>
@@ -328,6 +339,12 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 </div>
 </section>
 
+<section class="glass panel hidden" id="studentMessagePanel">
+<h3 class="panel-title">التواصل مع الأستاذة</h3><p class="panel-sub">اكتبي رسالتك وستصل إلى لوحة الأستاذة مع رمزك ووقت الإرسال.</p>
+<div class="field"><label>الرسالة</label><textarea id="studentMessageText" maxlength="3000" placeholder="اكتبي رسالتك هنا..."></textarea></div>
+<button class="btn gold full" onclick="sendStudentMessage()">إرسال الرسالة</button><div id="studentMessageStatus" class="notice hidden"></div>
+</section>
+
 <section class="glass panel hidden" id="teacherLoginPanel">
 <h3 class="panel-title">دخول الأستاذة</h3>
 <p class="panel-sub">TEACHER SECURE ACCESS</p>
@@ -378,6 +395,7 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 <div class="storage-bar"><span id="storageBar"></span></div>
 <p style="font-size:9px;color:var(--muted);line-height:2;margin:0" id="storageNote">الحجم المعروض تقديري من البيانات المستلمة، وليس قياساً فعلياً لحجم PostgreSQL.</p>
 <button class="btn dark full" style="margin-top:12px" onclick="loadDashboard()">تحديث بيانات التخزين</button>
+<button class="btn purple full" style="margin-top:8px" onclick="exportAllStudentsZip()">تصدير بيانات جميع الطالبات ZIP</button>
 </div>
 
 <div class="tabs">
@@ -385,7 +403,13 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 <button class="tab" onclick="switchTab('answers',this)"><i data-lucide="file-check"></i> الإجابات</button>
 <button class="tab" onclick="switchTab('questions',this)"><i data-lucide="book-open"></i> الأسئلة</button>
 <button class="tab" onclick="switchTab('control',this)"><i data-lucide="sliders-horizontal"></i> التحكم</button>
-<button class="tab" onclick="switchTab('security',this)"><i data-lucide="fingerprint"></i> الأمان</button>
+<button class="tab" onclick="switchTab('security',this)"><i data-lucide="fingerprint"></i> الأمان <span id="securityBadge"></span></button>
+<button class="tab" onclick="switchTab('visitors',this)"><i data-lucide="globe"></i> الزائرون <span id="visitorBadge"></span></button>
+<button class="tab" onclick="switchTab('notifications',this)"><i data-lucide="bell"></i> الإخطارات <span id="notificationBadge"></span></button>
+<button class="tab" onclick="switchTab('anti',this)"><i data-lucide="shield-alert"></i> مكافحة الغش <span id="pasteBadge"></span></button>
+<button class="tab" onclick="switchTab('notes',this)"><i data-lucide="notebook-pen"></i> الملاحظات</button>
+<button class="tab" onclick="switchTab('activity',this)"><i data-lucide="activity"></i> سجل النشاط</button>
+<button class="tab" onclick="switchTab('messages',this)"><i data-lucide="messages-square"></i> الرسائل <span id="messageBadge"></span></button>
 <button class="tab" onclick="switchTab('reports',this)"><i data-lucide="file-chart-column"></i> التقارير</button>
 <button class="tab" onclick="switchTab('storage',this)"><i data-lucide="database"></i> التخزين</button>
 </div>
@@ -497,6 +521,21 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 </div>
 </div>
 
+<div id="tab-visitors" class="hidden">
+<div class="toolbar"><h3>سجل الزائرين</h3><button class="btn dark" onclick="loadVisitors()">تحديث</button></div>
+<div class="detail-grid"><div class="detail-box"><small>كل الزائرين</small><b id="visitorTotal">0</b></div><div class="detail-box"><small>النشطون</small><b id="visitorActive">0</b></div><div class="detail-box"><small>المحظورون</small><b id="visitorBlocked">0</b></div></div>
+<div id="visitorsList"></div></div>
+
+<div id="tab-notifications" class="hidden"><div class="toolbar"><h3>مركز الإخطارات</h3><div class="inline-actions"><button class="btn dark" onclick="loadNotifications()">تحديث</button><button class="btn purple" onclick="markNotificationsRead()">تعليم الكل كمقروء</button></div></div><div id="notificationsList"></div></div>
+
+<div id="tab-anti" class="hidden"><h3 class="panel-title">مكافحة الغش واللصق</h3><p class="panel-sub">تسجيل محاولات اللصق في حقول الإجابة. يمكن منع اللصق أو السماح به من الإعداد التالي.</p><div class="item-card"><b>منع لصق النص في الإجابات</b><div class="actions"><button class="btn danger" onclick="setPasteBlock(true)">تفعيل المنع</button><button class="btn green" onclick="setPasteBlock(false)">السماح باللصق</button></div><small id="pasteModeLabel">حالة المنع: غير معروفة</small></div><div id="pasteEventsList"></div></div>
+
+<div id="tab-notes" class="hidden"><h3 class="panel-title">ملاحظات الأستاذة</h3><div class="field"><label>عنوان الملاحظة</label><input id="noteTitle" maxlength="180" placeholder="عنوان الملاحظة"></div><div class="field"><label>نص الملاحظة</label><textarea id="noteContent" maxlength="6000" placeholder="اكتبي الملاحظة مع الحركات العربية..."></textarea></div><input id="noteId" type="hidden"><div class="inline-actions"><button class="btn gold" onclick="saveNote()">حفظ الملاحظة</button><button class="btn dark" onclick="resetNoteForm()">جديد</button></div><div class="field"><label>بحث (يدعم البحث بالحركات وبدونها)</label><input id="noteSearch" oninput="filterNotes()" placeholder="ابحثي في الملاحظات"></div><div id="notesList"></div></div>
+
+<div id="tab-activity" class="hidden"><div class="toolbar"><h3>سجل النشاط الزمني</h3><button class="btn dark" onclick="loadActivity()">تحديث</button></div><div id="activityList"></div></div>
+
+<div id="tab-messages" class="hidden"><div class="toolbar"><h3>رسائل الطالبات</h3><div class="inline-actions"><button class="btn dark" onclick="loadMessages()">تحديث</button><button class="btn danger" onclick="setMessaging(false)">إيقاف استقبال الرسائل</button><button class="btn green" onclick="setMessaging(true)">تفعيل الاستقبال</button></div></div><div id="messagesList"></div></div>
+
 <div id="tab-reports" class="hidden">
 <div class="toolbar"><h3>تقارير الاختبار</h3><button class="btn gold" onclick="loadReports()">تحميل التقارير</button></div>
 <div id="reportsList"></div>
@@ -555,6 +594,8 @@ footer{text-align:center;padding:20px 0;color:var(--muted);font-size:9px}
 </div>
 </div>
 
+<div class="modal hidden" id="replyModal" onclick="if(event.target===this)closeModal('replyModal')"><div class="glass modal-content"><div class="modal-head"><h3>الرد على رسالة</h3><button class="icon-btn" onclick="closeModal('replyModal')"><i data-lucide="x"></i></button></div><input id="replyParentId" type="hidden"><div class="field"><label>الرد</label><textarea id="replyContent" maxlength="3000"></textarea></div><button class="btn gold full" onclick="sendTeacherReply()">إرسال الرد</button></div></div>
+
 <script>
 "use strict";
 
@@ -574,8 +615,8 @@ theme:"shger_theme"
 const $=id=>document.getElementById(id);
 
 let dashboardData={
-students:[],sessions:[],answers:[],questions:[],reports:[],devices:[],
-settings:{},access:{},security:{}
+students:[],sessions:[],answers:[],questions:[],reports:[],devices:[],security:[],visitors:[],notifications:[],pasteEvents:[],notes:[],messages:[],activity:[],
+settings:{},access:{},securitySettings:{}
 };
 
 let currentQuestion=null;
@@ -731,6 +772,7 @@ $("schoolName").textContent=exam.school||"متوسطة الأميرات";
 $("className").textContent=exam.class_name||"الثاني متوسط";
 $("subjectName").textContent=exam.subject||"التربية الإسلامية";
 $("duration").textContent=formatDuration(exam.duration_minutes||60);
+if(exam.site_notice){$("publicNoticePanel").classList.remove("hidden");$("publicNoticeText").textContent=exam.site_notice;}else{$("publicNoticePanel").classList.add("hidden");}
 
 totalQuestions=Number(exam.question_count||0);
 setConnection(true,"متصل");
@@ -809,6 +851,7 @@ $("closedPanel").classList.add("hidden");
 $("teacherLoginPanel").classList.add("hidden");
 $("teacherPanel").classList.add("hidden");
 $("examPanel").classList.remove("hidden");
+$("studentMessagePanel").classList.remove("hidden");
 
 $("studentName").textContent=student.full_name||"الطالبة";
 $("studentCode").textContent=student.student_code||"";
@@ -1066,6 +1109,7 @@ $("loginPanel").classList.add("hidden");
 $("closedPanel").classList.add("hidden");
 $("teacherLoginPanel").classList.add("hidden");
 $("examPanel").classList.add("hidden");
+$("studentMessagePanel").classList.add("hidden");
 $("teacherPanel").classList.remove("hidden");
 
 await loadDashboard();
@@ -1096,6 +1140,7 @@ security:data.security||{}
 };
 
 renderDashboard();
+refreshExtended();
 setConnection(true,"متصل • تحديث مباشر");
 
 }catch(error){
@@ -1219,11 +1264,13 @@ function switchTab(name,button){
 document.querySelectorAll(".tab").forEach(tab=>tab.classList.remove("active"));
 button.classList.add("active");
 
-["students","answers","questions","control","security","reports","storage"].forEach(tab=>{
-$("tab-"+tab).classList.toggle("hidden",tab!==name);
+["students","answers","questions","control","security","visitors","notifications","anti","notes","activity","messages","reports","storage"].forEach(tab=>{
+const panel=$("tab-"+tab);if(panel)panel.classList.toggle("hidden",tab!==name);
 });
-
 if(name==="reports")loadReports();
+if(["security","visitors","notifications","anti","notes","activity","messages"].includes(name)){
+({security:loadSecurity,visitors:loadVisitors,notifications:loadNotifications,anti:loadPasteEvents,notes:loadNotes,activity:loadActivity,messages:loadMessages})[name]();
+}
 }
 
 /* الطالبات */
@@ -1395,6 +1442,7 @@ ${sessions.length?sessions.map(session=>`
 <p>التسليم: ${escapeHTML(dateText(session.submitted_at))}</p>
 </div>`).join(""):'<div class="empty">لا توجد جلسات</div>'}
 
+<div class="actions"><button class="btn gold" onclick="exportStudentData('${id}')">تصدير بيانات الطالبة</button></div>
 <h3 style="font-size:12px;margin-top:20px">الإجابات</h3>
 ${answers.length?answers.map(answer=>`
 <div class="record">
@@ -1550,7 +1598,7 @@ showError("teacherErrorBox",error.message);
 /* Passkey - واجهة طلب العمليات الخادمية */
 async function setGlobalStrict(enabled){
 try{
-await api("admin_set_strict_mode",{
+await api("admin_set_security_settings",{
 admin_token:teacherToken(),
 enabled
 });
@@ -1566,7 +1614,7 @@ const id=$("strictStudentSelect").value;
 if(!id){toast("اختاري الطالبة أولاً");return;}
 
 try{
-await api("admin_set_student_strict_mode",{
+await api("admin_set_security_settings",{
 admin_token:teacherToken(),
 student_id:id,
 enabled
@@ -1668,6 +1716,9 @@ showError("teacherErrorBox",error.message);
 }
 }
 
+async function exportStudentData(id){try{const d=await api("admin_export_student",{admin_token:teacherToken(),student_id:id});downloadJSON(d.data||d,"student-"+id+".json")}catch(e){toast(e.message)}}
+function downloadJSON(data,name){const blob=new Blob(["\ufeff",JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+async function exportAllStudentsZip(){try{const d=await api("admin_export_all_students_zip",{admin_token:teacherToken()});if(d.download_url)window.open(d.download_url,"_blank","noopener");else toast("الخادم لم يُرجع رابط ZIP") }catch(e){toast(e.message)}}
 /* التقارير */
 async function loadReports(){
 $("reportsList").innerHTML='<div class="empty"><span class="spinner"></span><p>جاري التحميل</p></div>';
@@ -1769,6 +1820,59 @@ error.message
 }
 }
 
+
+/* =====================================================
+   إضافات الأمان والزائرين والإخطارات والمراسلات
+   جميع العمليات الحساسة تتم عبر Edge Function
+===================================================== */
+function deviceInfo(){
+ const ua=navigator.userAgent||"";
+ let browser="غير معروف";
+ if(/Edg\//.test(ua))browser="Edge";else if(/Chrome\//.test(ua))browser="Chrome";else if(/Firefox\//.test(ua))browser="Firefox";else if(/Safari\//.test(ua))browser="Safari";
+ return {device_id:getFingerprint(),device_name:(/Android/i.test(ua)?"Android":"Browser")+" • "+ua.slice(0,90),browser_name:browser,operating_system:/Android/i.test(ua)?"Android":/iPhone|iPad/i.test(ua)?"iOS":/Windows/i.test(ua)?"Windows":"Other"};
+}
+function currentStudent(){try{return JSON.parse(localStorage.getItem(STORAGE.studentProfile)||"null")}catch{return null}}
+async function sendStudentMessage(){
+ const profile=currentStudent(),content=$("studentMessageText").value.trim();
+ if(!profile||!studentToken()){toast("سجّلي الدخول أولاً لإرسال رسالة مرتبطة برمزك");return}
+ if(!content){toast("اكتبي نص الرسالة");return}
+ try{await api("student_send_message",{session_token:studentToken(),content});$("studentMessageText").value="";$("studentMessageStatus").textContent="تم إرسال الرسالة إلى الأستاذة";$("studentMessageStatus").classList.remove("hidden");toast("وصلت رسالتك إلى الأستاذة")}catch(e){toast(e.message)}
+}
+async function loadVisitors(){try{const d=await api("admin_visitors",{admin_token:teacherToken()});const a=d.visitors||[];$("visitorTotal").textContent=a.length;$("visitorActive").textContent=a.filter(x=>x.is_active).length;$("visitorBlocked").textContent=a.filter(x=>x.is_blocked).length;$("visitorsList").innerHTML=a.map(v=>`<article class="event-card"><div class="student-row"><b>${escapeHTML(v.visitor_name||"زائر بدون اسم")}</b><span class="pill ${v.is_blocked?'bad':'ok'}">${v.is_blocked?'محظور':v.is_active?'نشط':'غير نشط'}</span></div><p>الرمز: ${escapeHTML(v.visitor_code)}<br>الجهاز: ${escapeHTML(v.device_name||'—')}<br>المتصفح: ${escapeHTML(v.browser_name||'—')}<br>أول زيارة: ${escapeHTML(dateText(v.first_visit_at))}<br>آخر زيارة: ${escapeHTML(dateText(v.last_visit_at))}<br>عدد الزيارات: ${Number(v.visit_count||0)}</p><div class="actions"><button class="btn dark" onclick="renameVisitor('${v.id}')">تسمية</button><button class="btn ${v.is_blocked?'green':'danger'}" onclick="visitorBlock('${v.id}',${!v.is_blocked})">${v.is_blocked?'فك الحظر':'حظر'}</button><button class="btn purple" onclick="visitorHistory('${v.id}')">النشاط</button></div></article>`).join("")||'<div class="empty">لا يوجد زائرون مسجلون</div>'}catch(e){$("visitorsList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+async function renameVisitor(id){const name=prompt("اكتبي الاسم الذي تريدين تعيينه للزائر:");if(name===null||!name.trim())return;try{await api("admin_rename_visitor",{admin_token:teacherToken(),visitor_id:id,visitor_name:name.trim()});await loadVisitors();toast("تم تحديث اسم الزائر")}catch(e){toast(e.message)}}
+async function visitorBlock(id,blocked){try{await api("admin_block_visitor",{admin_token:teacherToken(),visitor_id:id,blocked});await loadVisitors();toast("تم تحديث حالة الزائر")}catch(e){toast(e.message)}}
+async function visitorHistory(id){try{const d=await api("admin_visitor_history",{admin_token:teacherToken(),visitor_id:id});const rows=d.events||[];$("detailsTitle").textContent="سجل الزائر";$("detailsContent").innerHTML=rows.map(x=>`<div class="record"><b>${escapeHTML(x.event_type||'نشاط')}</b><p>${escapeHTML(JSON.stringify(x.event_details||{}))}</p><small>${escapeHTML(dateText(x.created_at))}</small></div>`).join("")||'<div class="empty">لا يوجد نشاط</div>';$("detailsModal").classList.remove("hidden")}catch(e){toast(e.message)}}
+async function loadNotifications(){try{const d=await api("admin_notifications",{admin_token:teacherToken()});const rows=d.notifications||[];const unread=rows.filter(x=>!x.is_read).length;$("notificationBadge").innerHTML=unread?`<span class="unread-count">${unread}</span>`:"";$("notificationsList").innerHTML=rows.map(n=>`<article class="event-card ${n.severity==='critical'?'critical':n.severity==='warning'?'warning':''}"><div class="student-row"><b>${escapeHTML(n.title||n.event_type)}</b><span class="pill ${n.is_read?'wait':'bad'}">${n.is_read?'مقروء':'جديد'}</span></div><p>${escapeHTML(n.message||'')}<br>القسم: ${escapeHTML(n.category)} • الرمز: ${escapeHTML(n.user_code||'—')} • الاسم: ${escapeHTML(n.user_name||'—')}</p><small>${escapeHTML(dateText(n.created_at))}</small>${!n.is_read?`<div class="actions"><button class="btn dark" onclick="markOneNotification('${n.id}')">تعليم كمقروء</button></div>`:''}</article>`).join("")||'<div class="empty">لا توجد إخطارات</div>'}catch(e){$("notificationsList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+async function markOneNotification(id){try{await api("admin_mark_notification_read",{admin_token:teacherToken(),notification_id:id});loadNotifications()}catch(e){toast(e.message)}}
+async function markNotificationsRead(){try{await api("admin_mark_notifications_read",{admin_token:teacherToken()});await loadNotifications();toast("تمت مراجعة الإخطارات") }catch(e){toast(e.message)}}
+async function setPasteBlock(enabled){try{await api("admin_set_paste_block",{admin_token:teacherToken(),enabled});pasteBlocked=enabled;$("pasteModeLabel").textContent=enabled?"حالة المنع: مفعّل":"حالة المنع: متوقف";toast("تم تحديث إعداد منع اللصق")}catch(e){toast(e.message)}}
+async function loadPasteEvents(){try{const d=await api("admin_paste_events",{admin_token:teacherToken()});const rows=d.events||[];$("pasteBadge").innerHTML=rows.length?`<span class="unread-count">${rows.length}</span>`:"";$("pasteEventsList").innerHTML=rows.map(x=>`<article class="event-card warning"><b>محاولة لصق نص</b><p>الطالبة: ${escapeHTML(x.user_name||'—')} • الرمز: ${escapeHTML(x.user_code||'—')}<br>السؤال: ${escapeHTML(x.event_details?.question_id||'—')}<br>النص: ${escapeHTML(x.event_details?.pasted_text||'')}<br>عدد المحاولات: ${Number(x.event_details?.attempt_count||1)}</p><small>${escapeHTML(dateText(x.created_at))}</small></article>`).join("")||'<div class="empty">لا توجد محاولات لصق</div>'}catch(e){$("pasteEventsList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+function stripArabicMarks(s){return String(s||"").normalize("NFKD").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED]/g,"").toLowerCase()}
+function filterNotes(){const q=stripArabicMarks($("noteSearch").value);document.querySelectorAll("[data-note-search]").forEach(el=>el.classList.toggle("hidden",!stripArabicMarks(el.dataset.noteSearch).includes(q)))}
+function resetNoteForm(){$("noteId").value="";$("noteTitle").value="";$("noteContent").value=""}
+async function loadNotes(){try{const d=await api("admin_notes",{admin_token:teacherToken()});const rows=d.notes||[];$("notesList").innerHTML=rows.map(n=>`<article class="event-card" data-note-search="${escapeHTML((n.title||'')+' '+(n.content||''))}"><b>${escapeHTML(n.title||'ملاحظة')}</b><p>${escapeHTML(n.content)}</p><small>${escapeHTML(dateText(n.updated_at||n.created_at))}</small><div class="actions"><button class="btn dark" onclick="editNote('${n.id}')">تعديل</button><button class="btn danger" onclick="deleteNote('${n.id}')">حذف</button></div></article>`).join("")||'<div class="empty">لا توجد ملاحظات</div>';filterNotes()}catch(e){$("notesList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+async function saveNote(){const title=$("noteTitle").value.trim(),content=$("noteContent").value.trim(),id=$("noteId").value;if(!content){toast("اكتبي نص الملاحظة");return}try{await api("admin_save_note",{admin_token:teacherToken(),note_id:id||null,title,content});resetNoteForm();await loadNotes();toast("تم حفظ الملاحظة في قاعدة البيانات")}catch(e){toast(e.message)}}
+async function editNote(id){try{const d=await api("admin_notes",{admin_token:teacherToken()});const n=(d.notes||[]).find(x=>x.id===id);if(!n)return;$("noteId").value=n.id;$("noteTitle").value=n.title||"";$("noteContent").value=n.content||"";$("noteContent").focus()}catch(e){toast(e.message)}}
+async function deleteNote(id){if(!confirm("حذف هذه الملاحظة؟"))return;try{await api("admin_delete_note",{admin_token:teacherToken(),note_id:id});await loadNotes();toast("تم حذف الملاحظة")}catch(e){toast(e.message)}}
+async function loadActivity(){try{const d=await api("admin_activity",{admin_token:teacherToken()});const rows=d.events||[];$("activityList").innerHTML=rows.map(x=>`<article class="event-card"><div class="student-row"><b>${escapeHTML(x.event_type||'حدث')}</b><small>${escapeHTML(x.user_type||'')}</small></div><p>الاسم: ${escapeHTML(x.user_name||'—')} • الرمز: ${escapeHTML(x.user_code||'—')}<br>${escapeHTML(JSON.stringify(x.event_details||{}))}</p><small>${escapeHTML(dateText(x.created_at))}</small></article>`).join("")||'<div class="empty">لا توجد أحداث</div>'}catch(e){$("activityList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+async function loadMessages(){try{const d=await api("admin_messages",{admin_token:teacherToken()});const rows=d.messages||[];$("messageBadge").innerHTML=rows.filter(x=>!x.is_read).length?`<span class="unread-count">${rows.filter(x=>!x.is_read).length}</span>`:"";$("messagesList").innerHTML=rows.map(m=>`<article class="event-card"><b>${escapeHTML(m.user_name||'طالبة')} • ${escapeHTML(m.user_code||'—')}</b><p>${escapeHTML(m.content)}</p><small>${escapeHTML(dateText(m.created_at))}</small><div class="actions"><button class="btn purple" onclick="openReply('${m.id}')">رد</button><button class="btn danger" onclick="deleteMessage('${m.id}')">حذف</button><button class="btn dark" onclick="blockMessaging('${m.student_id}',true)">حظر المراسلة</button><button class="btn green" onclick="blockMessaging('${m.student_id}',false)">فك الحظر</button></div></article>`).join("")||'<div class="empty">لا توجد رسائل</div>'}catch(e){$("messagesList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`}}
+function openReply(id){$("replyParentId").value=id;$("replyContent").value="";$("replyModal").classList.remove("hidden")}
+async function sendTeacherReply(){const parent_id=$("replyParentId").value,content=$("replyContent").value.trim();if(!content)return toast("اكتبي الرد");try{await api("admin_reply_message",{admin_token:teacherToken(),parent_id,content});closeModal("replyModal");await loadMessages();toast("تم إرسال الرد")}catch(e){toast(e.message)}}
+async function deleteMessage(id){if(!confirm("حذف الرسالة؟"))return;try{await api("admin_delete_message",{admin_token:teacherToken(),message_id:id});loadMessages()}catch(e){toast(e.message)}}
+async function blockMessaging(student_id,blocked){try{await api("admin_block_messaging",{admin_token:teacherToken(),student_id,blocked});toast("تم تحديث صلاحية المراسلة")}catch(e){toast(e.message)}}
+async function setMessaging(enabled){try{await api("admin_set_messaging",{admin_token:teacherToken(),enabled});toast(enabled?"تم تفعيل استقبال الرسائل":"تم إيقاف استقبال الرسائل")}catch(e){toast(e.message)}}
+async function loadSecurity(){try{const d=await api("admin_security_records",{admin_token:teacherToken()});const rows=d.records||[];$("securityBadge").innerHTML=rows.length?`<span class="unread-count">${rows.length}</span>`:"";const box=document.getElementById("tab-security");let list=document.getElementById("securityRecords");if(!list){list=document.createElement("div");list.id="securityRecords";box.appendChild(list)}list.innerHTML=rows.map(x=>`<article class="event-card"><b>${escapeHTML(x.event_type||x.record_type||'حدث أمني')}</b><p>${escapeHTML(x.user_name||'—')} • ${escapeHTML(x.user_code||'—')}<br>الجهاز: ${escapeHTML(x.device_name||'—')} • المتصفح: ${escapeHTML(x.browser_name||'—')}<br>التفاصيل: ${escapeHTML(JSON.stringify(x.event_details||{}))}</p><small>${escapeHTML(dateText(x.created_at))}</small></article>`).join("")||'<div class="empty">لا توجد سجلات أمنية</div>'}catch(e){toast(e.message)}}
+async function refreshExtended(){await Promise.allSettled([loadVisitors(),loadNotifications(),loadPasteEvents(),loadNotes(),loadActivity(),loadMessages(),loadSecurity()])}
+
+/* visitor registration uses an anonymous, random browser identifier only */
+async function registerVisitor(){try{await api("visitor_track",{...deviceInfo(),page:location.pathname})}catch(_){}}
+/* Track tab return as a page visibility event; this is not screenshot detection. */
+document.addEventListener("visibilitychange",()=>{if(!document.hidden){api("record_activity",{session_token:studentToken(),event_type:"page_return",details:{visibility:"visible"}}).catch(()=>{})}});
+/* Anti-paste tracking for answer input. If the server says blocked, prevent insertion. */
+let pasteAttemptCount=0;
+let pasteBlocked=false;
+$("answerText").addEventListener("paste",ev=>{pasteAttemptCount++;const pasted=(ev.clipboardData||window.clipboardData)?.getData("text")||"";if(pasteBlocked){ev.preventDefault();toast("اللصق ممنوع حسب إعدادات الاختبار")}api("student_paste_event",{session_token:studentToken(),question_id:currentQuestion?.id||null,pasted_text:pasted,attempt_count:pasteAttemptCount}).catch(()=>{})});
+
 /* مراقبة الصفحة والاتصال */
 window.addEventListener("online",()=>setConnection(true,"متصل"));
 window.addEventListener("offline",()=>setConnection(false,"غير متصل"));
@@ -1799,6 +1903,7 @@ document.body.classList.add("day");
 }
 
 icons();
+await registerVisitor();
 
 await loadPublicStatus();
 
