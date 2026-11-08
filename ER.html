@@ -1940,6 +1940,11 @@ handleQuestionResponse(data.question);
 }
 });
 
+
+
+async function markCategoryRead(category){try{await api("admin_mark_category_notifications_read",{admin_token:teacherToken(),category});await loadNotifications()}catch(e){console.warn(e)}}
+
+
 /* تشغيل الموقع */
 (async function init(){
 
@@ -1959,8 +1964,8 @@ await showTeacherDashboard();
 await resumeStudentSession();
 }
 
+
 })();
 </script>
 </body>
 </html>
-async function markCategoryRead(category){try{await api("admin_mark_category_notifications_read",{admin_token:teacherToken(),category});await loadNotifications()}catch(e){console.warn(e)}}
