@@ -2043,7 +2043,7 @@ async function loadDashboard(silent=false){
     };
 
     renderDashboard();
-    refreshExtended();
+    if(!silent) await refreshExtended();
     setConnection(true,"متصل • تحديث مباشر");
 
   }catch(error){
@@ -2846,22 +2846,252 @@ function resetNoteForm(){
   if($("noteImageStatus")) $("noteImageStatus").textContent="الحد الأقصى 5MB • JPG / PNG / WEBP";
 }
 
+
 async function loadNotes(){
   try{
     const d=await api("admin_notes",{admin_token:teacherToken()});
     const rows=d.notes||[];
     $("notesList").innerHTML=rows.map(n=>`
-      <article class="event-card" data-note-search="${escapeHTML((n.title||'')+' '+(n.content||''))}">
+      <article class="event-card" data-note-search="${escapeHTML((n.title||"")+" "+(n.content||""))}">
         <details>
           <summary style="cursor:pointer;font-weight:700;color:var(--gold-primary);font-size:14px;display:flex;justify-content:space-between;align-items:center">
-            <span>${escapeHTML(n.title||'ملاحظة')}</span>
+            <span>${escapeHTML(n.title||"ملاحظة")}</span>
             <small style="color:var(--text-secondary);font-weight:500">${escapeHTML(dateText(n.updated_at||n.created_at))}</small>
           </summary>
           <div style="padding-top:16px;border-top:1px solid var(--border-subtle);margin-top:12px">
-            <p style="white-space:pre-wrap;line-height:1.8;font-size:13px">${escapeHTML(n.content||'')}</p>
+            <p style="white-space:pre-wrap;line-height:1.8;font-size:13px">${escapeHTML(n.content||"")}</p>
             ${n.event_details?.image_url?`
               <a href="${escapeHTML(n.event_details.image_url)}" target="_blank" rel="noopener">
                 <img src="${escapeHTML(n.event_details.image_url)}" alt="صورة الملاحظة" style="display:block;max-width:100%;max-height:320px;object-fit:contain;border-radius:12px;margin:16px auto;border:1px solid var(--border-subtle)">
-              </a>
-            `:''}
-            <div class="actions" styl
+              </a>`:""}
+            <div class="actions">
+              <button class="btn dark" onclick="editNote('${escapeHTML(n.id)}')">تعديل</button>
+              <button class="btn danger" onclick="deleteNote('${escapeHTML(n.id)}')">حذف</button>
+            </div>
+          </div>
+        </details>
+      </article>`).join("")||'<div class="empty">لا توجد ملاحظات</div>';
+    filterNotes();
+    icons();
+  }catch(e){
+    $("notesList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`;
+  }
+}
+
+async function saveNote(){
+  const title=$("noteTitle").value.trim();
+  const content=$("noteContent").value.trim();
+  const image_url=$("noteImageUrl").value.trim();
+  const note_id=$("noteId").value.trim();
+  if(!title){toast("اكتبي عنوان الملاحظة");return}
+  if(!content&&!image_url){toast("أضيفي نصاً أو صورة للملاحظة");return}
+  try{
+    await api("admin_save_note",{admin_token:teacherToken(),note_id:note_id||null,title,content,image_url});
+    resetNoteForm();
+    await loadNotes();
+    toast("تم حفظ الملاحظة في قاعدة البيانات");
+  }catch(e){toast(e.message)}
+}
+
+async function editNote(id){
+  try{
+    const d=await api("admin_notes",{admin_token:teacherToken()});
+    const n=(d.notes||[]).find(x=>x.id===id);
+    if(!n)return;
+    $("noteId").value=n.id;
+    $("noteTitle").value=n.title||"";
+    $("noteContent").value=n.content||"";
+    $("noteImageUrl").value=n.event_details?.image_url||"";
+    $("noteImageStatus").textContent=n.event_details?.image_url?"الصورة مرتبطة بهذه الملاحظة":"لم يتم إرفاق صورة";
+    $("noteTitle").focus();
+  }catch(e){toast(e.message)}
+}
+
+async function deleteNote(id){
+  if(!window.confirm("حذف هذه الملاحظة؟"))return;
+  try{
+    await api("admin_delete_note",{admin_token:teacherToken(),note_id:id});
+    await loadNotes();
+    toast("تم حذف الملاحظة");
+  }catch(e){toast(e.message)}
+}
+
+async function uploadNoteImage(input){
+  const file=input?.files?.[0];
+  if(!file)return;
+  if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
+    toast("اختاري صورة JPG أو PNG أو WEBP");
+    input.value="";
+    return;
+  }
+  if(file.size>5*1024*1024){
+    toast("حجم الصورة يجب ألا يتجاوز 5MB");
+    input.value="";
+    return;
+  }
+  $("noteImageStatus").textContent="جاري رفع الصورة إلى Supabase Storage...";
+  try{
+    const image_data=await new Promise((resolve,reject)=>{
+      const reader=new FileReader();
+      reader.onload=()=>resolve(String(reader.result||""));
+      reader.onerror=()=>reject(new Error("تعذرت قراءة الصورة"));
+      reader.readAsDataURL(file);
+    });
+    const d=await api("admin_upload_note_image",{admin_token:teacherToken(),image_data});
+    if(!d.image_url)throw new Error("لم يرجع الخادم رابط الصورة");
+    $("noteImageUrl").value=d.image_url;
+    $("noteImageStatus").textContent="تم رفع الصورة وربطها بنجاح";
+    toast("تم رفع الصورة إلى قاعدة التخزين");
+  }catch(e){
+    $("noteImageStatus").textContent=e.message;
+    toast(e.message);
+    input.value="";
+  }
+}
+
+async function loadMessages(){
+  try{
+    const d=await api("admin_messages",{admin_token:teacherToken()});
+    const rows=d.messages||[];
+    const unread=rows.filter(x=>!x.is_read).length;
+    $("messageBadge").innerHTML=unread?`<span class="unread-count">${unread}</span>`:"";
+    $("messagesList").innerHTML=rows.map(m=>`
+      <article class="event-card">
+        <div class="student-row">
+          <b>${escapeHTML(m.user_name||"طالبة")} • ${escapeHTML(m.user_code||"—")}</b>
+          <span class="pill ${m.is_read?"ok":"wait"}">${m.is_read?"مقروءة":"جديدة"}</span>
+        </div>
+        <p style="white-space:pre-wrap;line-height:1.8;margin:10px 0">${escapeHTML(m.content||"")}</p>
+        <small>${escapeHTML(dateText(m.created_at))}</small>
+        ${(m.replies||[]).map(r=>`<div class="record" style="margin-top:10px"><b style="color:var(--gold-primary)">رد الأستاذة</b><p style="white-space:pre-wrap">${escapeHTML(r.content||"")}</p><small>${escapeHTML(dateText(r.created_at))}</small></div>`).join("")}
+        <div class="actions">
+          <button class="btn purple" onclick="openReply('${escapeHTML(m.id)}')">رد</button>
+          <button class="btn danger" onclick="deleteMessage('${escapeHTML(m.id)}')">حذف</button>
+          ${m.student_id?`<button class="btn dark" onclick="blockMessaging('${escapeHTML(m.student_id)}',true)">حظر المراسلة</button><button class="btn green" onclick="blockMessaging('${escapeHTML(m.student_id)}',false)">فك الحظر</button>`:""}
+        </div>
+      </article>`).join("")||'<div class="empty">لا توجد رسائل من الطالبات</div>';
+    icons();
+  }catch(e){
+    $("messagesList").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`;
+  }
+}
+
+function openReply(id){
+  $("replyParentId").value=id;
+  $("replyContent").value="";
+  $("replyModal").classList.remove("hidden");
+  icons();
+}
+
+async function sendTeacherReply(){
+  const parent_id=$("replyParentId").value;
+  const content=$("replyContent").value.trim();
+  if(!content){toast("اكتبي نص الرد");return}
+  try{
+    await api("admin_reply_message",{admin_token:teacherToken(),parent_id,content});
+    closeModal("replyModal");
+    await loadMessages();
+    toast("تم إرسال الرد إلى الطالبة");
+  }catch(e){toast(e.message)}
+}
+
+async function deleteMessage(id){
+  if(!window.confirm("حذف الرسالة وردودها؟"))return;
+  try{
+    await api("admin_delete_message",{admin_token:teacherToken(),message_id:id});
+    await loadMessages();
+    toast("تم حذف الرسالة");
+  }catch(e){toast(e.message)}
+}
+
+async function blockMessaging(student_id,blocked){
+  try{
+    await api("admin_block_messaging",{admin_token:teacherToken(),student_id,blocked});
+    toast(blocked?"تم حظر مراسلة الطالبة":"تم السماح للطالبة بالمراسلة");
+  }catch(e){toast(e.message)}
+}
+
+async function setMessaging(enabled){
+  try{
+    await api("admin_set_messaging",{admin_token:teacherToken(),enabled});
+    toast(enabled?"تم تفعيل استقبال الرسائل":"تم إيقاف استقبال الرسائل");
+  }catch(e){toast(e.message)}
+}
+
+async function markCategoryRead(category){
+  try{
+    await api("admin_mark_category_notifications_read",{admin_token:teacherToken(),category});
+  }catch(e){/* لا نوقف عرض الرسائل بسبب فشل تعليم الإشعار */}
+}
+
+async function loadSecurity(){
+  try{
+    const d=await api("admin_security_records",{admin_token:teacherToken()});
+    const rows=d.records||d.security||[];
+    $("securityRecords").innerHTML=rows.map(x=>`
+      <article class="event-card">
+        <div class="student-row">
+          <b>${escapeHTML(x.event_type||x.record_type||"حدث أمني")}</b>
+          <small>${escapeHTML(dateText(x.created_at))}</small>
+        </div>
+        <p style="font-size:12px;line-height:1.8">
+          الاسم: ${escapeHTML(x.user_name||"—")} • الرمز: ${escapeHTML(x.user_code||"—")}<br>
+          الجهاز: ${escapeHTML(x.device_name||"—")} • المتصفح: ${escapeHTML(x.browser_name||"—")}<br>
+          التفاصيل: ${escapeHTML(JSON.stringify(x.event_details||{}))}
+        </p>
+      </article>`).join("")||'<div class="empty">لا توجد سجلات أمنية حالياً</div>';
+    icons();
+  }catch(e){
+    $("securityRecords").innerHTML=`<div class="notice">${escapeHTML(e.message)}</div>`;
+  }
+}
+
+async function refreshExtended(){
+  await Promise.allSettled([loadPasteEvents(),loadNotes(),loadMessages(),loadSecurity()]);
+}
+
+/* تسجيل محاولات اللصق لدى الخادم عند توفر جلسة طالبة */
+let pasteAttemptCount=0;
+$("answerText").addEventListener("paste",event=>{
+  pasteAttemptCount++;
+  const pasted=(event.clipboardData||window.clipboardData)?.getData("text")||"";
+  if(pasteBlocked){
+    event.preventDefault();
+    toast("اللصق ممنوع حسب إعدادات الاختبار");
+  }
+  if(studentToken()){
+    api("student_paste_event",{
+      session_token:studentToken(),
+      question_id:currentQuestion?.id||null,
+      pasted_text:pasted,
+      attempt_count:pasteAttemptCount
+    }).catch(()=>{});
+  }
+});
+
+window.addEventListener("online",()=>setConnection(true,"متصل"));
+window.addEventListener("offline",()=>setConnection(false,"غير متصل"));
+
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden)return;
+  if(teacherToken()){
+    loadDashboard(true);
+  }else if(studentToken()&&!finished){
+    api("student_current",{session_token:studentToken()}).then(data=>{
+      pasteBlocked=!!data.paste_block_enabled;
+      if(data.question?.completed)finishUI("تم إنهاء الاختبار");
+      else if(data.question?.question)handleQuestionResponse(data.question);
+    }).catch(()=>{});
+  }
+});
+
+(async function init(){
+  if(localStorage.getItem(STORAGE.theme)==="day")document.body.classList.add("day");
+  icons();
+  await loadPublicStatus();
+  if(teacherToken())await showTeacherDashboard();
+  else if(studentToken())await resumeStudentSession();
+})();
+</script>
+</body>
+</html>
