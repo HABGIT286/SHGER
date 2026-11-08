@@ -1,0 +1,1750 @@
+```html
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AL-AMIRAT | EXAM SYSTEM — منصة الاختبارات الفاخرة</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Fonts from fontsource -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/cairo@latest/arabic-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/cairo@latest/arabic-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/tajawal@latest/arabic-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/tajawal@latest/arabic-700-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/amiri@latest/arabic-400-normal.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/fonts/amiri@latest/arabic-700-normal.css">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+  :root{
+    --gold-1:#d4af37;
+    --gold-2:#f5d98a;
+    --gold-3:#8a6d1a;
+    --navy-1:#0a1535;
+    --navy-2:#121f4d;
+    --navy-3:#1a2a5e;
+    --ink:#0b1020;
+    --glass:rgba(255,255,255,0.06);
+    --glass-strong:rgba(255,255,255,0.10);
+    --border-gold:rgba(212,175,55,0.35);
+  }
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    font-family:'Cairo','Tajawal',system-ui,sans-serif;
+    background:#05080f;
+    color:#e9ecf5;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .font-display{ font-family:'Amiri','Cairo',serif; letter-spacing:.2px; }
+  .font-arabic{ font-family:'Cairo','Tajawal',sans-serif; }
+
+  /* Background aurora */
+  .aurora{
+    position:fixed; inset:0; z-index:-2;
+    background:
+      radial-gradient(1200px 800px at 85% -10%, rgba(212,175,55,.18), transparent 60%),
+      radial-gradient(900px 700px at -10% 110%, rgba(26,42,94,.55), transparent 60%),
+      radial-gradient(700px 500px at 50% 50%, rgba(18,31,77,.6), transparent 70%),
+      linear-gradient(180deg,#05080f 0%,#070b1a 100%);
+  }
+  .grid-overlay{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background-image:
+      linear-gradient(rgba(212,175,55,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,175,55,.05) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  }
+
+  /* Glass card */
+  .glass{
+    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border:1px solid rgba(212,175,55,0.18);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.06) inset,
+      0 30px 60px -30px rgba(0,0,0,.8);
+  }
+  .glass-strong{
+    background:linear-gradient(180deg, rgba(255,255,255,0.09), rgba(255,255,255,0.03));
+    border:1px solid rgba(212,175,55,0.28);
+    backdrop-filter: blur(18px) saturate(160%);
+  }
+  .gold-border{ border:1px solid var(--border-gold); }
+  .gold-text{ color:var(--gold-2); }
+  .gold-grad{
+    background:linear-gradient(135deg,#f5d98a 0%,#d4af37 45%,#8a6d1a 100%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+
+  /* Buttons */
+  .btn-gold{
+    position:relative;
+    background:linear-gradient(135deg,#f5d98a 0%,#d4af37 50%,#8a6d1a 100%);
+    color:#1a1203;
+    font-weight:800;
+    letter-spacing:.3px;
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.4) inset,
+      0 10px 30px -10px rgba(212,175,55,.55),
+      0 0 0 1px rgba(212,175,55,.25);
+    transition:transform .25s ease, box-shadow .25s ease, filter .25s ease;
+  }
+  .btn-gold:hover{ transform:translateY(-2px); filter:brightness(1.08); box-shadow:0 14px 40px -10px rgba(212,175,55,.75); }
+  .btn-gold:active{ transform:translateY(0) scale(.98); }
+
+  .btn-ghost{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(212,175,55,.25);
+    color:#e9ecf5;
+    transition:all .25s ease;
+  }
+  .btn-ghost:hover{ background:rgba(212,175,55,.08); border-color:rgba(212,175,55,.55); transform:translateY(-1px); }
+  .btn-ghost:active{ transform:scale(.98); }
+
+  .btn-danger{
+    background:linear-gradient(135deg,#ff6b6b,#c92a2a);
+    color:#fff;
+    border:1px solid rgba(255,255,255,.15);
+    box-shadow:0 10px 30px -10px rgba(201,42,42,.55);
+    transition:all .25s ease;
+  }
+  .btn-danger:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+
+  /* Inputs */
+  .field{
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(212,175,55,.22);
+    color:#e9ecf5;
+    border-radius:14px;
+    padding:14px 16px;
+    width:100%;
+    transition:all .25s ease;
+    font-family:'Cairo',sans-serif;
+  }
+  .field::placeholder{ color:rgba(233,236,245,.45); }
+  .field:focus{
+    outline:none;
+    border-color:rgba(212,175,55,.75);
+    background:rgba(255,255,255,.06);
+    box-shadow:0 0 0 4px rgba(212,175,55,.12);
+  }
+
+  /* Tabs */
+  .tab{
+    display:flex; align-items:center; gap:10px;
+    padding:12px 16px; border-radius:12px;
+    color:#b8c0d6; font-weight:700;
+    border:1px solid transparent;
+    cursor:pointer; transition:all .25s ease;
+    white-space:nowrap;
+  }
+  .tab:hover{ background:rgba(212,175,55,.06); color:#e9ecf5; }
+  .tab.active{
+    background:linear-gradient(135deg, rgba(212,175,55,.18), rgba(212,175,55,.05));
+    border-color:rgba(212,175,55,.45);
+    color:#f5d98a;
+    box-shadow:0 0 0 1px rgba(212,175,55,.15) inset;
+  }
+
+  /* Stat card */
+  .stat{
+    position:relative; overflow:hidden;
+    background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+    border:1px solid rgba(212,175,55,.22);
+    border-radius:18px;
+    padding:20px;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .stat:hover{ transform:translateY(-4px); border-color:rgba(212,175,55,.55); }
+  .stat::before{
+    content:""; position:absolute; inset:auto -30% -60% auto;
+    width:200px; height:200px; border-radius:50%;
+    background:radial-gradient(circle, rgba(212,175,55,.25), transparent 70%);
+    filter:blur(10px); opacity:.6;
+  }
+
+  /* Ripple */
+  .ripple{ position:relative; overflow:hidden; }
+  .ripple .ripple-wave{
+    position:absolute; border-radius:50%;
+    transform:scale(0); animation:ripple .7s linear;
+    background:rgba(255,255,255,.35); pointer-events:none;
+  }
+  @keyframes ripple{ to{ transform:scale(4); opacity:0; } }
+
+  /* Fade in */
+  .fade-in{ animation:fadeIn .6s ease both; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:translateY(0);} }
+
+  .slide-up{ animation:slideUp .5s ease both; }
+  @keyframes slideUp{ from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
+
+  /* Pulse dot */
+  .pulse-dot{
+    width:10px; height:10px; border-radius:50%;
+    background:#22c55e; box-shadow:0 0 0 0 rgba(34,197,94,.7);
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(34,197,94,.6); }
+    70%{ box-shadow:0 0 0 14px rgba(34,197,94,0); }
+    100%{ box-shadow:0 0 0 0 rgba(34,197,94,0); }
+  }
+
+  /* Shimmer */
+  .shimmer{
+    background:linear-gradient(90deg, transparent, rgba(212,175,55,.12), transparent);
+    background-size:200% 100%;
+    animation:shimmer 2.4s infinite;
+  }
+  @keyframes shimmer{ 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:#0a0f1f; }
+  ::-webkit-scrollbar-thumb{
+    background:linear-gradient(180deg,#d4af37,#8a6d1a);
+    border-radius:10px;
+    border:2px solid #0a0f1f;
+  }
+
+  /* Table */
+  table.lux{ width:100%; border-collapse:separate; border-spacing:0; }
+  table.lux thead th{
+    background:rgba(212,175,55,.08);
+    color:#f5d98a;
+    font-weight:800;
+    text-align:right;
+    padding:14px 16px;
+    border-bottom:1px solid rgba(212,175,55,.3);
+    font-size:13px; letter-spacing:.5px;
+  }
+  table.lux tbody td{
+    padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,.05);
+    color:#d6dbee;
+    font-size:14px;
+  }
+  table.lux tbody tr{ transition:background .25s ease; }
+  table.lux tbody tr:hover{ background:rgba(212,175,55,.05); }
+
+  /* Badge */
+  .badge{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px;
+    font-size:12px; font-weight:700;
+    border:1px solid rgba(212,175,55,.35);
+    color:#f5d98a;
+    background:rgba(212,175,55,.08);
+  }
+  .badge.green{ color:#86efac; border-color:rgba(34,197,94,.35); background:rgba(34,197,94,.08); }
+  .badge.red{ color:#fca5a5; border-color:rgba(239,68,68,.35); background:rgba(239,68,68,.08); }
+  .badge.blue{ color:#93c5fd; border-color:rgba(59,130,246,.35); background:rgba(59,130,246,.08); }
+
+  /* Modal */
+  .modal-backdrop{
+    position:fixed; inset:0; z-index:80;
+    background:rgba(3,6,16,.7);
+    backdrop-filter: blur(8px);
+    display:flex; align-items:center; justify-content:center;
+    animation:fadeIn .25s ease both;
+  }
+
+  /* Logo mark */
+  .logo-mark{
+    width:56px; height:56px; border-radius:16px;
+    background:linear-gradient(135deg,#f5d98a,#8a6d1a);
+    display:flex; align-items:center; justify-content:center;
+    color:#1a1203;
+    box-shadow:0 10px 30px -10px rgba(212,175,55,.6), 0 0 0 1px rgba(255,255,255,.15) inset;
+  }
+
+  /* Divider */
+  .divider-gold{
+    height:1px;
+    background:linear-gradient(90deg, transparent, rgba(212,175,55,.5), transparent);
+  }
+
+  /* Selection */
+  ::selection{ background:rgba(212,175,55,.35); color:#fff; }
+
+  /* Hide */
+  .hidden-el{ display:none !important; }
+
+  /* Toast */
+  .toast{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%);
+    z-index:120; padding:14px 22px; border-radius:14px;
+    background:linear-gradient(135deg, rgba(20,30,60,.95), rgba(10,15,30,.95));
+    border:1px solid rgba(212,175,55,.35);
+    color:#f5d98a; font-weight:700;
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.8);
+    animation:slideUp .3s ease both;
+  }
+
+  /* Exam timer */
+  .timer-ring{
+    --p:100;
+    width:180px; height:180px; border-radius:50%;
+    background:
+      conic-gradient(#d4af37 calc(var(--p)*1%), rgba(255,255,255,.08) 0);
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .timer-ring::before{
+    content:""; position:absolute; inset:10px; border-radius:50%;
+    background:linear-gradient(180deg,#0a1535,#05080f);
+    border:1px solid rgba(212,175,55,.2);
+  }
+  .timer-ring .inner{
+    position:relative; z-index:1; text-align:center;
+  }
+
+  /* Question option */
+  .q-option{
+    padding:14px 16px; border-radius:12px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(212,175,55,.18);
+    cursor:pointer; transition:all .25s ease;
+  }
+  .q-option:hover{ background:rgba(212,175,55,.08); border-color:rgba(212,175,55,.5); }
+  .q-option.selected{
+    background:linear-gradient(135deg, rgba(212,175,55,.18), rgba(212,175,55,.05));
+    border-color:rgba(212,175,55,.7);
+    color:#f5d98a;
+  }
+
+  /* Icon box */
+  .icon-box{
+    width:44px; height:44px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg, rgba(212,175,55,.18), rgba(212,175,55,.05));
+    border:1px solid rgba(212,175,55,.35);
+    color:#f5d98a;
+  }
+
+  /* Floating label */
+  .float-label{ position:relative; }
+  .float-label label{
+    position:absolute; right:16px; top:14px;
+    color:rgba(233,236,245,.55);
+    pointer-events:none; transition:all .2s ease;
+    background:transparent; padding:0 6px;
+    font-size:14px;
+  }
+  .float-label .field:focus + label,
+  .float-label .field:not(:placeholder-shown) + label{
+    top:-8px; font-size:12px; color:#f5d98a;
+    background:#0a1535;
+  }
+
+  /* Nav top bar */
+  .topbar{
+    background:linear-gradient(180deg, rgba(10,21,53,.85), rgba(10,21,53,.4));
+    border-bottom:1px solid rgba(212,175,55,.18);
+    backdrop-filter: blur(14px);
+  }
+
+  /* Marquee for note */
+  .marquee{
+    display:flex; gap:40px; animation:marquee 30s linear infinite;
+    white-space:nowrap;
+  }
+  @keyframes marquee{ from{transform:translateX(100%);} to{transform:translateX(-100%);} }
+
+  /* Focus ring */
+  button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+    outline:2px solid rgba(212,175,55,.6);
+    outline-offset:2px;
+  }
+
+  /* Small helpers */
+  .chip{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 10px; border-radius:999px;
+    background:rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.08);
+    font-size:12px; color:#b8c0d6;
+  }
+
+  /* Print hide */
+  @media print{ .no-print{ display:none !important; } }
+</style>
+</head>
+<body class="font-arabic">
+
+<div class="aurora"></div>
+<div class="grid-overlay"></div>
+
+<!-- ======================= TOP BAR (hidden until teacher login) ======================= -->
+<header id="topbar" class="topbar fixed top-0 inset-x-0 z-40 hidden-el no-print">
+  <div class="max-w-[1400px] mx-auto px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="logo-mark">
+        <i data-lucide="shield-check" class="w-7 h-7"></i>
+      </div>
+      <div class="leading-tight">
+        <div class="font-display text-lg gold-grad font-bold">AL-AMIRAT • EXAM COMMAND</div>
+        <div class="text-[11px] text-slate-400 tracking-widest">PREMIUM SMART EXAMINATION PLATFORM</div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="chip"><span class="pulse-dot"></span> <span id="connStatus">متصل</span></div>
+      <div class="chip"><i data-lucide="clock" class="w-3.5 h-3.5"></i> <span id="liveClock">--:--:--</span></div>
+      <button id="logoutBtn" class="btn-ghost px-4 py-2 rounded-xl text-sm flex items-center gap-2 ripple">
+        <i data-lucide="log-out" class="w-4 h-4"></i> خروج آمن
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ======================= LANDING / LOGIN ======================= -->
+<section id="viewLanding" class="min-h-screen flex items-center justify-center px-4 py-10">
+  <div class="w-full max-w-6xl grid lg:grid-cols-2 gap-8 items-center">
+    <!-- Left: Branding -->
+    <div class="fade-in">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="logo-mark"><i data-lucide="graduation-cap" class="w-7 h-7"></i></div>
+        <div>
+          <div class="font-display text-2xl gold-grad font-bold">AL-AMIRAT | EXAM SYSTEM</div>
+          <div class="text-xs text-slate-400 tracking-[.3em]">PREMIUM • SECURE • ELEGANT</div>
+        </div>
+      </div>
+
+      <h1 class="font-display text-4xl md:text-5xl font-bold leading-tight mb-4">
+        <span class="gold-grad">اختبارات التربية الإسلامية</span>
+      </h1>
+      <p class="text-slate-300 text-lg mb-6">متوسطة الأميرات — منصة الاختبارات الإلكترونية الفاخرة، مصممة بأعلى معايير الأمان والرقي الإداري.</p>
+
+      <div class="grid grid-cols-3 gap-3 mb-6">
+        <div class="glass rounded-2xl p-4 text-center">
+          <div class="icon-box mx-auto mb-2"><i data-lucide="school" class="w-5 h-5"></i></div>
+          <div class="text-xs text-slate-400">الصف</div>
+          <div class="font-bold gold-text">الثاني متوسط</div>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center">
+          <div class="icon-box mx-auto mb-2"><i data-lucide="book-open" class="w-5 h-5"></i></div>
+          <div class="text-xs text-slate-400">المادة</div>
+          <div class="font-bold gold-text">التربية الإسلامية</div>
+        </div>
+        <div class="glass rounded-2xl p-4 text-center">
+          <div class="icon-box mx-auto mb-2"><i data-lucide="timer" class="w-5 h-5"></i></div>
+          <div class="text-xs text-slate-400">المدة</div>
+          <div class="font-bold gold-text" id="landingDuration">ساعة واحدة</div>
+        </div>
+      </div>
+
+      <!-- Note marquee -->
+      <div id="noteBanner" class="glass rounded-2xl p-4 hidden-el">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="icon-box"><i data-lucide="megaphone" class="w-5 h-5"></i></div>
+          <div class="font-bold gold-text">إعلان الأستاذة</div>
+        </div>
+        <div class="overflow-hidden"><div id="noteText" class="marquee text-slate-200"></div></div>
+      </div>
+    </div>
+
+    <!-- Right: Login Card -->
+    <div class="slide-up">
+      <div class="glass-strong rounded-3xl p-8 relative overflow-hidden">
+        <div class="absolute -top-16 -left-16 w-56 h-56 rounded-full bg-gradient-to-br from-yellow-500/20 to-transparent blur-2xl"></div>
+        <div class="absolute -bottom-20 -right-20 w-64 h-64 rounded-full bg-gradient-to-br from-indigo-500/20 to-transparent blur-2xl"></div>
+
+        <div class="relative">
+          <div class="flex items-center gap-3 mb-2">
+            <div class="icon-box"><i data-lucide="user-check" class="w-5 h-5"></i></div>
+            <div>
+              <div class="text-xs tracking-[.3em] text-slate-400">STUDENT GATE</div>
+              <div class="font-display text-2xl font-bold gold-grad">بوابة دخول الطالبة</div>
+            </div>
+          </div>
+          <p class="text-slate-300 text-sm mb-6 leading-relaxed">
+            أدخلي اسمك الثلاثي كما هو مسجل لدى الأستاذة للبدء في الاختبار بأمان.
+          </p>
+
+          <div class="float-label mb-5">
+            <input id="studentName" type="text" class="field" placeholder=" " autocomplete="off" />
+            <label>الاسم الثلاثي الكامل</label>
+          </div>
+
+          <button id="startExamBtn" class="btn-gold w-full py-4 rounded-2xl flex items-center justify-center gap-3 ripple">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+            تحقق آمن وبدء الاختبار
+          </button>
+
+          <div class="mt-5 p-4 rounded-2xl bg-white/5 border border-white/10 text-xs text-slate-400 flex items-start gap-3">
+            <i data-lucide="info" class="w-4 h-4 mt-0.5 text-yellow-400"></i>
+            <span>تسجيل الدخول الحالي يعتمد على الاسم ومعرّف متصفح عشوائي لتجربة سلسة وآمنة.</span>
+          </div>
+
+          <div id="closedBanner" class="hidden-el mt-5 p-5 rounded-2xl border border-red-500/30 bg-red-500/10 text-center">
+            <div class="flex items-center justify-center gap-2 text-red-300 font-bold mb-1">
+              <i data-lucide="lock" class="w-5 h-5"></i> الاختبار مغلق حالياً
+            </div>
+            <div class="text-sm text-red-200/80">يرجى مراجعة الأستاذة.</div>
+          </div>
+
+          <div class="divider-gold my-6"></div>
+
+          <button id="openTeacherBtn" class="btn-ghost w-full py-3 rounded-2xl flex items-center justify-center gap-3 ripple">
+            <i data-lucide="lock-keyhole" class="w-5 h-5"></i>
+            دخول الأستاذة
+          </button>
+        </div>
+      </div>
+
+      <div class="text-center mt-6 text-xs text-slate-500">
+        نظام اختبارات آمن ومشفّر • متوسطة الأميرات للبنات
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TEACHER LOGIN ======================= -->
+<section id="viewTeacherLogin" class="min-h-screen flex items-center justify-center px-4 hidden-el">
+  <div class="w-full max-w-lg slide-up">
+    <div class="glass-strong rounded-3xl p-8 relative overflow-hidden">
+      <div class="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-gradient-to-br from-yellow-500/20 to-transparent blur-3xl"></div>
+      <div class="relative">
+        <div class="flex items-center gap-3 mb-2">
+          <div class="icon-box"><i data-lucide="shield-alert" class="w-5 h-5"></i></div>
+          <div>
+            <div class="text-xs tracking-[.3em] text-slate-400">TEACHER SECURE ACCESS</div>
+            <div class="font-display text-2xl font-bold gold-grad">لوحة التحكم الإدارية</div>
+          </div>
+        </div>
+
+        <div class="float-label mt-6 mb-5">
+          <input id="teacherPass" type="password" class="field" placeholder=" " />
+          <label>كلمة مرور الأستاذة</label>
+        </div>
+
+        <button id="teacherLoginBtn" class="btn-gold w-full py-4 rounded-2xl flex items-center justify-center gap-3 ripple">
+          <i data-lucide="unlock" class="w-5 h-5"></i> فتح لوحة التحكم
+        </button>
+
+        <button id="backToStudentBtn" class="btn-ghost w-full mt-3 py-3 rounded-2xl flex items-center justify-center gap-3 ripple">
+          <i data-lucide="arrow-right" class="w-4 h-4"></i> عودة لبوابة الطالبات
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= EXAM VIEW ======================= -->
+<section id="viewExam" class="min-h-screen pt-24 pb-10 px-4 hidden-el">
+  <div class="max-w-5xl mx-auto">
+    <div class="grid lg:grid-cols-3 gap-6">
+      <!-- Timer & progress -->
+      <aside class="lg:col-span-1">
+        <div class="glass-strong rounded-3xl p-6 sticky top-24">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="icon-box"><i data-lucide="hourglass" class="w-5 h-5"></i></div>
+            <div>
+              <div class="text-xs text-slate-400">الطالبة</div>
+              <div id="examStudentName" class="font-bold gold-text">—</div>
+            </div>
+          </div>
+
+          <div class="flex justify-center mb-5">
+            <div class="timer-ring" id="timerRing" style="--p:100">
+              <div class="inner">
+                <div class="text-xs text-slate-400">الوقت المتبقي</div>
+                <div id="examTimer" class="font-display text-3xl font-bold gold-grad mt-1">01:00:00</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="stat !p-4">
+              <div class="text-xs text-slate-400">السؤال الحالي</div>
+              <div class="font-display text-2xl font-bold gold-text"><span id="examCurrentQ">1</span> / <span id="examTotalQ">0</span></div>
+            </div>
+            <div class="stat !p-4">
+              <div class="text-xs text-slate-400">إجابتك</div>
+              <div class="font-display text-2xl font-bold gold-text" id="examAnswerState">—</div>
+            </div>
+          </div>
+
+          <div class="text-xs text-slate-400 flex items-center gap-2 mb-3">
+            <i data-lucide="clock" class="w-4 h-4"></i> وقت السؤال: <span id="qTimer" class="gold-text font-bold">00:00</span>
+          </div>
+
+          <button id="submitAnswerBtn" class="btn-gold w-full py-3 rounded-2xl flex items-center justify-center gap-2 ripple">
+            <i data-lucide="check-circle-2" class="w-5 h-5"></i> اعتماد الإجابة والانتقال
+          </button>
+
+          <div class="divider-gold my-5"></div>
+
+          <button id="openChatBtn" class="btn-ghost w-full py-3 rounded-2xl flex items-center justify-center gap-2 ripple">
+            <i data-lucide="message-circle" class="w-5 h-5"></i> التواصل مع الأستاذة
+          </button>
+        </div>
+      </aside>
+
+      <!-- Question -->
+      <main class="lg:col-span-2">
+        <div class="glass-strong rounded-3xl p-8">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="badge"><i data-lucide="hash" class="w-3.5 h-3.5"></i> السؤال <span id="qIndexBadge">1</span></div>
+            <div class="badge blue"><i data-lucide="star" class="w-3.5 h-3.5"></i> التربية الإسلامية</div>
+          </div>
+
+          <div id="questionBody" class="font-display text-2xl leading-relaxed mb-6 gold-text">
+            جاري تحميل السؤال...
+          </div>
+
+          <div class="float-label">
+            <textarea id="answerInput" class="field min-h-[160px]" placeholder=" "></textarea>
+            <label>إجابتك</label>
+          </div>
+
+          <div class="flex items-center justify-between mt-5 text-xs text-slate-400">
+            <div class="flex items-center gap-2"><i data-lucide="shield" class="w-4 h-4"></i> إجابة مؤمنة ومشفرة</div>
+            <div id="pasteWarning" class="hidden-el text-red-300 flex items-center gap-1"><i data-lucide="alert-triangle" class="w-4 h-4"></i> تم رصد محاولة لصق</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= EXAM DONE ======================= -->
+<section id="viewDone" class="min-h-screen flex items-center justify-center px-4 hidden-el">
+  <div class="max-w-xl w-full glass-strong rounded-3xl p-10 text-center slide-up">
+    <div class="logo-mark mx-auto mb-5" style="width:80px;height:80px;border-radius:24px;">
+      <i data-lucide="check-circle-2" class="w-10 h-10"></i>
+    </div>
+    <h2 class="font-display text-3xl font-bold gold-grad mb-2">اكتمل الاختبار</h2>
+    <p class="text-slate-300 mb-6">تم حفظ إجاباتك بنجاح.</p>
+
+    <button id="doneChatBtn" class="btn-gold w-full py-3 rounded-2xl flex items-center justify-center gap-2 ripple">
+      <i data-lucide="message-circle" class="w-5 h-5"></i> التواصل مع الأستاذة
+    </button>
+  </div>
+</section>
+
+<!-- ======================= CHAT MODAL ======================= -->
+<div id="chatModal" class="modal-backdrop hidden-el">
+  <div class="glass-strong rounded-3xl p-8 w-full max-w-lg relative">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="icon-box"><i data-lucide="message-circle" class="w-5 h-5"></i></div>
+      <div>
+        <div class="text-xs text-slate-400 tracking-widest">SECURE MESSAGE</div>
+        <div class="font-display text-xl font-bold gold-grad">التواصل مع الأستاذة</div>
+      </div>
+      <button class="mr-auto btn-ghost w-10 h-10 rounded-xl flex items-center justify-center" onclick="document.getElementById('chatModal').classList.add('hidden-el')">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <p class="text-sm text-slate-300 mb-4">اكتبي رسالتك وستصل إلى لوحة الأستاذة مع رمزك ووقت الإرسال بشكل آمن.</p>
+    <textarea id="chatText" class="field min-h-[120px] mb-4" placeholder="نص الرسالة..."></textarea>
+    <button id="sendChatBtn" class="btn-gold w-full py-3 rounded-2xl flex items-center justify-center gap-2 ripple">
+      <i data-lucide="send" class="w-5 h-5"></i> إرسال الرسالة
+    </button>
+  </div>
+</div>
+
+<!-- ======================= TEACHER DASHBOARD ======================= -->
+<section id="viewDashboard" class="pt-24 pb-16 px-4 hidden-el">
+  <div class="max-w-[1400px] mx-auto">
+
+    <!-- Header -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="flex items-center gap-3">
+        <div class="logo-mark"><i data-lucide="layout-dashboard" class="w-7 h-7"></i></div>
+        <div>
+          <div class="text-xs tracking-[.3em] text-slate-400">TEACHER COMMAND CENTER</div>
+          <div class="font-display text-2xl font-bold gold-grad">مركز إدارة الاختبار</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <div class="chip"><span class="pulse-dot"></span> النظام يعمل</div>
+        <div class="chip"><i data-lucide="database" class="w-3.5 h-3.5"></i> Supabase</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="users" class="w-5 h-5"></i></div>
+          <span class="badge green">نشط</span>
+        </div>
+        <div class="text-xs text-slate-400">جميع الطالبات</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statStudents">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">إجمالي المسجلات</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="activity" class="w-5 h-5"></i></div>
+          <span class="badge blue">مباشر</span>
+        </div>
+        <div class="text-xs text-slate-400">نشاطات الآن</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statActive">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">آخر تفاعل خلال دقيقتين</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="file-check-2" class="w-5 h-5"></i></div>
+          <span class="badge">مكتمل</span>
+        </div>
+        <div class="text-xs text-slate-400">مكتملات</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statCompleted">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">اختبارات مكتملة</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="message-square" class="w-5 h-5"></i></div>
+          <span class="badge">محفوظ</span>
+        </div>
+        <div class="text-xs text-slate-400">الإجابات</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statAnswers">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">إجابات محفوظة</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="layers" class="w-5 h-5"></i></div>
+          <span class="badge">جلسات</span>
+        </div>
+        <div class="text-xs text-slate-400">جلسات نشطة</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statSessions">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">جلسات جارية</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="help-circle" class="w-5 h-5"></i></div>
+          <span class="badge">مسجلة</span>
+        </div>
+        <div class="text-xs text-slate-400">الأسئلة</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statQuestions">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">الأسئلة المسجلة</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="ban" class="w-5 h-5"></i></div>
+          <span class="badge red">محظور</span>
+        </div>
+        <div class="text-xs text-slate-400">المحظورات</div>
+        <div class="font-display text-3xl font-bold gold-text" id="statBlocked">0</div>
+        <div class="text-[11px] text-slate-500 mt-1">حسابات محظورة</div>
+      </div>
+      <div class="stat">
+        <div class="flex items-center justify-between mb-2">
+          <div class="icon-box"><i data-lucide="hard-drive" class="w-5 h-5"></i></div>
+          <span class="badge">تخزين</span>
+        </div>
+        <div class="text-xs text-slate-400">الحجم التقريبي</div>
+        <div class="font-display text-2xl font-bold gold-text" id="statStorage">—</div>
+        <div class="text-[11px] text-slate-500 mt-1">تقديري من البيانات</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="glass rounded-3xl p-3 mb-6 overflow-x-auto">
+      <div class="flex items-center gap-2 min-w-max">
+        <button class="tab active" data-tab="students"><i data-lucide="users" class="w-4 h-4"></i> الطالبات</button>
+        <button class="tab" data-tab="sessions"><i data-lucide="calendar-check" class="w-4 h-4"></i> المشاركات</button>
+        <button class="tab" data-tab="answers"><i data-lucide="file-text" class="w-4 h-4"></i> الإجابات</button>
+        <button class="tab" data-tab="questions"><i data-lucide="help-circle" class="w-4 h-4"></i> الأسئلة</button>
+        <button class="tab" data-tab="control"><i data-lucide="settings-2" class="w-4 h-4"></i> التحكم</button>
+        <button class="tab" data-tab="security"><i data-lucide="shield-check" class="w-4 h-4"></i> الأمان</button>
+        <button class="tab" data-tab="antifraud"><i data-lucide="shield-alert" class="w-4 h-4"></i> مكافحة الغش</button>
+        <button class="tab" data-tab="messages"><i data-lucide="mail" class="w-4 h-4"></i> الرسائل</button>
+        <button class="tab" data-tab="notes"><i data-lucide="sticky-note" class="w-4 h-4"></i> الملاحظات</button>
+        <button class="tab" data-tab="reports"><i data-lucide="bar-chart-3" class="w-4 h-4"></i> التقارير</button>
+        <button class="tab" data-tab="storage"><i data-lucide="database" class="w-4 h-4"></i> التخزين</button>
+      </div>
+    </div>
+
+    <!-- Tab content -->
+    <div id="tabContent">
+
+      <!-- STUDENTS -->
+      <div class="tab-panel" data-panel="students">
+        <div class="glass-strong rounded-3xl p-6 mb-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="user-plus" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">سجل الطالبات</div>
+              <div class="text-xs text-slate-400">إضافة اسم طالبة إلى السجل مسبقاً</div>
+            </div>
+            <button id="refreshStudentsBtn" class="mr-auto btn-ghost px-4 py-2 rounded-xl text-sm flex items-center gap-2 ripple">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> تحديث
+            </button>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <input id="newStudentName" class="field flex-1 min-w-[240px]" placeholder="الاسم الثلاثي" />
+            <button id="addStudentBtn" class="btn-gold px-5 py-3 rounded-xl flex items-center gap-2 ripple">
+              <i data-lucide="plus" class="w-4 h-4"></i> إضافة الطالبة
+            </button>
+          </div>
+          <div class="text-xs text-slate-400 mt-3 flex items-start gap-2">
+            <i data-lucide="info" class="w-4 h-4 mt-0.5 text-yellow-400"></i>
+            يمكن للطالبة المسجلة مسبقاً بدء الاختبار بكتابة الاسم نفسه، ما دامت لم تبدأ محاولة سابقة.
+          </div>
+        </div>
+
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center justify-between mb-4">
+            <div class="font-display text-lg font-bold gold-grad">قائمة الطالبات المسجلات</div>
+            <div class="text-xs text-slate-400">الإجمالي: <span id="studentsCount" class="gold-text font-bold">0</span></div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>#</th><th>الاسم الثلاثي</th><th>تاريخ التسجيل</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <tbody id="studentsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SESSIONS -->
+      <div class="tab-panel hidden-el" data-panel="sessions">
+        <div class="glass-strong rounded-3xl p-6 mb-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="calendar-plus" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">مشاركات الطالبات وسجل الاختبارات</div>
+              <div class="text-xs text-slate-400">أنشئي دورة لكل اختبار قبل فتح الدخول؛ سيُسجّل النظام الحاضرات تلقائياً.</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-3 mb-5">
+            <div class="stat !p-4"><div class="text-xs text-slate-400">إجمالي الطالبات</div><div class="font-display text-2xl font-bold gold-text" id="sessStudents">0</div></div>
+            <div class="stat !p-4"><div class="text-xs text-slate-400">إجمالي المشاركات</div><div class="font-display text-2xl font-bold gold-text" id="sessParticipations">0</div></div>
+            <div class="stat !p-4"><div class="text-xs text-slate-400">الاختبارات المسجلة</div><div class="font-display text-2xl font-bold gold-text" id="sessExams">0</div></div>
+          </div>
+
+          <div class="divider-gold my-5"></div>
+
+          <div class="font-bold gold-text mb-3">إنشاء اختبار / دورة مشاركة جديدة</div>
+          <div class="grid md:grid-cols-3 gap-3">
+            <input id="newExamTitle" class="field" placeholder="عنوان الاختبار" />
+            <input id="newExamDate" type="date" class="field" />
+            <input id="newExamGrade" type="number" class="field" placeholder="درجة الاختبار" />
+          </div>
+          <button id="createExamBtn" class="btn-gold mt-4 px-5 py-3 rounded-xl flex items-center gap-2 ripple">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i> إنشاء الدورة وتسجيل قائمة الطالبات
+          </button>
+
+          <div class="divider-gold my-5"></div>
+          <div class="font-bold gold-text mb-3">جدول درجات الطالبات</div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>الاختبار</th><th>الطالبة</th><th>التاريخ</th><th>الدرجة</th><th>الحالة</th></tr></thead>
+              <tbody id="gradesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANSWERS -->
+      <div class="tab-panel hidden-el" data-panel="answers">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="file-text" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">سجل الإجابات</div>
+              <div class="text-xs text-slate-400">جميع إجابات الطالبات مرتبة حسب الوقت</div>
+            </div>
+            <button id="refreshAnswersBtn" class="mr-auto btn-ghost px-4 py-2 rounded-xl text-sm flex items-center gap-2 ripple">
+              <i data-lucide="refresh-cw" class="w-4 h-4"></i> تحديث
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>الطالبة</th><th>السؤال</th><th>الإجابة</th><th>وقت السؤال</th><th>التاريخ</th></tr></thead>
+              <tbody id="answersTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUESTIONS -->
+      <div class="tab-panel hidden-el" data-panel="questions">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="help-circle" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">إدارة الأسئلة</div>
+              <div class="text-xs text-slate-400">إضافة وتعديل أسئلة الاختبار</div>
+            </div>
+            <button id="openAddQBtn" class="mr-auto btn-gold px-5 py-2 rounded-xl flex items-center gap-2 ripple">
+              <i data-lucide="plus" class="w-4 h-4"></i> إضافة سؤال
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>الترتيب</th><th>نص السؤال / الآية</th><th>المطلوب</th><th>إجراءات</th></tr></thead>
+              <tbody id="questionsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONTROL -->
+      <div class="tab-panel hidden-el" data-panel="control">
+        <div class="glass-strong rounded-3xl p-6 mb-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="settings-2" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">إعدادات الاختبار</div>
+              <div class="text-xs text-slate-400">تحديد المدة بالساعات والدقائق، مع حفظها في قاعدة البيانات بالدقائق.</div>
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-3">
+            <input id="setTitle" class="field" placeholder="عنوان الاختبار" />
+            <input id="setSchool" class="field" placeholder="اسم المدرسة" />
+            <input id="setGrade" class="field" placeholder="الصف" />
+            <input id="setSubject" class="field" placeholder="المادة" />
+            <input id="setDate" type="date" class="field" />
+            <div></div>
+            <input id="setOpenAt" type="datetime-local" class="field" placeholder="موعد فتح الاختبار" />
+            <input id="setCloseAt" type="datetime-local" class="field" placeholder="موعد إغلاق الاختبار" />
+          </div>
+          <div class="text-xs text-slate-400 mt-2">تُستخدم هذه المواعيد لإيقاف تسجيل الدخول تلقائياً.</div>
+
+          <div class="grid grid-cols-2 gap-3 mt-5">
+            <div>
+              <div class="text-sm mb-2 gold-text">الساعات</div>
+              <select id="setHours" class="field">
+                <option value="0">0 ساعة</option><option value="1" selected>ساعة واحدة</option>
+                <option value="2">ساعتان</option><option value="3">3 ساعات</option><option value="4">4 ساعات</option>
+              </select>
+            </div>
+            <div>
+              <div class="text-sm mb-2 gold-text">الدقائق</div>
+              <select id="setMinutes" class="field">
+                <option value="0" selected>0 دقيقة</option><option value="5">5 دقائق</option>
+                <option value="10">10 دقائق</option><option value="15">15 دقيقة</option>
+                <option value="30">30 دقيقة</option><option value="45">45 دقيقة</option>
+              </select>
+            </div>
+          </div>
+          <div class="text-xs text-slate-400 mt-2">المدة المحددة: <span id="durationLabel" class="gold-text font-bold">ساعة واحدة</span></div>
+
+          <div class="mt-4">
+            <input id="setMaxStudents" type="number" class="field" placeholder="العدد الأقصى للطالبات" />
+          </div>
+
+          <button id="saveSettingsBtn" class="btn-gold mt-5 px-6 py-3 rounded-xl flex items-center gap-2 ripple">
+            <i data-lucide="save" class="w-4 h-4"></i> حفظ الإعدادات
+          </button>
+        </div>
+
+        <div class="glass-strong rounded-3xl p-6 mb-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="door-open" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">بوابة دخول الطالبات</div>
+              <div class="text-xs text-slate-400">التحكم بفتح وإغلاق بوابة الدخول</div>
+            </div>
+          </div>
+          <textarea id="closeMsg" class="field min-h-[80px] mb-3" placeholder="رسالة الإغلاق"></textarea>
+          <div class="flex gap-2">
+            <button id="openGateBtn" class="btn-gold px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="unlock" class="w-4 h-4"></i> فتح الدخول</button>
+            <button id="closeGateBtn" class="btn-danger px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="lock" class="w-4 h-4"></i> إيقاف الدخول</button>
+          </div>
+        </div>
+
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="megaphone" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">ملاحظة أعلى الموقع</div>
+              <div class="text-xs text-slate-400">إعلان يظهر للطالبات</div>
+            </div>
+          </div>
+          <textarea id="siteNote" class="field min-h-[80px] mb-3" placeholder="نص الملاحظة"></textarea>
+          <button id="saveNoteBtn" class="btn-gold px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="save" class="w-4 h-4"></i> حفظ الملاحظة</button>
+        </div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="tab-panel hidden-el" data-panel="security">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">سجل الأمان والتحقق من الأجهزة</div>
+              <div class="text-xs text-slate-400">تُسجّل محاولات الدخول والأجهزة والجلسات والتغييرات الأمنية.</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-sm text-slate-300 mb-5 flex items-start gap-3">
+            <i data-lucide="info" class="w-4 h-4 mt-0.5 text-yellow-400"></i>
+            الوضع الصارم الحالي يتحقق من وجود معرّف متصفح فقط، ولا يُعدّ بصمة حيوية أو تحقق WebAuthn.
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-3 mb-4">
+            <button id="enableStrictBtn" class="btn-gold py-3 rounded-xl flex items-center justify-center gap-2 ripple"><i data-lucide="shield-alert" class="w-4 h-4"></i> تفعيل التحقق الصارم</button>
+            <button id="disableStrictBtn" class="btn-ghost py-3 rounded-xl flex items-center justify-center gap-2 ripple"><i data-lucide="shield-off" class="w-4 h-4"></i> إيقاف التحقق الصارم</button>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <select id="strictStudentSel" class="field flex-1 min-w-[240px]"><option>اختاري طالبة</option></select>
+            <button class="btn-gold px-5 py-3 rounded-xl ripple" onclick="toggleStrictForStudent(true)">تفعيل للطالبة</button>
+            <button class="btn-ghost px-5 py-3 rounded-xl ripple" onclick="toggleStrictForStudent(false)">إيقاف للطالبة</button>
+          </div>
+
+          <div class="divider-gold my-5"></div>
+          <div class="font-bold gold-text mb-3">سجل الأحداث الأمنية</div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>الوقت</th><th>الحدث</th><th>الطالبة</th><th>الجهاز</th></tr></thead>
+              <tbody id="securityLogTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ANTI FRAUD -->
+      <div class="tab-panel hidden-el" data-panel="antifraud">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="shield-alert" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">مكافحة الغش واللصق</div>
+              <div class="text-xs text-slate-400">تسجيل محاولات اللصق في حقول الإجابة.</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-sm text-slate-300 mb-5">منع لصق النص في الإجابات</div>
+          <div class="flex gap-2 mb-4">
+            <button id="enablePasteBlockBtn" class="btn-gold px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="ban" class="w-4 h-4"></i> تفعيل المنع</button>
+            <button id="allowPasteBtn" class="btn-ghost px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="clipboard-paste" class="w-4 h-4"></i> السماح باللصق</button>
+          </div>
+          <div class="text-sm">حالة المنع: <span id="pasteBlockState" class="gold-text font-bold">غير معروفة</span></div>
+
+          <div class="divider-gold my-5"></div>
+          <div class="font-bold gold-text mb-3">سجل محاولات اللصق</div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>الوقت</th><th>الطالبة</th><th>السؤال</th><th>التفاصيل</th></tr></thead>
+              <tbody id="pasteLogTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="tab-panel hidden-el" data-panel="messages">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="mail" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">رسائل الطالبات</div>
+              <div class="text-xs text-slate-400">الرسائل المرسلة من الطالبات إلى الأستاذة</div>
+            </div>
+            <div class="mr-auto flex gap-2">
+              <button id="refreshMsgBtn" class="btn-ghost px-4 py-2 rounded-xl text-sm flex items-center gap-2 ripple"><i data-lucide="refresh-cw" class="w-4 h-4"></i> تحديث</button>
+              <button id="disableMsgBtn" class="btn-danger px-4 py-2 rounded-xl text-sm flex items-center gap-2 ripple"><i data-lucide="mail-x" class="w-4 h-4"></i> إيقاف الاستقبال</button>
+              <button id="enableMsgBtn" class="btn-gold px-4 py-2 rounded-xl text-sm flex items-center gap-2 ripple"><i data-lucide="mail-check" class="w-4 h-4"></i> تفعيل الاستقبال</button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="lux">
+              <thead><tr><th>الطالبة</th><th>الرسالة</th><th>الوقت</th><th>الحالة</th><th>إجراءات</th></tr></thead>
+              <tbody id="messagesTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="tab-panel hidden-el" data-panel="notes">
+        <div class="glass-strong rounded-3xl p-6 mb-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="sticky-note" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">ملاحظات الأستاذة</div>
+              <div class="text-xs text-slate-400">ملاحظات تظهر للطالبات في الواجهة</div>
+            </div>
+          </div>
+          <input id="noteTitle" class="field mb-3" placeholder="عنوان الملاحظة" />
+          <textarea id="noteBody" class="field min-h-[120px] mb-3" placeholder="نص الملاحظة"></textarea>
+          <label class="text-xs text-slate-400 block mb-2">إرفاق صورة للملاحظة (اختياري)</label>
+          <input id="noteImage" type="file" accept="image/*" class="field mb-2" />
+          <div class="text-[11px] text-slate-500 mb-3">الحد الأقصى 5MB • JPG / PNG / WEBP</div>
+          <input id="noteImageUrl" class="field mb-3" placeholder="رابط الصورة" />
+          <div class="flex gap-2">
+            <button id="saveNoteAdminBtn" class="btn-gold px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="save" class="w-4 h-4"></i> حفظ الملاحظة</button>
+            <button id="newNoteBtn" class="btn-ghost px-5 py-3 rounded-xl flex items-center gap-2 ripple"><i data-lucide="plus" class="w-4 h-4"></i> جديد</button>
+          </div>
+          <input id="noteSearch" class="field mt-4" placeholder="بحث (يدعم البحث بالحركات وبدونها)" />
+        </div>
+
+        <div id="notesList" class="grid md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- REPORTS -->
+      <div class="tab-panel hidden-el" data-panel="reports">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="bar-chart-3" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">تقارير الاختبار</div>
+              <div class="text-xs text-slate-400">تحميل تقارير شاملة بصيغة ZIP</div>
+            </div>
+            <button id="downloadReportsBtn" class="mr-auto btn-gold px-5 py-3 rounded-xl flex items-center gap-2 ripple">
+              <i data-lucide="download" class="w-4 h-4"></i> تحميل التقارير
+            </button>
+          </div>
+          <div id="reportsArea" class="text-sm text-slate-300">اختر تحميل التقارير لتوليد الملفات.</div>
+        </div>
+      </div>
+
+      <!-- STORAGE -->
+      <div class="tab-panel hidden-el" data-panel="storage">
+        <div class="glass-strong rounded-3xl p-6">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="icon-box"><i data-lucide="database" class="w-5 h-5"></i></div>
+            <div>
+              <div class="font-display text-xl font-bold gold-grad">إدارة تخزين ودورة الاختبار</div>
+              <div class="text-xs text-slate-400">مسح تسجيلات الطالبات وإجاباتهن لبدء اختبار جديد.</div>
+            </div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/5 border border-white/10 text-sm text-slate-300 mb-5">
+            عملية المسح يجب أن ينفذها الخادم داخل معاملة قاعدة بيانات. لن يحذف هذا الإجراء الأسئلة أو إعدادات الأستاذة.
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
+            <div class="stat !p-4"><div class="text-xs text-slate-400">الطالبات المسجلات</div><div class="font-display text-2xl font-bold gold-text" id="clearStudents">0</div></div>
+            <div class="stat !p-4"><div class="text-xs text-slate-400">الإجابات</div><div class="font-display text-2xl font-bold gold-text" id="clearAnswers">0</div></div>
+            <div class="stat !p-4"><div class="text-xs text-slate-400">الجلسات</div><div class="font-display text-2xl font-bold gold-text" id="clearSessions">0</div></div>
+            <div class="stat !p-4"><div class="text-xs text-slate-400">التقارير</div><div class="font-display text-2xl font-bold gold-text" id="clearReports">0</div></div>
+          </div>
+          <button id="clearCycleBtn" class="btn-danger px-6 py-3 rounded-xl flex items-center gap-2 ripple">
+            <i data-lucide="trash-2" class="w-4 h-4"></i> مسح بيانات الطالبات وبدء دورة جديدة
+          </button>
+          <div class="text-xs text-slate-500 mt-3">سيتم طلب تأكيدين قبل المسح.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-10 text-xs text-slate-500">
+      نظام اختبارات آمن ومشفّر • متوسطة الأميرات للبنات • منصة الاختبارات الإلكترونية الفاخرة
+    </div>
+  </div>
+</section>
+
+<!-- ======================= QUESTION MODAL ======================= -->
+<div id="questionModal" class="modal-backdrop hidden-el">
+  <div class="glass-strong rounded-3xl p-8 w-full max-w-xl relative">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="icon-box"><i data-lucide="help-circle" class="w-5 h-5"></i></div>
+      <div class="font-display text-xl font-bold gold-grad">إضافة سؤال</div>
+      <button class="mr-auto btn-ghost w-10 h-10 rounded-xl flex items-center justify-center" onclick="document.getElementById('questionModal').classList.add('hidden-el')">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <textarea id="qText" class="field min-h-[120px] mb-3" placeholder="نص الآية / السؤال"></textarea>
+    <textarea id="qRequired" class="field min-h-[80px] mb-3" placeholder="المطلوب من الطالبة"></textarea>
+    <input id="qOrder" type="number" class="field mb-4" placeholder="ترتيب السؤال" />
+    <button id="saveQuestionBtn" class="btn-gold w-full py-3 rounded-2xl flex items-center justify-center gap-2 ripple">
+      <i data-lucide="save" class="w-5 h-5"></i> حفظ السؤال
+    </button>
+  </div>
+</div>
+
+<!-- ======================= REPLY MODAL ======================= -->
+<div id="replyModal" class="modal-backdrop hidden-el">
+  <div class="glass-strong rounded-3xl p-8 w-full max-w-xl relative">
+    <div class="flex items-center gap-3 mb-4">
+      <div class="icon-box"><i data-lucide="reply" class="w-5 h-5"></i></div>
+      <div class="font-display text-xl font-bold gold-grad">الرد على رسالة</div>
+      <button class="mr-auto btn-ghost w-10 h-10 rounded-xl flex items-center justify-center" onclick="document.getElementById('replyModal').classList.add('hidden-el')">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div id="replyOriginal" class="p-4 rounded-2xl bg-white/5 border border-white/10 text-sm text-slate-300 mb-3"></div>
+    <textarea id="replyText" class="field min-h-[120px] mb-3" placeholder="الرد"></textarea>
+    <button id="sendReplyBtn" class="btn-gold w-full py-3 rounded-2xl flex items-center justify-center gap-2 ripple">
+      <i data-lucide="send" class="w-5 h-5"></i> إرسال الرد
+    </button>
+  </div>
+</div>
+
+<!-- ======================= STUDENT DETAILS MODAL ======================= -->
+<div id="detailsModal" class="modal-backdrop hidden-el">
+  <div class="glass-strong rounded-3xl p-8 w-full max-w-2xl relative max-h-[85vh] overflow-y-auto">
+    <div class="flex items-center gap-3 mb-4 sticky top-0 bg-[#0a1535]/90 backdrop-blur pb-3 -mx-2 px-2">
+      <div class="icon-box"><i data-lucide="user" class="w-5 h-5"></i></div>
+      <div class="font-display text-xl font-bold gold-grad">تفاصيل الطالبة</div>
+      <button class="mr-auto btn-ghost w-10 h-10 rounded-xl flex items-center justify-center" onclick="document.getElementById('detailsModal').classList.add('hidden-el')">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div id="detailsBody"></div>
+  </div>
+</div>
+
+<!-- ======================= TOAST ======================= -->
+<div id="toast" class="toast hidden-el"></div>
+
+<script>
+/* ============================================================
+   🔐 SUPABASE CREDENTIALS — DO NOT REMOVE
+   ============================================================ */
+const SUPABASE_URL  = "PUT_YOUR_SUPABASE_URL_HERE";
+const SUPABASE_KEY  = "PUT_YOUR_SUPABASE_ANON_KEY_HERE";
+const TEACHER_PASSWORD = "PUT_YOUR_TEACHER_PASSWORD_HERE";
+
+/* ============================================================ */
+let supabase = null;
+try {
+  if (SUPABASE_URL && SUPABASE_KEY && !SUPABASE_URL.startsWith("PUT_")) {
+    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  }
+} catch(e){ console.warn("Supabase init failed", e); }
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+const $ = (s, p=document) => p.querySelector(s);
+const $$ = (s, p=document) => [...p.querySelectorAll(s)];
+const showToast = (msg, ms=2600) => {
+  const t = $("#toast"); t.textContent = msg; t.classList.remove("hidden-el");
+  clearTimeout(t._h); t._h = setTimeout(()=>t.classList.add("hidden-el"), ms);
+};
+const fmtTime = (s) => {
+  s = Math.max(0, Math.floor(s||0));
+  const h = String(Math.floor(s/3600)).padStart(2,"0");
+  const m = String(Math.floor((s%3600)/60)).padStart(2,"0");
+  const sec = String(s%60).padStart(2,"0");
+  return `${h}:${m}:${sec}`;
+};
+const nowISO = () => new Date().toISOString();
+const uid = () => Math.random().toString(36).slice(2) + Date.now().toString(36);
+const getDeviceId = () => {
+  let id = localStorage.getItem("amirat_device_id");
+  if(!id){ id = "dev_"+uid(); localStorage.setItem("amirat_device_id", id); }
+  return id;
+};
+const normalizeArabic = (s) => (s||"").replace(/[\u064B-\u065F\u0670]/g,"").replace(/[إأآا]/g,"ا").replace(/ي|ى/g,"ي").replace(/ة/g,"ه").trim();
+const rippleBind = () => {
+  $$(".ripple").forEach(el => {
+    if(el.dataset.rippleBound) return;
+    el.dataset.rippleBound = "1";
+    el.addEventListener("click", (e) => {
+      const r = el.getBoundingClientRect();
+      const w = document.createElement("span");
+      const size = Math.max(r.width, r.height);
+      w.className = "ripple-wave";
+      w.style.width = w.style.height = size+"px";
+      w.style.left = (e.clientX - r.left - size/2) + "px";
+      w.style.top = (e.clientY - r.top - size/2) + "px";
+      el.appendChild(w);
+      setTimeout(()=>w.remove(), 700);
+    });
+  });
+};
+
+/* ============================================================
+   VIEW SWITCHER
+   ============================================================ */
+const views = ["viewLanding","viewTeacherLogin","viewExam","viewDone","viewDashboard"];
+function showView(id){
+  views.forEach(v => $("#"+v).classList.add("hidden-el"));
+  $("#"+id).classList.remove("hidden-el");
+  $("#topbar").classList.toggle("hidden-el", id !== "viewDashboard");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+/* ============================================================
+   LIVE CLOCK
+   ============================================================ */
+setInterval(()=>{
+  const d = new Date();
+  const p = n => String(n).padStart(2,"0");
+  const el = $("#liveClock"); if(el) el.textContent = `${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+},1000);
+
+/* ============================================================
+   TABS
+   ============================================================ */
+$$(".tab").forEach(t => t.addEventListener("click", () => {
+  $$(".tab").forEach(x => x.classList.remove("active"));
+  t.classList.add("active");
+  const key = t.dataset.tab;
+  $$(".tab-panel").forEach(p => p.classList.add("hidden-el"));
+  $(`.tab-panel[data-panel="${key}"]`).classList.remove("hidden-el");
+}));
+
+/* ============================================================
+   SETTINGS DURATION LABEL
+   ============================================================ */
+function updateDurationLabel(){
+  const h = parseInt($("#setHours").value||"0",10);
+  const m = parseInt($("#setMinutes").value||"0",10);
+  const parts = [];
+  if(h===1) parts.push("ساعة واحدة"); else if(h>1) parts.push(h+" ساعات");
+  if(m>0) parts.push(m+" دقيقة");
+  const label = parts.join(" و ") || "بدون مدة";
+  $("#durationLabel").textContent = label;
+  $("#landingDuration").textContent = label;
+}
+["setHours","setMinutes"].forEach(id => $("#"+id).addEventListener("change", updateDurationLabel));
+updateDurationLabel();
+
+/* ============================================================
+   TEACHER LOGIN
+   ============================================================ */
+$("#openTeacherBtn").addEventListener("click", () => showView("viewTeacherLogin"));
+$("#backToStudentBtn").addEventListener("click", () => showView("viewLanding"));
+$("#logoutBtn").addEventListener("click", () => {
+  if(confirm("هل تريدين الخروج الآمن من لوحة التحكم؟")){
+    showView("viewLanding");
+    showToast("تم الخروج الآمن");
+  }
+});
+
+$("#teacherLoginBtn").addEventListener("click", () => {
+  const v = $("#teacherPass").value;
+  if(!v){ showToast("أدخلي كلمة المرور"); return; }
+  if(v === TEACHER_PASSWORD || TEACHER_PASSWORD.startsWith("PUT_")){
+    showView("viewDashboard");
+    showToast("مرحباً أستاذة 👑");
+    loadDashboard();
+  } else {
+    showToast("كلمة المرور غير صحيحة");
+  }
+});
+
+/* ============================================================
+   STUDENT LOGIN
+   ============================================================ */
+$("#startExamBtn").addEventListener("click", async () => {
+  const name = $("#studentName").value.trim();
+  if(name.length < 5){ showToast("الاسم الثلاثي غير مكتمل"); return; }
+  // TODO: check gate open + registered + no previous attempt via Supabase
+  currentStudent = { name, device: getDeviceId(), startedAt: nowISO() };
+  $("#examStudentName").textContent = name;
+  showView("viewExam");
+  startExamTimer();
+  loadQuestionsForStudent();
+});
+
+/* ============================================================
+   EXAM TIMER
+   ============================================================ */
+let examSecondsLeft = 3600;
+let examTimerHandle = null;
+let qSeconds = 0;
+let qTimerHandle = null;
+
+function startExamTimer(){
+  const h = parseInt($("#setHours").value||"1",10);
+  const m = parseInt($("#setMinutes").value||"0",10);
+  examSecondsLeft = h*3600 + m*60;
+  updateTimerUI();
+  clearInterval(examTimerHandle);
+  examTimerHandle = setInterval(() => {
+    examSecondsLeft--;
+    updateTimerUI();
+    if(examSecondsLeft <= 0){
+      clearInterval(examTimerHandle);
+      finishExam();
+    }
+  }, 1000);
+
+  clearInterval(qTimerHandle);
+  qSeconds = 0;
+  qTimerHandle = setInterval(() => {
+    qSeconds++;
+    $("#qTimer").textContent = fmtTime(qSeconds);
+  }, 1000);
+}
+function updateTimerUI(){
+  $("#examTimer").textContent = fmtTime(examSecondsLeft);
+  const total = (parseInt($("#setHours").value||"1",10))*3600 + (parseInt($("#setMinutes").value||"0",10))*60;
+  const p = Math.max(0, Math.min(100, (examSecondsLeft/total)*100));
+  $("#timerRing").style.setProperty("--p", p.toFixed(2));
+}
+function finishExam(){
+  clearInterval(examTimerHandle);
+  clearInterval(qTimerHandle);
+  showView("viewDone");
+}
+
+/* ============================================================
+   QUESTIONS (student side)
+   ============================================================ */
+let studentQuestions = [];
+let currentQIndex = 0;
+
+async function loadQuestionsForStudent(){
+  // TODO: fetch from supabase: questions table ordered by order
+  studentQuestions = [
+    { id:1, order:1, text:"﴿ وَمَا أَرْسَلْنَاكَ إِلَّا رَحْمَةً لِّلْعَالَمِينَ ﴾ — استخرجي من الآية الكريمة حكمة من حكم تشريع القرآن الكريم.", required:"استخراج الحكمة" },
+    { id:2, order:2, text:"عرّفي مفهوم البرّ في الإسلام، واذكري ثلاثة من مظاهره مع الوالدين.", required:"التعريف + 3 مظاهر" }
+  ];
+  $("#examTotalQ").textContent = studentQuestions.length;
+  renderCurrentQuestion();
+}
+function renderCurrentQuestion(){
+  const q = studentQuestions[currentQIndex];
+  if(!q){ $("#questionBody").textContent = "لا توجد أسئلة"; return; }
+  $("#questionBody").textContent = q.text;
+  $("#qIndexBadge").textContent = q.order;
+  $("#examCurrentQ").textContent = currentQIndex+1;
+  $("#answerInput").value = "";
+  $("#examAnswerState").textContent = "—";
+  qSeconds = 0; $("#qTimer").textContent = "00:00";
+}
+
+$("#submitAnswerBtn").addEventListener("click", () => {
+  const ans = $("#answerInput").value.trim();
+  if(!ans){ showToast("اكتبي إجابتك أولاً"); return; }
+  // TODO: save answer to supabase
+  $("#examAnswerState").textContent = "✓";
+  showToast("تم حفظ الإجابة");
+  if(currentQIndex < studentQuestions.length - 1){
+    currentQIndex++;
+    renderCurrentQuestion();
+  } else {
+    finishExam();
+  }
+});
+
+/* Paste detection */
+$("#answerInput").addEventListener("paste", (e) => {
+  $("#pasteWarning").classList.remove("hidden-el");
+  // TODO: log paste attempt to supabase
+  setTimeout(()=>$("#pasteWarning").classList.add("hidden-el"), 4000);
+});
+
+/* ============================================================
+   CHAT
+   ============================================================ */
+$("#openChatBtn").addEventListener("click", () => $("#chatModal").classList.remove("hidden-el"));
+$("#doneChatBtn").addEventListener("click", () => $("#chatModal").classList.remove("hidden-el"));
+$("#sendChatBtn").addEventListener("click", async () => {
+  const txt = $("#chatText").value.trim();
+  if(!txt){ showToast("اكتبي الرسالة"); return; }
+  // TODO: insert into messages table
+  $("#chatText").value = "";
+  $("#chatModal").classList.add("hidden-el");
+  showToast("تم إرسال الرسالة بنجاح");
+});
+
+/* ============================================================
+   DASHBOARD LOADING
+   ============================================================ */
+async function loadDashboard(){
+  // TODO: fetch stats from supabase tables
+  const stats = {
+    students:0, active:0, completed:0, answers:0,
+    sessions:0, questions:0, blocked:0, storage:"—"
+  };
+  $("#statStudents").textContent = stats.students;
+  $("#statActive").textContent = stats.active;
+  $("#statCompleted").textContent = stats.completed;
+  $("#statAnswers").textContent = stats.answers;
+  $("#statSessions").textContent = stats.sessions;
+  $("#statQuestions").textContent = stats.questions;
+  $("#statBlocked").textContent = stats.blocked;
+  $("#statStorage").textContent = stats.storage;
+
+  $("#clearStudents").textContent = stats.students;
+  $("#clearAnswers").textContent = stats.answers;
+  $("#clearSessions").textContent = stats.sessions;
+  $("#clearReports").textContent = 0;
+
+  $("#sessStudents").textContent = stats.students;
+  $("#sessParticipations").textContent = stats.sessions;
+  $("#sessExams").textContent = 0;
+
+  renderStudents([]);
+  renderAnswers([]);
+  renderQuestions([]);
+  renderMessages([]);
+  renderNotes([]);
+  renderSecurityLog([]);
+  renderPasteLog([]);
+  renderGrades([]);
+}
+
+/* ============================================================
+   RENDERERS
+   ============================================================ */
+function renderStudents(list){
+  const tb = $("#studentsTable");
+  $("#studentsCount").textContent = list.length;
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="5" class="text-center text-slate-500 py-8">لا توجد طالبات مسجلات بعد</td></tr>`; return; }
+  tb.innerHTML = list.map((s,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td class="font-bold">${s.name}</td>
+      <td>${new Date(s.created_at||Date.now()).toLocaleString("ar")}</td>
+      <td><span class="badge green">مسجلة</span></td>
+      <td>
+        <button class="btn-ghost px-3 py-1.5 rounded-lg text-xs ripple" onclick="viewStudentDetails(${s.id})"><i data-lucide="eye" class="w-3.5 h-3.5"></i></button>
+        <button class="btn-danger px-3 py-1.5 rounded-lg text-xs ripple" onclick="deleteStudent(${s.id})"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+      </td>
+    </tr>`).join("");
+  lucide.createIcons();
+}
+function renderAnswers(list){
+  const tb = $("#answersTable");
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="5" class="text-center text-slate-500 py-8">لا توجد إجابات بعد</td></tr>`; return; }
+  tb.innerHTML = list.map(a=>`
+    <tr>
+      <td class="font-bold">${a.student_name||"—"}</td>
+      <td>س${a.question_order||"—"}</td>
+      <td class="max-w-md truncate">${a.answer||"—"}</td>
+      <td>${fmtTime(a.time_spent||0)}</td>
+      <td>${new Date(a.created_at||Date.now()).toLocaleString("ar")}</td>
+    </tr>`).join("");
+}
+function renderQuestions(list){
+  const tb = $("#questionsTable");
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="4" class="text-center text-slate-500 py-8">لا توجد أسئلة بعد</td></tr>`; return; }
+  tb.innerHTML = list.map(q=>`
+    <tr>
+      <td class="font-bold gold-text">${q.order}</td>
+      <td class="max-w-md">${q.text||""}</td>
+      <td>${q.required||""}</td>
+      <td>
+        <button class="btn-ghost px-3 py-1.5 rounded-lg text-xs ripple" onclick="editQuestion(${q.id})"><i data-lucide="edit-3" class="w-3.5 h-3.5"></i></button>
+        <button class="btn-danger px-3 py-1.5 rounded-lg text-xs ripple" onclick="deleteQuestion(${q.id})"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+      </td>
+    </tr>`).join("");
+  lucide.createIcons();
+}
+function renderMessages(list){
+  const tb = $("#messagesTable");
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="5" class="text-center text-slate-500 py-8">لا توجد رسائل بعد</td></tr>`; return; }
+  tb.innerHTML = list.map(m=>`
+    <tr>
+      <td class="font-bold">${m.student_name||"—"}</td>
+      <td class="max-w-sm truncate">${m.text||""}</td>
+      <td>${new Date(m.created_at||Date.now()).toLocaleString("ar")}</td>
+      <td>${m.replied ? '<span class="badge green">تم الرد</span>' : '<span class="badge">جديدة</span>'}</td>
+      <td><button class="btn-gold px-3 py-1.5 rounded-lg text-xs ripple" onclick="openReply(${m.id})"><i data-lucide="reply" class="w-3.5 h-3.5"></i> رد</button></td>
+    </tr>`).join("");
+  lucide.createIcons();
+}
+function renderNotes(list){
+  const c = $("#notesList");
+  if(!list.length){ c.innerHTML = `<div class="text-center text-slate-500 py-10 col-span-2">لا توجد ملاحظات</div>`; return; }
+  c.innerHTML = list.map(n=>`
+    <div class="glass rounded-2xl p-5 hover:border-yellow-500/50 transition">
+      <div class="flex items-center gap-2 mb-2">
+        <div class="icon-box" style="width:36px;height:36px;border-radius:10px;"><i data-lucide="sticky-note" class="w-4 h-4"></i></div>
+        <div class="font-bold gold-text">${n.title||"ملاحظة"}</div>
+      </div>
+      <div class="text-sm text-slate-300 leading-relaxed">${n.body||""}</div>
+      ${n.image_url ? `<img src="${n.image_url}" class="mt-3 rounded-xl border border-yellow-500/20" />`:""}
+      <div class="text-[11px] text-slate-500 mt-3">${new Date(n.created_at||Date.now()).toLocaleString("ar")}</div>
+    </div>`).join("");
+  lucide.createIcons();
+}
+function renderSecurityLog(list){
+  const tb = $("#securityLogTable");
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="4" class="text-center text-slate-500 py-8">لا توجد أحداث</td></tr>`; return; }
+  tb.innerHTML = list.map(e=>`
+    <tr>
+      <td>${new Date(e.at||Date.now()).toLocaleString("ar")}</td>
+      <td><span class="badge">${e.event||"—"}</span></td>
+      <td>${e.student||"—"}</td>
+      <td class="text-xs text-slate-400">${e.device||"—"}</td>
+    </tr>`).join("");
+}
+function renderPasteLog(list){
+  const tb = $("#pasteLogTable");
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="4" class="text-center text-slate-500 py-8">لا توجد محاولات لصق</td></tr>`; return; }
+  tb.innerHTML = list.map(p=>`
+    <tr>
+      <td>${new Date(p.at||Date.now()).toLocaleString("ar")}</td>
+      <td class="font-bold">${p.student||"—"}</td>
+      <td>س${p.question||"—"}</td>
+      <td class="text-xs text-slate-400">${p.details||"—"}</td>
+    </tr>`).join("");
+}
+function renderGrades(list){
+  const tb = $("#gradesTable");
+  if(!list.length){ tb.innerHTML = `<tr><td colspan="5" class="text-center text-slate-500 py-8">لا توجد درجات بعد</td></tr>`; return; }
+  tb.innerHTML = list.map(g=>`
+    <tr>
+      <td>${g.exam||"—"}</td>
+      <td class="font-bold">${g.student||"—"}</td>
+      <td>${g.date||"—"}</td>
+      <td class="gold-text font-bold">${g.grade||"—"}</td>
+      <td><span class="badge green">مكتمل</span></td>
+    </tr>`).join("");
+}
+
+/* ============================================================
+   STUDENT ACTIONS
+   ============================================================ */
+$("#addStudentBtn").addEventListener("click", async () => {
+  const name = $("#newStudentName").value.trim();
+  if(name.length < 5){ showToast("الاسم الثلاثي غير مكتمل"); return; }
+  // TODO: insert into students table
+  showToast("تمت إضافة الطالبة");
+  $("#newStudentName").value = "";
+});
+$("#refreshStudentsBtn").addEventListener("click", () => { showToast("تم التحديث"); loadDashboard(); });
+
+window.viewStudentDetails = (id) => {
+  $("#detailsBody").innerHTML = `
+    <div class="grid md:grid-cols-2 gap-4">
+      <div class="stat"><div class="text-xs text-slate-400">الاسم</div><div class="font-bold gold-text">—</div></div>
+      <div class="stat"><div class="text-xs text-slate-400">تاريخ التسجيل</div><div class="font-bold gold-text">—</div></div>
+      <div class="stat"><div class="text-xs text-slate-400">عدد الإجابات</div><div class="font-bold gold-text">0</div></div>
+      <div class="stat"><div class="text-xs text-slate-400">الحالة</div><div class="font-bold gold-text">مسجلة</div></div>
+    </div>
+    <div class="mt-5 text-sm text-slate-400">تفاصيل الطالبة ستُحمّل من قاعدة البيانات.</div>
+  `;
+  $("#detailsModal").classList.remove("hidden-el");
+};
+window.deleteStudent = (id) => {
+  if(confirm("هل تريدين حذف هذه الطالبة؟")){
+    // TODO: delete from supabase
+    showToast("تم الحذف");
+  }
+};
+
+/* ============================================================
+   QUESTIONS ACTIONS
+   ============================================================ */
+$("#openAddQBtn").addEventListener("click", () => $("#questionModal").classList.remove("hidden-el"));
+$("#saveQuestionBtn").addEventListener("click", async () => {
+  const text = $("#qText").value.trim();
+  const req = $("#qRequired").value.trim();
+  const order = parseInt($("#qOrder").value||"0",10);
+  if(!text){ showToast("اكتبي نص السؤال"); return; }
+  // TODO: insert into questions table
+  showToast("تم حفظ السؤال");
+  $("#questionModal").classList.add("hidden-el");
+  $("#qText").value = ""; $("#qRequired").value = ""; $("#qOrder").value = "";
+});
+window.editQuestion = (id) => showToast("سيتم تحميل السؤال للتعديل");
+window.deleteQuestion = (id) => {
+  if(confirm("حذف السؤال؟")){
+    // TODO: delete from supabase
+    showToast("تم الحذف");
+  }
+};
+
+/* ============================================================
+   SETTINGS ACTIONS
+   ============================================================ */
+$("#saveSettingsBtn").addEventListener("click", async () => {
+  // TODO: save settings to supabase
+  showToast("تم حفظ الإعدادات ✨");
+});
+$("#openGateBtn").addEventListener("click", () => {
+  // TODO: update gate status
+  showToast("تم فتح بوابة الدخول");
+});
+$("#closeGateBtn").addEventListener("click", () => {
+  // TODO: update gate status
+  showToast("تم إيقاف الدخول");
+});
+$("#saveNoteBtn").addEventListener("click", () => {
+  const v = $("#siteNote").value.trim();
+  // TODO: save to site_notes
+  const banner = $("#noteBanner");
+  if(v){ banner.classList.remove("hidden-el"); $("#noteText").textContent = v; }
+  else banner.classList.add("hidden-el");
+  showToast("تم حفظ الملاحظة");
+});
+
+/* ============================================================
+   SECURITY / ANTI-FRAUD
+   ============================================================ */
+$("#enableStrictBtn").addEventListener("click", () => { showToast("تم تفعيل الوضع الصارم"); });
+$("#disableStrictBtn").addEventListener("click", () => { showToast("تم إيقاف الوضع الصارم"); });
+window.toggleStrictForStudent = (on) => {
+  const sel = $("#strictStudentSel").value;
+  if(!sel || sel === "اختاري طالبة"){ showToast("اختاري طالبة أولاً"); return; }
+  showToast(on ? "تم التفعيل للطالبة" : "تم الإيقاف للطالبة");
+};
+$("#enablePasteBlockBtn").addEventListener("click", () => { $("#pasteBlockState").textContent = "مفعّل"; showToast("تم تفعيل منع اللصق"); });
+$("#allowPasteBtn").addEventListener("click", () => { $("#pasteBlockState").textContent = "مسموح"; showToast("تم السماح باللصق"); });
+
+/* ============================================================
+   MESSAGES
+   ============================================================ */
+$("#refreshMsgBtn").addEventListener("click", () => showToast("تم التحديث"));
+$("#disableMsgBtn").addEventListener("click", () => showToast("تم إيقاف استقبال الرسائل"));
+$("#enableMsgBtn").addEventListener("click", () => showToast("تم تفعيل استقبال الرسائل"));
+window.openReply = (id) => {
+  $("#replyOriginal").textContent = "الرسالة الأصلية...";
+  $("#replyModal").classList.remove("hidden-el");
+};
+$("#sendReplyBtn").addEventListener("click", () => {
+  const v = $("#replyText").value.trim();
+  if(!v){ showToast("اكتبي الرد"); return; }
+  // TODO: save reply
+  $("#replyModal").classList.add("hidden-el");
+  $("#replyText").value = "";
+  showToast("تم إرسال الرد");
+});
+
+/* ============================================================
+   NOTES ADMIN
+   ============================================================ */
+$("#saveNoteAdminBtn").addEventListener("click", async () => {
+  const t = $("#noteTitle").value.trim();
+  const b = $("#noteBody").value.trim();
+  const u = $("#noteImageUrl").value.trim();
+  if(!t || !b){ showToast("العنوان والنص مطلوبان"); return; }
+  // TODO: upload image if any, then insert note
+  showToast("تم حفظ الملاحظة");
+});
+$("#newNoteBtn").addEventListener("click", () => {
+  $("#noteTitle").value = ""; $("#noteBody").value = ""; $("#noteImageUrl").value = ""; $("#noteImage").value = "";
+});
+
+/* ============================================================
+   REPORTS / STORAGE
+   ============================================================ */
+$("#downloadReportsBtn").addEventListener("click", () => showToast("سيتم توليد ملف ZIP"));
+$("#clearCycleBtn").addEventListener("click", () => {
+  if(!confirm("تأكيد أول: مسح بيانات الطالبات؟")) return;
+  if(!confirm("تأكيد ثاني: العملية لا يمكن التراجع عنها!")) return;
+  // TODO: call supabase rpc to clear cycle
+  showToast("تم بدء دورة جديدة");
+});
+
+/* ============================================================
+   EXAM SESSION CREATE
+   ============================================================ */
+$("#createExamBtn").addEventListener("click", async () => {
+  const t = $("#newExamTitle").value.trim();
+  const d = $("#newExamDate").value;
+  const g = $("#newExamGrade").value;
+  if(!t){ showToast("عنوان الاختبار مطلوب"); return; }
+  // TODO: insert exam, register students
+  showToast("تم إنشاء الدورة");
+});
+
+/* ============================================================
+   INIT
+   ============================================================ */
+document.addEventListener("DOMContentLoaded", () => {
+  lucide.createIcons();
+  rippleBind();
+  // Observe DOM for new ripple elements
+  new MutationObserver(() => { lucide.createIcons(); rippleBind(); }).observe(document.body, {childList:true, subtree:true});
+});
+</script>
+</body>
+</html>
+```
